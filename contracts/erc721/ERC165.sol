@@ -1,4 +1,4 @@
-pragma solidity ^0.6.4;
+pragma solidity ^0.7.3;
 
 import "./IERC165.sol";
 
@@ -19,7 +19,7 @@ contract ERC165 is IERC165 {
      */
     mapping(bytes4 => bool) private _supportedInterfaces;
 
-    constructor () internal {
+    constructor() {
         // Derived contracts need only register support for their own interfaces,
         // we register support for ERC165 itself here
         _registerInterface(_INTERFACE_ID_ERC165);
@@ -30,7 +30,12 @@ contract ERC165 is IERC165 {
      *
      * Time complexity O(1), guaranteed to always use less than 30 000 gas.
      */
-    function supportsInterface(bytes4 interfaceId) public view override returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        override
+        view
+        returns (bool)
+    {
         return _supportedInterfaces[interfaceId];
     }
 

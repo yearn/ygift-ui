@@ -301,7 +301,7 @@ This tutorial aims to create a view where the user can create new ERC20 tokens u
 
 ```bash
 echo '//SPDX-License-Identifier: Unlicense
-pragma solidity ^0.6.8;
+pragma solidity ^0.7.3;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 

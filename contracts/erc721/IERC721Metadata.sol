@@ -1,4 +1,4 @@
-pragma solidity ^0.6.4;
+pragma solidity ^0.7.3;
 
 import "./IERC721.sol";
 
@@ -7,7 +7,6 @@ import "./IERC721.sol";
  * @dev See https://eips.ethereum.org/EIPS/eip-721
  */
 interface IERC721Metadata is IERC721 {
-
     /**
      * @dev Returns the token collection name.
      */
