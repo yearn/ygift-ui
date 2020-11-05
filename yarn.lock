@@ -603,10 +603,10 @@
   resolved "https://registry.yarnpkg.com/@solidity-parser/parser/-/parser-0.7.1.tgz#660210130e4237476cb55e2882064809f80f861e"
   integrity sha512-5ma2uuwPAEX1TPl2rAPAAuGlBkKnn2oUKQvnhTFlDIB8U/KDWX77FpHtL6Rcz+OwqSCWx9IClxACgyIEJ/GhIw==
 
-"@symfoni/hardhat-react@^0.0.42":
-  version "0.0.42"
-  resolved "https://registry.yarnpkg.com/@symfoni/hardhat-react/-/hardhat-react-0.0.42.tgz#0ba3797cec9aeca5379400c8b9513f7ee6879940"
-  integrity sha512-MrPEH6inJBQpGR1ZAsYONx0o98hOLLl5re/gcM3Z8q2GMT3OIwCTcT+poWuHJ2jJ6/04wo23G4dAvPxBGSsYhg==
+"@symfoni/hardhat-react@^0.0.45":
+  version "0.0.45"
+  resolved "https://registry.yarnpkg.com/@symfoni/hardhat-react/-/hardhat-react-0.0.45.tgz#fd55c7e027c6a8ca58137deebbd597b2fa29f48c"
+  integrity sha512-budlO/e8PvrijOjoGt6eAvk5ZhVAsSadyNfbfIvRzEx88Nx9NbGDHHhquvCC7AUs4huToOybSqeEUGCdwmPHuw==
 
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
@@ -3701,10 +3701,10 @@ hardhat-deploy-ethers@^0.3.0-beta.5:
   resolved "https://registry.yarnpkg.com/hardhat-deploy-ethers/-/hardhat-deploy-ethers-0.3.0-beta.5.tgz#c365ebb5c29e7474b2b35912f27dc9699a0e63b3"
   integrity sha512-KoUswkCPSuARGjZQIf8kItL5rPFt6srgVj+q0B9YTQ7Vyw/k2N0R8u7aYWq4Piy9mjDKcEGQTPBXhaX02BMkVw==
 
-hardhat-deploy@^0.7.0-beta.19:
-  version "0.7.0-beta.19"
-  resolved "https://registry.yarnpkg.com/hardhat-deploy/-/hardhat-deploy-0.7.0-beta.19.tgz#2a6824b8eb09177358e16c51e9e643c056acdfe9"
-  integrity sha512-ZzI0jRzsl3ZK2Fw008px5r4rDlpVpm5iA4apmWhu7b46KbiDFrajgUW8wruqYnVK4enVf5gel5iw7Tt6E9Zdsg==
+hardhat-deploy@^0.7.0-beta.23:
+  version "0.7.0-beta.28"
+  resolved "https://registry.yarnpkg.com/hardhat-deploy/-/hardhat-deploy-0.7.0-beta.28.tgz#e71dc7d7a97903773c717818e8ecb7eef8f97a5c"
+  integrity sha512-oWAVa636zyOXecvLkZ/hpph1PvqwoK0DnqjA21En4amfTjLx5Do6XlrGcNJAKrH9LRTnfg2dc7zmTauBqFM5+g==
   dependencies:
     "@ethersproject/abi" "^5.0.2"
     "@ethersproject/abstract-signer" "^5.0.2"
