@@ -15,7 +15,7 @@ it("should be able to attempt and mint a gift", async () => {
   const { result, waitForNextUpdate } = renderHook(() => useCreateGiftFormManagement(), { wrapper });
   await waitForNextUpdate();
   expect(
-    result.current.handleSubmit([
+    result.current.onSubmit([
       "0xbfeceC47dD8bf5F6264A9830A9d26ef387c38A67",
       "0xbfeceC47dD8bf5F6264A9830A9d26ef387c38A67",
       0,

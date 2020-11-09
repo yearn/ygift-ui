@@ -8,10 +8,10 @@ export function useCreateGiftFormManagement() {
     yGift?.instance?.mint.apply(null, params)?.then(() => {
       console.debug("hello");
     });
-  const handleSubmit = useCallback(submitHandler, [yGift?.instance]);
+  const onSubmit = useCallback(submitHandler, [yGift?.instance]);
   const initialValues: Parameters<YGift["mint"]> = ["", "", 0, "", "", "", 0];
   return {
-    handleSubmit,
+    onSubmit,
     initialValues,
   };
 }
