@@ -4,6 +4,7 @@ import "./App.css";
 import { HardhatContext } from "./hardhat/HardhatContext";
 import { YGift } from "./components/YGift";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { CreateGift } from "./components/CreateGift";
 
 function App() {
   return (
