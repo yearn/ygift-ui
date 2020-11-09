@@ -19,7 +19,7 @@ export const YGift: React.FC<Props> = () => {
       setMessage(message);
     };
     doAsync();
-  }, [yGift]);
+  }, [yGift, signer]);
 
   const handleSetGreeting = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
