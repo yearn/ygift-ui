@@ -80,6 +80,9 @@ const Navbar: React.FunctionComponent<IProps> = (props) => {
         ) : (
           <Button
             ml="auto"
+            background="#0065D0"
+            borderRadius="32px"
+            color="white"
             onClick={async () => {
               await web3Modal.connect();
             }}
