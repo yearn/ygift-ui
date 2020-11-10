@@ -9,7 +9,7 @@ export function useCreateGiftFormManagement() {
       console.debug("hello");
     });
   const onSubmit = useCallback(submitHandler, [yGift?.instance]);
-  const initialValues: Parameters<YGift["mint"]> = ["", "", 0, "", "", "", 0];
+  const initialValues: Parameters<YGift["mint"]> = ["", "", "", "", "", "", ""];
   return {
     onSubmit,
     initialValues,
