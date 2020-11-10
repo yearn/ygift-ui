@@ -43,7 +43,6 @@ const Gifts: React.FunctionComponent<IProps> = (props) => {
       ) : (
         <NoGifts></NoGifts>
       )}
-      )
     </Wrap>
   );
 };
