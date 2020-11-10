@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import { Flex, Stack, Text, Button, HStack, Heading, Link as CLink, Center } from "@chakra-ui/core";
+import { Flex, Text, Button, HStack, Heading, Link as CLink, Center } from "@chakra-ui/core";
 import { NavLink } from "react-router-dom";
 import Web3Modal from "web3modal";
 import { CurrentAddressContext } from "../../hardhat/HardhatContext";
@@ -46,7 +46,7 @@ const OurLink = (props) => (
 
 const Links = () => (
   <Center mx="auto">
-    <HStack spacing={2}>
+    <HStack spacing={10}>
       <OurLink to="/create-gift">Create Gift</OurLink>
       <OurLink to="/gifts">Gifts</OurLink>
       <OurLink to="/about">About</OurLink>
