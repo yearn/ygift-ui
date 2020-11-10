@@ -6,14 +6,13 @@ import { useFormik } from "formik";
 
 export const componentDataTestId = createDataTestId("Tip");
 
-export const params = ["_to", "_token", "_amount", "_url", "_name", "_msg", "_lockedDuration"];
+export const params = ["_tokenId", "_amount", "_msg"];
 
 interface IProps {}
 
 const Tip: React.FunctionComponent<IProps> = (props) => {
   const management = useTipFormManagement();
   const formik = useFormik(management);
-  // const [_to, _token, _amount, _url, _name, _msg, _lockedDuration] = formik.values;
 
   return (
     <form onSubmit={formik.handleSubmit}>

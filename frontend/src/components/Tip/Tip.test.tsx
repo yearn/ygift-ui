@@ -1,11 +1,11 @@
 import React from "react";
 import { render, screen, act, cleanup } from "@testing-library/react";
-import { CreateGift, params } from ".";
+import { Tip, params } from ".";
 import { HardhatContext } from "../../hardhat/HardhatContext";
 
 it("should render form inputs", async () => {
   const wrapper: React.FC = ({ children }) => <HardhatContext>{children}</HardhatContext>;
-  render(<CreateGift></CreateGift>, { wrapper });
+  render(<Tip></Tip>, { wrapper });
 
   const ids = params.map((param) => screen.findByTestId(param));
   const inputs = await Promise.all(ids);
