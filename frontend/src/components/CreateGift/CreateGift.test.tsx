@@ -3,18 +3,16 @@ import { render, screen, act, cleanup } from "@testing-library/react";
 import { CreateGift, params } from ".";
 import { HardhatContext } from "../../hardhat/HardhatContext";
 
-beforeEach(cleanup);
-
-test("should render form inputs", async () => {
+it("should render form inputs", async () => {
   const wrapper: React.FC = ({ children }) => <HardhatContext>{children}</HardhatContext>;
-  act(() => {
-    render(<CreateGift></CreateGift>, { wrapper });
-  });
+  render(<CreateGift></CreateGift>, { wrapper });
 
-  const inputs = await Promise.all(params.map((param) => screen.findByTestId(param)));
+  const ids = params.map((param) => screen.findByTestId(param));
+  const inputs = await Promise.all(ids);
 
   inputs.forEach((input) => {
     expect(input).toBeInTheDocument();
   });
-  expect(await screen.getByTestId("submit")).toBeInTheDocument();
+  const submit = await screen.getByTestId("submit");
+  expect(submit).toBeInTheDocument();
 });

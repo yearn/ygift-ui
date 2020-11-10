@@ -1,6 +1,6 @@
 import React from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import { Flex, Stack, Text, Button } from "@chakra-ui/core";
+import { Button, VStack, Input, FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/core";
 import { useCreateGiftFormManagement } from "./useCreateGiftFormManagement";
 import { useFormik } from "formik";
 
@@ -16,25 +16,29 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   // const [_to, _token, _amount, _url, _name, _msg, _lockedDuration] = formik.values;
 
   return (
-    <div>
-      <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={formik.handleSubmit}>
+      <VStack spacing={2}>
         {params.map((param, index) => (
-          <input
-            key={param}
-            data-testid={param}
-            id={param}
-            name={param}
-            onChange={formik.handleChange}
-            type="text"
-            value={formik.values[index]?.toString()}
-          />
+          <FormControl key={param} isInvalid={Boolean(formik.errors[index] && formik.touched[index])}>
+            <FormLabel htmlFor={param}>{param}</FormLabel>
+            <Input
+              key={param}
+              data-testid={param}
+              id={index.toString()}
+              name={index.toString()}
+              onChange={formik.handleChange}
+              type="text"
+              value={formik.values[index]?.toString()}
+            />
+            <FormErrorMessage>{formik.errors[index]}</FormErrorMessage>
+          </FormControl>
         ))}
 
-        <button data-testid={"submit"} type="submit" disabled={formik.isSubmitting}>
+        <Button data-testid={"submit"} type="submit" disabled={formik.isSubmitting}>
           Submit
-        </button>
-      </form>
-    </div>
+        </Button>
+      </VStack>
+    </form>
   );
 };
 
