@@ -1,25 +1,13 @@
-import { BigNumber } from "ethers";
 import { useContext, useEffect, useState } from "react";
 import { ProviderContext, SignerContext, yGiftContext } from "../../../hardhat/HardhatContext";
-
-export type Gift = {
-  0: string;
-  1: string;
-  2: string;
-  3: string;
-  4: BigNumber;
-  5: string;
-  6: boolean;
-  7: BigNumber;
-  8: BigNumber;
-};
+import { GiftModel } from "../../Gifts/Gift";
 
 export function useGifts() {
   const yGift = useContext(yGiftContext);
   const signer = useContext(SignerContext);
   const provider = useContext(ProviderContext);
-  const [giftsOwned, setGiftsOwned] = useState<(Gift | undefined)[]>([]);
-  const [giftsSent, setGiftsSent] = useState<(Gift | undefined)[]>([]);
+  const [giftsOwned, setGiftsOwned] = useState<(GiftModel | undefined)[]>([]);
+  const [giftsSent, setGiftsSent] = useState<(GiftModel | undefined)[]>([]);
 
   useEffect(() => {
     const fetch = async () => {
