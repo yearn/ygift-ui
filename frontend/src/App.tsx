@@ -5,33 +5,26 @@ import { HardhatContext } from "./hardhat/HardhatContext";
 import { YGift } from "./components/YGift";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { CreateGift } from "./components/CreateGift";
+import { Layout } from "./components/Layout";
+import { About } from "./components/About";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <Router>
-          <HardhatContext>
+      <Router>
+        <HardhatContext>
+          <Layout>
             <Switch>
               <Route exact path="/">
-                <div>
-                  <img src={logo} className="App-logo" alt="logo" />
-                  <p>
-                    Edit <code>src/App.tsx</code> and save to reload.
-                  </p>
-                  <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-                    Learn React
-                  </a>
-                  <YGift></YGift>
-                </div>
+                <About></About>
               </Route>
               <Route path="/create-gift">
                 <CreateGift />
               </Route>
             </Switch>
-          </HardhatContext>
-        </Router>
-      </header>
+          </Layout>
+        </HardhatContext>
+      </Router>
     </div>
   );
 }

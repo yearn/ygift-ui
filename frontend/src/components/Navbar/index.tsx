@@ -60,7 +60,7 @@ const formatAddress = (currentAddress: string) =>
 const Navbar: React.FunctionComponent<IProps> = (props) => {
   const currentAddress = useContext(CurrentAddressContext);
   return (
-    <Flex>
+    <Flex width="100%" px={[2, 10]} mb={4}>
       <Logo></Logo>
       <Links></Links>
       <Center>

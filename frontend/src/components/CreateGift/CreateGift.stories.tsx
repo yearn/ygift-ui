@@ -1,6 +1,7 @@
 import React from "react";
 
 import { CreateGift } from ".";
+import { Layout } from "../Layout";
 
 const story = {
   component: CreateGift,
@@ -8,7 +9,11 @@ const story = {
 };
 export default story;
 
-const Template: any = (args: any) => <CreateGift {...args} />;
+const Template: any = (args: any) => (
+  <Layout>
+    <CreateGift {...args} />
+  </Layout>
+);
 
 export const Default = Template.bind({});
 Default.args = {
