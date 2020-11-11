@@ -16,7 +16,9 @@ const Template: any = (args: any) => (
 );
 
 export const Default = Template.bind({});
-Default.args = {
-  0: "CreateGift Name goes here",
-  5: "https://ipfs.rarible.com/ipfs/QmQcHGycE8vqeNzowUd6RkJ9zLwVS7u4azoAMT6jphXdhb",
+Default.args = {};
+
+export const Submitting = Template.bind({});
+Submitting.args = {
+  isSubmitting: true,
 };
