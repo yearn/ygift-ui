@@ -37,7 +37,5 @@
     "url": "https://github.com/symfoni/hardhat-react-boilerplate/issues"
   },
   "homepage": "https://github.com/symfoni/hardhat-react-boilerplate#readme",
-  "dependencies": {
-    "web3modal": "^1.9.1"
-  }
+  "dependencies": {}
 }

@@ -11,8 +11,10 @@ import {
   Center,
   Image,
   Heading,
+  useClipboard,
   Text,
 } from "@chakra-ui/core";
+import { CopyIcon } from "@chakra-ui/icons";
 import { useCreateGiftFormManagement } from "./useCreateGiftFormManagement";
 import { useFormik } from "formik";
 import graphic from "./graphic.png";
@@ -63,11 +65,93 @@ const Submitting: React.FC = () => (
   </Center>
 );
 
+interface ISubmittedProps {
+  imageURL: string;
+}
+export const Submitted: React.FC<ISubmittedProps> = (props) => {
+  const { hasCopied, onCopy } = useClipboard(props.imageURL);
+  return (
+    <Center
+      {...{
+        background: "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
+        borderRadius: "16px",
+        width: "70vw",
+        py: 8,
+      }}
+    >
+      <VStack spacing={2}>
+        <Heading
+          as="h3"
+          {...{
+            fontFamily: "Roboto",
+            fontStyle: "normal",
+            fontWeight: "bold",
+            fontSize: "24px",
+            color: "white",
+          }}
+        >
+          Your gift has been created succesfully
+        </Heading>
+        <Image src={props.imageURL} width="425px" height="425px"></Image>
+        <HStack spacing={3}>
+          <Text
+            {...{
+              fontFamily: "Roboto",
+              fontStyle: "normal",
+              fontWeight: "normal",
+              fontSize: "16px",
+              textOverflow: "ellipsis",
+              width: "300px",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              color: "white",
+            }}
+          >
+            {props.imageURL}
+          </Text>
+          {hasCopied ? <Text>Copied</Text> : <CopyIcon id="add" cursor="pointer" onClick={onCopy}></CopyIcon>}
+        </HStack>
+        <VStack spacing={1}>
+          <Text
+            color="white"
+            {...{
+              fontFamily: "Roboto",
+              fontStyle: "normal",
+              fontWeight: "bold",
+              fontSize: "18px",
+              width: "400px",
+              textAlign: "center",
+            }}
+          >
+            Want to make this even more memorable?
+          </Text>
+          <Text
+            {...{
+              fontFamily: "Roboto",
+              fontStyle: "normal",
+              fontWeight: "bold",
+              fontSize: "18px",
+              width: "400px",
+              textAlign: "center",
+              color: "white",
+            }}
+          >
+            Share the image and URL so that others can add tips in yUSD.
+          </Text>
+        </VStack>
+      </VStack>
+    </Center>
+  );
+};
+
 const CreateGift: React.FunctionComponent<IProps> = (props) => {
   const management = useCreateGiftFormManagement();
   const formik = useFormik(management);
   // const [_to, _token, _amount, _url, _name, _msg, _lockedDuration] = formik.values;
 
+  if (management.hasSubmitted) {
+    return <Submitted imageURL={formik.values?.[3]}></Submitted>;
+  }
   return (
     <form onSubmit={formik.handleSubmit}>
       {(props.isSubmitting || formik.isSubmitting) && <Submitting></Submitting>}
@@ -183,7 +267,6 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               <Button
                 data-testid={"submit"}
                 type="submit"
-                disabled={formik.isSubmitting}
                 variant="outline"
                 background="#0065D0"
                 borderRadius="32px"
