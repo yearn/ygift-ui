@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.7.3;
 
 import "../erc721/ERC721.sol";
@@ -83,10 +85,9 @@ contract yGift is ERC721("yearn Gift NFT", "yGIFT"), Controller {
         uint256 lockedDuration;
     }
 
-    Gift[] gifts;
+    Gift[] public gifts;
 
-    mapping(address => bool) supportedTokens;
-    mapping(address => uint256) tokensHeld;
+    mapping(address => uint256) public tokensHeld;
 
     event GiftMinted(
         address indexed from,
@@ -110,61 +111,6 @@ contract yGift is ERC721("yearn Gift NFT", "yGIFT"), Controller {
     );
 
     /**
-     * @dev Allows controller to support a new token to be tipped
-     *
-     * _tokens: array of token addresses to whitelist
-     */
-    function addTokens(address[] calldata _tokens) external onlyController {
-        for (uint256 i = 0; i < _tokens.length; i++)
-            supportedTokens[_tokens[i]] = true;
-    }
-
-    /**
-     * @dev Allows controller to remove the support support of a token to be tipped
-     *
-     * _tokens: array of token addresses to blacklist
-     */
-    function removeTokens(address[] calldata _tokens) external onlyController {
-        for (uint256 i = 0; i < _tokens.length; i++)
-            supportedTokens[_tokens[i]] = false;
-    }
-
-    /**
-     * @dev Returns a gift struct
-     *
-     * _tokenId: gift in which the function caller would like to tip
-     */
-    function getGift(uint256 _tokenId)
-        public
-        view
-        returns (
-            string memory,
-            address,
-            address,
-            address,
-            uint256,
-            string memory,
-            bool,
-            uint256,
-            uint256
-        )
-    {
-        require(_tokenId < gifts.length, "yGift: Token ID does not exist.");
-        Gift memory gift = gifts[_tokenId];
-        return (
-            gift.name,
-            gift.minter,
-            gift.recipient,
-            gift.token,
-            gift.amount,
-            gift.imageURL,
-            gift.redeemed,
-            gift.createdAt,
-            gift.lockedDuration
-        );
-    }
-
-    /**
      * @dev Mints a new Gift NFT and places it into the contract address for future collection
      * _to: recipient of the gift
      * _token: token address of the token to be gifted
@@ -186,11 +132,7 @@ contract yGift is ERC721("yearn Gift NFT", "yGIFT"), Controller {
         string calldata _name,
         string calldata _msg,
         uint256 _lockedDuration
-    ) external onlyWhitelisted {
-        require(
-            supportedTokens[_token],
-            "yGift: ERC20 token is not supported."
-        );
+    ) external {
         require(
             IERC20(_token).balanceOf(msg.sender) >= _amount,
             "yGift: Not enough token balance to mint."
@@ -272,12 +214,12 @@ contract yGift is ERC721("yearn Gift NFT", "yGIFT"), Controller {
 
     /**
      * @dev Allows the gift recipient to collect their tokens
-     * _amount: amount of tokens the gift owner would like to collect
      * _tokenId: gift in which the function caller would like to tip
+     * _amount: amount of tokens the gift owner would like to collect
      *
      * requirement: caller must own the gift recipient && gift must have been redeemed
      */
-    function collect(uint256 _amount, uint256 _tokenId) public {
+    function collect(uint256 _tokenId, uint256 _amount) public {
         require(_tokenId < gifts.length, "yGift: Token ID does not exist.");
         require(
             ownerOf(_tokenId) == msg.sender,
@@ -287,7 +229,7 @@ contract yGift is ERC721("yearn Gift NFT", "yGIFT"), Controller {
         require(gift.redeemed, "yGift: NFT tokens cannot be collected.");
         gift.amount = gift.amount.sub(_amount);
         tokensHeld[gift.token] = tokensHeld[gift.token].sub(_amount);
-        IERC20(gift.token).safeTransferFrom(address(this), msg.sender, _amount);
+        IERC20(gift.token).safeTransfer(msg.sender, _amount);
         emit Collected(msg.sender, _tokenId, gift.token, _amount);
     }
 
