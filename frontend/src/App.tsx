@@ -9,6 +9,7 @@ import { Layout } from "./components/Layout";
 import { About } from "./components/About";
 import { ViewGift } from "./components/ViewGift";
 import { ChakraProvider } from "@chakra-ui/core";
+import { GiftsTabs } from "./components/GiftsTabs";
 
 function App() {
   return (
@@ -23,6 +24,9 @@ function App() {
                 </Route>
                 <Route path="/create-gift">
                   <CreateGift />
+                </Route>
+                <Route path="/gifts/">
+                  <GiftsTabs />
                 </Route>
                 <Route path="/gift/:tokenId">
                   <ViewGift />

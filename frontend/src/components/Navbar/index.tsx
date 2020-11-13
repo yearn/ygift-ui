@@ -49,7 +49,7 @@ const Links = () => (
     <HStack spacing={10}>
       <OurLink to="/create-gift">Create Gift</OurLink>
       <OurLink to="/gifts">Gifts</OurLink>
-      <OurLink to="/about">About</OurLink>
+      <OurLink to="/">About</OurLink>
     </HStack>
   </Center>
 );
