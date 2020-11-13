@@ -1822,7 +1822,7 @@
     "@chakra-ui/checkbox" "1.0.0-rc.8"
     "@chakra-ui/utils" "1.0.0-rc.8"
 
-"@chakra-ui/system@1.0.0-rc.8", "@chakra-ui/system@^1.0.0-rc.8":
+"@chakra-ui/system@1.0.0-rc.8":
   version "1.0.0-rc.8"
   resolved "https://registry.yarnpkg.com/@chakra-ui/system/-/system-1.0.0-rc.8.tgz#0bca9a5d649ec3c44004a872f3e171567ccd6c7c"
   integrity sha512-+jBXq15wwzvUht8weW/Svbuw704ArWdnto/mrfMJdB+ZVpyekhiD2lRoMJu5bxX7iD8sKhkKr5UjSRh97Gcdiw==
@@ -4900,7 +4900,7 @@ babel-loader@8.1.0:
     pify "^4.0.1"
     schema-utils "^2.6.5"
 
-babel-loader@^8.0.6, babel-loader@^8.2.0:
+babel-loader@^8.0.6:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.2.0.tgz#37b37e8e35511627d0e73e00a0bb5f023230fea0"
   integrity sha512-xm8HSeshX4r143Vhi7b0LBjqAtOWPNGoIe7yvLUQjJcGU90+h5Odby13VejHo6zKAN+GuaOK/DwLa7wzMV5wSg==

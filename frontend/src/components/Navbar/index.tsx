@@ -26,7 +26,7 @@ const Logo = () => (
   </Heading>
 );
 
-const OurLink = (props) => (
+const OurLink = (props: any) => (
   <CLink
     as={NavLink}
     activeStyle={{

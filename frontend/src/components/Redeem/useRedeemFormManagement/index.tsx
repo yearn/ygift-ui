@@ -9,7 +9,7 @@ export function useRedeemFormManagement(tokenId: string) {
       console.debug("hello");
     });
   const onSubmit = useCallback(submitHandler, [yGift?.instance]);
-  const initialValues: Parameters<YGift["redeem"]> = [tokenId, 0, ""];
+  const initialValues: Parameters<YGift["redeem"]> = [tokenId];
   return {
     onSubmit,
     initialValues,
