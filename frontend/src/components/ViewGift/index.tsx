@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
 import { Flex, Stack, Text, Button, VStack, HStack, Image, useDisclosure, Heading } from "@chakra-ui/core";
 import { GiftModel } from "../Gifts/Gift";
@@ -14,28 +14,36 @@ import {
 } from "@chakra-ui/core";
 import { AddIcon, InfoIcon, CloseIcon, CopyIcon } from "@chakra-ui/icons";
 import { TransactionHistory } from "./TransactionHistory";
-
-export type GiftTransaction = {};
+import { useParams } from "react-router-dom";
+import { yGiftContext } from "../../hardhat/HardhatContext";
 
 export const componentDataTestId = createDataTestId("ViewGift");
 
 export const dataTestIds = {};
 
-interface IProps {
-  gift: GiftModel;
-}
+interface IProps {}
 
 const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
+  const { tokenId } = useParams<{ tokenId: string }>();
+  const yGift = useContext(yGiftContext);
+  const [gift, setGift] = useState<GiftModel>();
+  useEffect(() => {
+    const fetch = async () => {
+      const gift = await yGift?.instance?.getGift(tokenId);
+      setGift(gift);
+    };
+    fetch();
+  }, [yGift, tokenId]);
 
   return (
     <VStack height={"70vh"} borderRadius="32px">
       <HStack height="100%">
-        <Image height="400px" width="400px" src={props.gift["5"]} />
+        <Image height="400px" width="400px" src={gift?.["5"]} />
         <VStack height="100%" width="520px" alignItems="flex-start" p={4}>
           {/*  */}
           <HStack width="100%">
-            <Heading mr="auto">{props.gift["0"]}</Heading>
+            <Heading mr="auto">{gift?.["0"]}</Heading>
             <HStack spacing={4}>
               <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} placement="bottom" closeOnBlur={false}>
                 <PopoverTrigger>
@@ -56,7 +64,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           <HStack spacing={4}>
             <VStack alignItems="flex-start" spacing={2}>
               <Text>Gift Amount</Text>
-              <Text>{props.gift["3"]} ETH</Text>
+              <Text>{gift?.["3"]} ETH</Text>
             </VStack>
             <VStack alignItems="flex-start" spacing={2}>
               <Text>Received</Text>
@@ -67,13 +75,13 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           {/*  */}
           <VStack spacing={2} alignItems="flex-start">
             <Text>Message</Text>
-            <Text>{(props.gift as any)["message"]}</Text>
+            <Text>{(gift as any)["message"]}</Text>
           </VStack>
           {/*  */}
           <VStack spacing={2} alignItems="flex-start">
             <Text>Owned by</Text>
             <HStack>
-              <Text>{props.gift["2"]}</Text>
+              <Text>{gift?.["2"]}</Text>
               <CopyIcon></CopyIcon>
             </HStack>
           </VStack>
@@ -81,14 +89,14 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           <VStack spacing={2} alignItems="flex-start">
             <Text>Gifted by</Text>
             <HStack>
-              <Text>{props.gift["1"]}</Text>
+              <Text>{gift?.["1"]}</Text>
               <CopyIcon></CopyIcon>
             </HStack>
           </VStack>
         </VStack>
       </HStack>
 
-      <TransactionHistory></TransactionHistory>
+      <TransactionHistory tokenId={tokenId}></TransactionHistory>
       <VStack></VStack>
     </VStack>
   );

@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { CreateGift } from "./components/CreateGift";
 import { Layout } from "./components/Layout";
 import { About } from "./components/About";
+import { ViewGift } from "./components/ViewGift";
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
               </Route>
               <Route path="/create-gift">
                 <CreateGift />
+              </Route>
+              <Route path="/gift/:tokenId">
+                <ViewGift />
               </Route>
             </Switch>
           </Layout>
