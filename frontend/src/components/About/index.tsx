@@ -40,7 +40,8 @@ const Content: React.FC<IContentProps> = (props) => {
         Send a thank you with a custom NFT—or add yUSD to reward contributors with a sharable NFT that stays meaningful
         and memorable forever.
       </Text>
-      <HStack spacing={4}>
+      {/* TODO: Hide until route implemented */}
+      {/* <HStack spacing={4}>
         <Input
           background="#ECF4FA"
           borderRadius="24px"
@@ -65,7 +66,7 @@ const Content: React.FC<IContentProps> = (props) => {
         >
           View someone's gifts
         </Button>
-      </HStack>
+      </HStack> */}
     </VStack>
   );
 };
@@ -73,7 +74,7 @@ const Content: React.FC<IContentProps> = (props) => {
 const About: React.FunctionComponent<IProps> = (props) => (
   <HStack spacing={10} px={20}>
     <Content></Content>
-    <Image src={graphic} width="575px" height="auto"></Image>
+    <Image src={graphic} width="450px" height="auto"></Image>
   </HStack>
 );
 
