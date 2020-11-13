@@ -1,6 +1,6 @@
 import React from "react";
 import { createDataTestId } from "../../../lib/create-data-testid";
-import { Flex, Stack, Text, Button, VStack, Heading, HStack } from "@chakra-ui/core";
+import { Flex, Stack, Text, Button, VStack, Heading, HStack, Divider } from "@chakra-ui/core";
 import { BigNumberish } from "ethers";
 import { useGiftTransactionHistory } from "./useGiftTransactionHistory";
 
@@ -54,7 +54,16 @@ const TransactionHistory: React.FunctionComponent<IProps> = (props) => {
       <Heading as="h3" fontFamily="Roboto" fontSize="24px">
         Gift History
       </Heading>
-      {transactionHistory.map(Transaction)}
+      {transactionHistory.map((transaction, index) =>
+        index % 2 ? (
+          <>
+            <Transaction {...transaction}></Transaction>
+            <Divider></Divider>
+          </>
+        ) : (
+          <Transaction {...transaction}></Transaction>
+        )
+      )}
     </VStack>
   );
 };
