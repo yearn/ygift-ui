@@ -16,6 +16,7 @@ import { AddIcon, InfoIcon, CloseIcon, CopyIcon } from "@chakra-ui/icons";
 import { TransactionHistory } from "./TransactionHistory";
 import { useParams } from "react-router-dom";
 import { yGiftContext } from "../../hardhat/HardhatContext";
+import { Tip } from "../Tip";
 
 export const componentDataTestId = createDataTestId("ViewGift");
 
@@ -52,8 +53,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                 <PopoverContent p={5}>
                   <PopoverArrow />
                   <PopoverCloseButton />
-                  <Text>Tip form goes here</Text>
-                  {/* <Tip /> */}
+                  <Tip />
                 </PopoverContent>
               </Popover>
               <InfoIcon></InfoIcon>

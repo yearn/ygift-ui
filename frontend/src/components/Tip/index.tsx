@@ -34,7 +34,7 @@ const Tip: React.FunctionComponent<IProps> = (props) => {
         ))}
 
         <Button data-testid={"submit"} type="submit" disabled={formik.isSubmitting}>
-          Submit
+          Tip
         </Button>
       </VStack>
     </form>
