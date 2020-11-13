@@ -57,10 +57,10 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                 <PopoverContent p={5}>
                   <PopoverArrow />
                   <PopoverCloseButton />
-                  {isRecipient ? (
+                  {isRecipient && isRedeemed ? (
                     <Text>Collect</Text>
                   ) : // <Collect tokenId={tokenId} />
-                  isRedeemed ? (
+                  isRecipient ? (
                     <Text>Redeem</Text>
                   ) : (
                     // <Redeem tokenId={tokenId}></Redeem>
