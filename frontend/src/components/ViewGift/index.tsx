@@ -17,6 +17,7 @@ import { TransactionHistory } from "./TransactionHistory";
 import { useParams } from "react-router-dom";
 import { CurrentAddressContext, yGiftContext } from "../../hardhat/HardhatContext";
 import { Tip } from "../Tip";
+import { Redeem } from "../Redeem";
 
 export const componentDataTestId = createDataTestId("ViewGift");
 
@@ -61,9 +62,8 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                     <Text>Collect</Text>
                   ) : // <Collect tokenId={tokenId} />
                   isRecipient ? (
-                    <Text>Redeem</Text>
+                    <Redeem tokenId={tokenId}></Redeem>
                   ) : (
-                    // <Redeem tokenId={tokenId}></Redeem>
                     <Tip tokenId={tokenId}></Tip>
                   )}
                 </PopoverContent>

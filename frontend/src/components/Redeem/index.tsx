@@ -1,19 +1,19 @@
 import React from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
 import { Button, VStack, Input, FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/core";
-import { useTipFormManagement } from "./useTipFormManagement";
+import { useRedeemFormManagement } from "./useRedeemFormManagement";
 import { useFormik } from "formik";
 
-export const componentDataTestId = createDataTestId("Tip");
+export const componentDataTestId = createDataTestId("Redeem");
 
-export const params = ["_tokenId", "_amount", "_msg"];
+export const params = ["_tokenId"];
 
 interface IProps {
   tokenId: string;
 }
 
-const Tip: React.FunctionComponent<IProps> = (props) => {
-  const management = useTipFormManagement(props.tokenId);
+const Redeem: React.FunctionComponent<IProps> = (props) => {
+  const management = useRedeemFormManagement(props.tokenId);
   const formik = useFormik(management);
 
   return (
@@ -36,11 +36,11 @@ const Tip: React.FunctionComponent<IProps> = (props) => {
         ))}
 
         <Button data-testid={"submit"} type="submit" disabled={formik.isSubmitting}>
-          Tip
+          Redeem
         </Button>
       </VStack>
     </form>
   );
 };
 
-export { Tip };
+export { Redeem };
