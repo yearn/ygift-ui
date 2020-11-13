@@ -18,6 +18,7 @@ import { useParams } from "react-router-dom";
 import { CurrentAddressContext, yGiftContext } from "../../hardhat/HardhatContext";
 import { Tip } from "../Tip";
 import { Redeem } from "../Redeem";
+import { Collect } from "../Collect";
 
 export const componentDataTestId = createDataTestId("ViewGift");
 
@@ -59,9 +60,8 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                   <PopoverArrow />
                   <PopoverCloseButton />
                   {isRecipient && isRedeemed ? (
-                    <Text>Collect</Text>
-                  ) : // <Collect tokenId={tokenId} />
-                  isRecipient ? (
+                    <Collect tokenId={tokenId} />
+                  ) : isRecipient ? (
                     <Redeem tokenId={tokenId}></Redeem>
                   ) : (
                     <Tip tokenId={tokenId}></Tip>
