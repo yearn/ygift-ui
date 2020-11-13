@@ -13,6 +13,7 @@ import {
   PopoverCloseButton,
 } from "@chakra-ui/core";
 import { AddIcon, InfoIcon, CloseIcon, CopyIcon } from "@chakra-ui/icons";
+import { TransactionHistory } from "./TransactionHistory";
 
 export type GiftTransaction = {};
 
@@ -22,7 +23,6 @@ export const dataTestIds = {};
 
 interface IProps {
   gift: GiftModel;
-  history: [GiftTransaction];
 }
 
 const ViewGift: React.FunctionComponent<IProps> = (props) => {
@@ -88,7 +88,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
         </VStack>
       </HStack>
 
-      {/* TransactionHistory */}
+      <TransactionHistory></TransactionHistory>
       <VStack></VStack>
     </VStack>
   );
