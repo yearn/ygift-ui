@@ -250,7 +250,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                       id={index.toString()}
                       name={index.toString()}
                       onChange={formik.handleChange}
-                      type="text"
+                      type={param === "_lockedDuration" || param === "_amount" ? "number" : "text"}
                       value={formik.values[index]?.toString()}
                       color="#013A6D"
                       {...{
