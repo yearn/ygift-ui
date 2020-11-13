@@ -15,7 +15,7 @@ import {
 import { AddIcon, InfoIcon, CloseIcon, CopyIcon } from "@chakra-ui/icons";
 import { TransactionHistory } from "./TransactionHistory";
 import { useParams } from "react-router-dom";
-import { yGiftContext } from "../../hardhat/HardhatContext";
+import { CurrentAddressContext, yGiftContext } from "../../hardhat/HardhatContext";
 import { Tip } from "../Tip";
 
 export const componentDataTestId = createDataTestId("ViewGift");
@@ -28,6 +28,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const { tokenId } = useParams<{ tokenId: string }>();
   const yGift = useContext(yGiftContext);
+  const [currentAddress] = useContext(CurrentAddressContext);
   const [gift, setGift] = useState<GiftModel>();
   useEffect(() => {
     const fetch = async () => {
@@ -36,6 +37,9 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
     };
     fetch();
   }, [yGift, tokenId]);
+
+  const isRedeemed = gift?.["6"] ?? false;
+  const isRecipient = gift?.["2"] === currentAddress ?? false;
 
   return (
     <VStack height={"70vh"} borderRadius="32px">
@@ -53,7 +57,15 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                 <PopoverContent p={5}>
                   <PopoverArrow />
                   <PopoverCloseButton />
-                  <Tip />
+                  {isRecipient ? (
+                    <Text>Collect</Text>
+                  ) : // <Collect tokenId={tokenId} />
+                  isRedeemed ? (
+                    <Text>Redeem</Text>
+                  ) : (
+                    // <Redeem tokenId={tokenId}></Redeem>
+                    <Tip tokenId={tokenId}></Tip>
+                  )}
                 </PopoverContent>
               </Popover>
               <InfoIcon></InfoIcon>

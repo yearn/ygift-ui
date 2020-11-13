@@ -8,10 +8,12 @@ export const componentDataTestId = createDataTestId("Tip");
 
 export const params = ["_tokenId", "_amount", "_msg"];
 
-interface IProps {}
+interface IProps {
+  tokenId: string;
+}
 
 const Tip: React.FunctionComponent<IProps> = (props) => {
-  const management = useTipFormManagement();
+  const management = useTipFormManagement(props.tokenId);
   const formik = useFormik(management);
 
   return (
