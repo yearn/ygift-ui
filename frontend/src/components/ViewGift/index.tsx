@@ -75,7 +75,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           {/*  */}
           <VStack spacing={2} alignItems="flex-start">
             <Text>Message</Text>
-            <Text>{(gift as any)["message"]}</Text>
+            <Text>{(gift as any)?.["message"]}</Text>
           </VStack>
           {/*  */}
           <VStack spacing={2} alignItems="flex-start">
