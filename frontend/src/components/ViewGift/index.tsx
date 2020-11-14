@@ -27,17 +27,20 @@ interface IProps {}
 
 const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
-  const { tokenId } = useParams<{ tokenId: string }>();
+  const { id } = useParams<{ id: string }>();
   const yGift = useContext(yGiftContext);
   const [currentAddress] = useContext(CurrentAddressContext);
   const [gift, setGift] = useState<GiftModel>();
   useEffect(() => {
     const fetch = async () => {
-      const gift = await yGift?.instance?.getGift(tokenId);
-      setGift(gift);
+      if (yGift?.instance) {
+        const gift = await yGift?.instance?.gifts(id);
+        console.log(gift);
+        setGift(gift);
+      }
     };
     fetch();
-  }, [yGift, tokenId]);
+  }, [yGift, id]);
 
   const isRecipient = true;
 
@@ -57,7 +60,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                 <PopoverContent p={5}>
                   <PopoverArrow />
                   <PopoverCloseButton />
-                  {isRecipient ? <Collect tokenId={tokenId} /> : <Tip tokenId={tokenId}></Tip>}
+                  {isRecipient ? <Collect tokenId={id} /> : <Tip tokenId={id}></Tip>}
                 </PopoverContent>
               </Popover>
               <InfoIcon></InfoIcon>
@@ -68,7 +71,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           <HStack spacing={4}>
             <VStack alignItems="flex-start" spacing={2}>
               <Text>Gift Amount</Text>
-              <Text>{gift?.["3"]} ETH</Text>
+              <Text>{gift?.amount?.toString()} ETH</Text>
             </VStack>
             <VStack alignItems="flex-start" spacing={2}>
               <Text>Received</Text>
@@ -85,7 +88,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           <VStack spacing={2} alignItems="flex-start">
             <Text>Owned by</Text>
             <HStack>
-              <Text>{gift?.["2"]}</Text>
+              <Text>{"ehllo"}</Text>
               <CopyIcon></CopyIcon>
             </HStack>
           </VStack>
@@ -93,14 +96,14 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           <VStack spacing={2} alignItems="flex-start">
             <Text>Gifted by</Text>
             <HStack>
-              <Text>{gift?.["1"]}</Text>
+              <Text>{"hello"}</Text>
               <CopyIcon></CopyIcon>
             </HStack>
           </VStack>
         </VStack>
       </HStack>
 
-      <TransactionHistory tokenId={tokenId}></TransactionHistory>
+      <TransactionHistory id={id}></TransactionHistory>
       <VStack></VStack>
     </VStack>
   );

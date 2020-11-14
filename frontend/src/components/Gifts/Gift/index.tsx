@@ -2,6 +2,7 @@ import React from "react";
 import { createDataTestId } from "../../../lib/create-data-testid";
 import { Flex, Stack, Text, Button, Image, VStack, Heading } from "@chakra-ui/core";
 import { BigNumber } from "ethers";
+import { Link } from "react-router-dom";
 
 /*
   string name;
@@ -15,6 +16,7 @@ import { BigNumber } from "ethers";
   uint256 lockedDuration;
 */
 export type GiftModel = {
+  id?: string;
   token: string;
   amount: BigNumber;
   start: BigNumber;
@@ -39,25 +41,27 @@ export const componentDataTestId = createDataTestId("Gift");
 
 export const dataTestIds = {};
 
-const Gift: React.FunctionComponent<GiftModel & { message?: string }> = (props) => (
-  <VStack spacing={0} width="220px" boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)" cursor="pointer">
-    <Image width="220px" height="220px" src={props["5"]} borderRadius="16px"></Image>
-    <VStack p={2} width="100%" spacing={1} alignItems="flex-start">
-      <Heading as="h4" fontFamily="Roboto" fontSize="18px" fontWeight="700" color={giftName}>
-        {props["0"]}
-      </Heading>
-      {props["4"] && (
-        <Text fontFamily="Roboto" fontSize="16px" fontWeight="bold" color={giftAmountColour}>
-          {`${props["4"].toString()} ETH`}
-        </Text>
-      )}
-      {props.message && (
-        <Text fontFamily="Roboto" fontSize="14px" fontWeight="400" color={giftMessageColour}>
-          {props.message}
-        </Text>
-      )}
+const Gift: React.FunctionComponent<GiftModel> = (props) => (
+  <Link to={`/gift/${props.id}`}>
+    <VStack spacing={0} width="220px" boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)" cursor="pointer">
+      <Image width="220px" height="220px" src={props["5"]} borderRadius="16px"></Image>
+      <VStack p={2} width="100%" spacing={1} alignItems="flex-start">
+        <Heading as="h4" fontFamily="Roboto" fontSize="18px" fontWeight="700" color={giftName}>
+          {props["0"]}
+        </Heading>
+        {props["4"] && (
+          <Text fontFamily="Roboto" fontSize="16px" fontWeight="bold" color={giftAmountColour}>
+            {`${props["4"].toString()} ETH`}
+          </Text>
+        )}
+        {props.message && (
+          <Text fontFamily="Roboto" fontSize="14px" fontWeight="400" color={giftMessageColour}>
+            {props.message}
+          </Text>
+        )}
+      </VStack>
     </VStack>
-  </VStack>
+  </Link>
 );
 
 export { Gift };

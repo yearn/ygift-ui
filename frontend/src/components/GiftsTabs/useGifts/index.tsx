@@ -29,12 +29,13 @@ export function useGifts() {
       if (giftMintedSentEventFilter) {
         const logs = await provider?.[0]?.getLogs({ ...giftMintedSentEventFilter, fromBlock: 0 });
         const giftsMinted = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
-        const _tokenIds: string[] = giftsMinted.map((gift) => {
+        const ids: string[] = giftsMinted.map((gift) => {
           console.log(gift);
-          const _tokenId = gift?.[2];
-          return _tokenId;
+          const id = gift?.[2];
+          return id;
         });
-        const gifts = await Promise.all(_tokenIds.map((_tokenId) => yGift?.instance?.gifts(_tokenId)));
+        let gifts = await Promise.all(ids.map((id) => yGift?.instance?.gifts(id)));
+        (gifts as any) = ids.map((id, index) => ({ ...gifts[index], id }));
         setGiftsSent(gifts);
       }
 
@@ -42,12 +43,12 @@ export function useGifts() {
       if (giftMintedOwnedEventFilter) {
         const logs = await provider?.[0]?.getLogs({ ...giftMintedOwnedEventFilter, fromBlock: 0 });
         const giftsMinted = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
-        const _tokenIds: string[] = giftsMinted.map((gift) => {
-          const _tokenId = gift?.[2];
-          return _tokenId;
+        const ids: string[] = giftsMinted.map((gift) => {
+          const id = gift?.[2];
+          return id;
         });
-        const gifts = await Promise.all(_tokenIds.map((_tokenId) => yGift?.instance?.gifts(_tokenId)));
-        console.log(gifts);
+        let gifts = await Promise.all(ids.map((id) => yGift?.instance?.gifts(id)));
+        (gifts as any) = ids.map((id, index) => ({ ...gifts[index], id }));
         setGiftsOwned(gifts);
       }
     };

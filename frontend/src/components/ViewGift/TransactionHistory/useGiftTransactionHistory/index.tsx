@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { ProviderContext, SignerContext, yGiftContext } from "../../../../hardhat/HardhatContext";
 import { TransactionModel } from "../";
+import { BigNumber, ethers } from "ethers";
 
-export function useGiftTransactionHistory(tokenId: string) {
+export function useGiftTransactionHistory(id: string) {
   const yGift = useContext(yGiftContext);
   const signer = useContext(SignerContext);
   const provider = useContext(ProviderContext);
@@ -11,17 +12,32 @@ export function useGiftTransactionHistory(tokenId: string) {
   useEffect(() => {
     const fetch = async () => {
       // const address = await signer?.[0]?.getAddress();
-      const giftMintedSentEventFilter = yGift?.instance?.filters?.GiftMinted(null, null, tokenId, null);
-      const giftMintedOwnedEventFilter = yGift?.instance?.filters?.GiftMinted(null, null, tokenId, null);
-      const collectedEventFilter = yGift?.instance?.filters?.Collected(null, tokenId, null, null);
-      const tipEventFilter = yGift?.instance?.filters?.Tip(null, tokenId, null, null, null);
+      console.log(BigNumber.from(id).toHexString());
+      const giftMintedSentEventFilter = yGift?.instance?.filters?.GiftMinted(
+        null,
+        null,
+        BigNumber.from(id).toHexString(),
+        null
+      );
+      const giftMintedOwnedEventFilter = yGift?.instance?.filters?.GiftMinted(
+        null,
+        null,
+        BigNumber.from(id).toHexString(),
+        null
+      );
+      const collectedEventFilter = yGift?.instance?.filters?.Collected(
+        null,
+        BigNumber.from(id).toHexString(),
+        null,
+        null
+      );
+      const tipEventFilter = yGift?.instance?.filters?.Tip(null, BigNumber.from(id).toHexString(), null, null, null);
 
       const transactions: TransactionModel[] = [];
       let minter,
         recipient = "";
 
       if (giftMintedSentEventFilter) {
-        console.log(giftMintedSentEventFilter);
         const logs = await provider?.[0]?.getLogs({ ...giftMintedSentEventFilter, fromBlock: 0 });
         const [giftMinted] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (giftMinted) {
@@ -59,7 +75,7 @@ export function useGiftTransactionHistory(tokenId: string) {
         const [collected] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (collected) {
           const block = await provider?.[0]?.getBlock(logs[0].blockHash);
-          const gift = await yGift?.instance?.gifts(tokenId);
+          const gift = await yGift?.instance?.gifts(id);
           if (gift) {
             const transaction: TransactionModel = {
               minter,
@@ -75,7 +91,7 @@ export function useGiftTransactionHistory(tokenId: string) {
         const [redeemed] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (redeemed) {
           const block = await provider?.[0]?.getBlock(logs[0].blockHash);
-          const gift = await yGift?.instance?.gifts(tokenId);
+          const gift = await yGift?.instance?.gifts(id);
           if (gift) {
             const transaction: TransactionModel = {
               minter,
@@ -90,7 +106,7 @@ export function useGiftTransactionHistory(tokenId: string) {
       setTransactionHistory(transactions);
     };
     fetch();
-  }, [yGift?.instance, signer, provider, tokenId]);
+  }, [yGift?.instance, signer, provider, id]);
 
   return { transactionHistory };
 }

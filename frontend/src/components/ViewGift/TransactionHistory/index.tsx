@@ -18,7 +18,7 @@ export type TransactionModel = {
 
 const Transaction: React.FC<TransactionModel> = (props) => (
   <HStack spacing={4}>
-    <Text>{new Date(props.date)}</Text>
+    <Text>{new Date(props.date).valueOf()}</Text>
     <VStack spacing={2}>
       <VStack>
         <Text>Minted by</Text>
@@ -43,11 +43,11 @@ const Transaction: React.FC<TransactionModel> = (props) => (
 );
 
 interface IProps {
-  tokenId: string;
+  id: string;
 }
 
 const TransactionHistory: React.FunctionComponent<IProps> = (props) => {
-  const { transactionHistory } = useGiftTransactionHistory(props.tokenId);
+  const { transactionHistory } = useGiftTransactionHistory(props.id);
 
   return (
     <VStack alignItems="flex-start" spacing={1} p={4} overflowY="scroll">

@@ -28,7 +28,7 @@ function App() {
                 <Route path="/gifts/">
                   <GiftsTabs />
                 </Route>
-                <Route path="/gift/:tokenId">
+                <Route path="/gift/:id">
                   <ViewGift />
                 </Route>
               </Switch>
