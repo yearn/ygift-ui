@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 
 export const componentDataTestId = createDataTestId("Collect");
 
-export const params = ["_amount", "_tokenId"];
+export const params = ["_tokenId", "_amount"];
 
 interface IProps {
   tokenId: string;
@@ -28,7 +28,7 @@ const Collect: React.FunctionComponent<IProps> = (props) => {
               id={index.toString()}
               name={index.toString()}
               onChange={formik.handleChange}
-              type="text"
+              type="number"
               value={formik.values[index]?.toString()}
             />
             <FormErrorMessage>{formik.errors[index]}</FormErrorMessage>

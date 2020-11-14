@@ -12,7 +12,7 @@ export function useGiftTransactionHistory(id: string) {
   useEffect(() => {
     const fetch = async () => {
       // const address = await signer?.[0]?.getAddress();
-      console.log(BigNumber.from(id).toHexString());
+      // console.log(BigNumber.from(id).toHexString());
       const giftMintedSentEventFilter = yGift?.instance?.filters?.GiftMinted(
         null,
         null,
@@ -41,29 +41,15 @@ export function useGiftTransactionHistory(id: string) {
         const logs = await provider?.[0]?.getLogs({ ...giftMintedSentEventFilter, fromBlock: 0 });
         const [giftMinted] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (giftMinted) {
-          const [mintedFrom, mintedTo] = giftMinted;
+          const [mintedFrom, mintedFor] = giftMinted;
           minter = mintedFrom;
-          recipient = mintedTo;
+          recipient = mintedFor;
           const block = await provider?.[0]?.getBlock(logs[0].blockHash);
           const transaction: TransactionModel = {
             minter,
             recipient,
             date: block.timestamp,
-          };
-          transactions.push(transaction);
-        }
-      }
-
-      // Now do giftsReceived/Owned
-      if (giftMintedOwnedEventFilter) {
-        const logs = await provider?.[0]?.getLogs({ ...giftMintedOwnedEventFilter, fromBlock: 0 });
-        const [giftMinted] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
-        if (giftMinted) {
-          const block = await provider?.[0]?.getBlock(logs[0].blockHash);
-          const transaction: TransactionModel = {
-            minter,
-            recipient,
-            date: block.timestamp,
+            event: "Minted",
           };
           transactions.push(transaction);
         }
@@ -74,36 +60,43 @@ export function useGiftTransactionHistory(id: string) {
         const logs = await provider?.[0]?.getLogs({ ...collectedEventFilter, fromBlock: 0 });
         const [collected] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (collected) {
-          const block = await provider?.[0]?.getBlock(logs[0].blockHash);
           const gift = await yGift?.instance?.gifts(id);
           if (gift) {
-            const transaction: TransactionModel = {
-              minter,
-              recipient,
-              date: block.timestamp,
-            };
-            transactions.push(transaction);
+            const blocks = await Promise.all(logs.map((log) => provider?.[0]?.getBlock(log.blockHash)));
+            blocks.forEach((block) => {
+              const transaction: TransactionModel = {
+                minter: collected?.[0],
+                recipient,
+                date: block.timestamp,
+                event: "Collected",
+              };
+              transactions.push(transaction);
+            });
           }
         }
       }
       if (tipEventFilter) {
         const logs = await provider?.[0]?.getLogs({ ...tipEventFilter, fromBlock: 0 });
-        const [redeemed] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
-        if (redeemed) {
-          const block = await provider?.[0]?.getBlock(logs[0].blockHash);
+        const [tipped] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
+        if (tipped) {
           const gift = await yGift?.instance?.gifts(id);
           if (gift) {
-            const transaction: TransactionModel = {
-              minter,
-              recipient,
-              date: block.timestamp,
-            };
-            transactions.push(transaction);
+            const blocks = await Promise.all(logs.map((log) => provider?.[0]?.getBlock(log.blockHash)));
+            blocks.forEach((block) => {
+              const transaction: TransactionModel = {
+                minter: tipped?.[0],
+                recipient,
+                date: block.timestamp,
+                event: "Tipped",
+              };
+              transactions.push(transaction);
+            });
           }
         }
       }
 
-      setTransactionHistory(transactions);
+      const sortedTransactions = transactions.sort((a, b) => a.date - b.date);
+      setTransactionHistory(sortedTransactions);
     };
     fetch();
   }, [yGift?.instance, signer, provider, id]);

@@ -18,6 +18,8 @@ import { useParams } from "react-router-dom";
 import { CurrentAddressContext, yGiftContext } from "../../hardhat/HardhatContext";
 import { Tip } from "../Tip";
 import { Collect } from "../Collect";
+import { formatUnits } from "ethers/lib/utils";
+import { BigNumber } from "ethers";
 
 export const componentDataTestId = createDataTestId("ViewGift");
 
@@ -44,69 +46,73 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
 
   const isRecipient = true;
 
-  return (
-    <VStack height={"70vh"} borderRadius="32px">
-      <HStack height="100%">
-        <Image height="400px" width="400px" src={gift?.["5"]} />
-        <VStack height="100%" width="520px" alignItems="flex-start" p={4}>
-          {/*  */}
-          <HStack width="100%">
-            <Heading mr="auto">{gift?.["0"]}</Heading>
+  if (gift) {
+    return (
+      <VStack height={"70vh"} borderRadius="32px">
+        <HStack height="100%">
+          <Image height="400px" width="400px" src={gift?.url} />
+          <VStack height="100%" width="520px" alignItems="flex-start" p={4}>
+            {/*  */}
+            <HStack width="100%">
+              <Heading mr="auto">{gift?.name}</Heading>
+              <HStack spacing={4}>
+                <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} placement="bottom" closeOnBlur={false}>
+                  <PopoverTrigger>
+                    <AddIcon></AddIcon>
+                  </PopoverTrigger>
+                  <PopoverContent p={5}>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    {isRecipient ? <Collect tokenId={id} /> : <Tip tokenId={id}></Tip>}
+                  </PopoverContent>
+                </Popover>
+                <InfoIcon></InfoIcon>
+                <CloseIcon></CloseIcon>
+              </HStack>
+            </HStack>
+            {/*  */}
             <HStack spacing={4}>
-              <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} placement="bottom" closeOnBlur={false}>
-                <PopoverTrigger>
-                  <AddIcon></AddIcon>
-                </PopoverTrigger>
-                <PopoverContent p={5}>
-                  <PopoverArrow />
-                  <PopoverCloseButton />
-                  {isRecipient ? <Collect tokenId={id} /> : <Tip tokenId={id}></Tip>}
-                </PopoverContent>
-              </Popover>
-              <InfoIcon></InfoIcon>
-              <CloseIcon></CloseIcon>
+              <VStack alignItems="flex-start" spacing={2}>
+                <Text>Gift Amount</Text>
+                <Text>{formatUnits(BigNumber.from(gift?.amount), "wei")}</Text>
+              </VStack>
+              <VStack alignItems="flex-start" spacing={2}>
+                <Text>Received</Text>
+                {/* TODO: Date.fn */}
+                <Text>{gift?.start?.toString()}</Text>
+              </VStack>
             </HStack>
-          </HStack>
-          {/*  */}
-          <HStack spacing={4}>
-            <VStack alignItems="flex-start" spacing={2}>
-              <Text>Gift Amount</Text>
-              <Text>{gift?.amount?.toString()} ETH</Text>
+            {/*  */}
+            <VStack spacing={2} alignItems="flex-start">
+              <Text>Message</Text>
+              <Text>{gift?.message}</Text>
             </VStack>
-            <VStack alignItems="flex-start" spacing={2}>
-              <Text>Received</Text>
-              {/* TODO: Date.fn */}
-              <Text>28/11/2020</Text>
+            {/*  */}
+            <VStack spacing={2} alignItems="flex-start">
+              <Text>Owned by</Text>
+              <HStack>
+                <Text>{currentAddress}</Text>
+                <CopyIcon></CopyIcon>
+              </HStack>
             </VStack>
-          </HStack>
-          {/*  */}
-          <VStack spacing={2} alignItems="flex-start">
-            <Text>Message</Text>
-            <Text>{(gift as any)?.["message"]}</Text>
+            {/*  */}
+            <VStack spacing={2} alignItems="flex-start">
+              <Text>Gifted by</Text>
+              <HStack>
+                <Text>{currentAddress}</Text>
+                <CopyIcon></CopyIcon>
+              </HStack>
+            </VStack>
           </VStack>
-          {/*  */}
-          <VStack spacing={2} alignItems="flex-start">
-            <Text>Owned by</Text>
-            <HStack>
-              <Text>{"ehllo"}</Text>
-              <CopyIcon></CopyIcon>
-            </HStack>
-          </VStack>
-          {/*  */}
-          <VStack spacing={2} alignItems="flex-start">
-            <Text>Gifted by</Text>
-            <HStack>
-              <Text>{"hello"}</Text>
-              <CopyIcon></CopyIcon>
-            </HStack>
-          </VStack>
-        </VStack>
-      </HStack>
+        </HStack>
 
-      <TransactionHistory id={id}></TransactionHistory>
-      <VStack></VStack>
-    </VStack>
-  );
+        <TransactionHistory id={id}></TransactionHistory>
+        <VStack></VStack>
+      </VStack>
+    );
+  } else {
+    return null;
+  }
 };
 
 export { ViewGift };

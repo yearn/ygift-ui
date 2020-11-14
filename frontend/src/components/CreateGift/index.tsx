@@ -273,7 +273,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                   alignSelf: "flex-start",
                 }}
               >
-                Create a new Gift
+                Create a new gift
               </Heading>
               <Text
                 {...{
