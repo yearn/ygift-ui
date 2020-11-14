@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
 import {
   Button,
@@ -18,10 +18,29 @@ import { CopyIcon } from "@chakra-ui/icons";
 import { useCreateGiftFormManagement } from "./useCreateGiftFormManagement";
 import { useFormik } from "formik";
 import graphic from "./graphic.png";
+import { ethers } from "ethers";
+import { CurrentAddressContext, ProviderContext, SignerContext } from "../../hardhat/HardhatContext";
 
 export const componentDataTestId = createDataTestId("CreateGift");
 
 export const params = ["_to", "_token", "_amount", "_url", "_name", "_msg", "_lockedDuration"];
+const yGiftContractAddress = "0x02f55d8495551a59279ea0ad0d329e04fe1ad1b3";
+const erc20Abi = [
+  // Some details about the token
+  "function name() view returns (string)",
+  "function symbol() view returns (string)",
+
+  // Get the account balance
+  "function balanceOf(address) view returns (uint)",
+  "function approve(address spender, uint256 amount) returns (bool)",
+
+  // Send some of your tokens to someone else
+  "function transfer(address to, uint amount)",
+
+  // An event triggered whenever anyone transfers to someone else
+  "event Transfer(address indexed from, address indexed to, uint amount)",
+  "event Approval(address indexed owner, address indexed spender, uint256 value)",
+];
 
 interface IProps {
   isSubmitting?: boolean;
@@ -147,7 +166,42 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
 const CreateGift: React.FunctionComponent<IProps> = (props) => {
   const management = useCreateGiftFormManagement();
   const formik = useFormik(management);
+  const [provider] = useContext(ProviderContext);
+  const [signer] = useContext(SignerContext);
+  const [currentAddress] = useContext(CurrentAddressContext);
   // const [_to, _token, _amount, _url, _name, _msg, _lockedDuration] = formik.values;
+  const _token = formik?.values["1"];
+  const [isApproved, setIsApproved] = useState<boolean>(false);
+  const [erc20Contract, setErc20Contract] = useState<ethers.Contract | undefined>(undefined);
+
+  useEffect(() => {
+    const fetch = async () => {
+      // The Contract object
+      const erc20Contract = new ethers.Contract(_token, erc20Abi, provider);
+      if (signer && erc20Contract) {
+        erc20Contract.connect(signer);
+        setErc20Contract(erc20Contract);
+        const filter = erc20Contract?.filters.Approval(currentAddress, yGiftContractAddress);
+        const events = await erc20Contract.queryFilter(filter);
+        console.log(events);
+        setIsApproved(events?.length > 0);
+      }
+    };
+    fetch();
+  }, [_token, currentAddress, provider, signer]);
+
+  const erc20Approve = useCallback(() => {
+    const fetch = async () => {
+      if (erc20Contract && signer) {
+        erc20Contract.connect(signer);
+        const tx = await (erc20Contract as any).approve(yGiftContractAddress, 0);
+        await tx.wait();
+        setIsApproved(true);
+      }
+    };
+
+    fetch();
+  }, [erc20Contract, signer]);
 
   if (management.hasSubmitted) {
     return <Submitted imageURL={formik.values?.[3]}></Submitted>;
@@ -266,7 +320,10 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               })}
               <Button
                 data-testid={"submit"}
-                type="submit"
+                type={isApproved ? "submit" : "button"}
+                onClick={() => {
+                  !isApproved && erc20Approve();
+                }}
                 variant="outline"
                 background="#0065D0"
                 borderRadius="32px"
@@ -280,7 +337,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                   lineHeight: "137.88%",
                 }}
               >
-                Submit
+                {isApproved ? "Submit" : "Approve"}
               </Button>
             </VStack>
           </Center>

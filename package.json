@@ -25,7 +25,7 @@
   "scripts": {
     "test": "npx hardhat test",
     "node": "npx hardhat node --watch",
-    "frontend": "cd frontend && npm run start"
+    "dev": "cd frontend && npm run start"
   },
   "repository": {
     "type": "git",
