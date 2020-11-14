@@ -20,11 +20,14 @@ import { useFormik } from "formik";
 import graphic from "./graphic.png";
 import { ethers } from "ethers";
 import { CurrentAddressContext, ProviderContext, SignerContext } from "../../hardhat/HardhatContext";
+import yGiftDeployment from "../../hardhat/deployments/localhost/yGift.json";
+import { YGift } from "../../hardhat/typechain/YGift";
+// /src/hardhat/deployments/localhost/yGift.json
 
 export const componentDataTestId = createDataTestId("CreateGift");
 
-export const params = ["_to", "_token", "_amount", "_url", "_name", "_msg", "_lockedDuration"];
-const yGiftContractAddress = "0x02f55d8495551a59279ea0ad0d329e04fe1ad1b3";
+export const params = ["_to", "_token", "_amount", "_name", "_msg", "_url", "_start", "_duration"];
+const yGiftContractAddress = yGiftDeployment.receipt.contractAddress;
 const erc20Abi = [
   // Some details about the token
   "function name() view returns (string)",
@@ -177,9 +180,8 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   useEffect(() => {
     const fetch = async () => {
       // The Contract object
-      const erc20Contract = new ethers.Contract(_token, erc20Abi, provider);
-      if (signer && erc20Contract) {
-        erc20Contract.connect(signer);
+      if (signer) {
+        const erc20Contract = new ethers.Contract(_token, erc20Abi, provider).connect(signer);
         setErc20Contract(erc20Contract);
         const filter = erc20Contract?.filters.Approval(currentAddress, yGiftContractAddress);
         const events = await erc20Contract.queryFilter(filter);
