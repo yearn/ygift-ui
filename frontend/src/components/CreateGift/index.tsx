@@ -18,7 +18,7 @@ import { CopyIcon } from "@chakra-ui/icons";
 import { useCreateGiftFormManagement } from "./useCreateGiftFormManagement";
 import { useFormik } from "formik";
 import graphic from "./graphic.png";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { CurrentAddressContext, ProviderContext, SignerContext } from "../../hardhat/HardhatContext";
 import yGiftDeployment from "../../hardhat/deployments/localhost/yGift.json";
 import { YGift } from "../../hardhat/typechain/YGift";
@@ -173,7 +173,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   const [signer] = useContext(SignerContext);
   const [currentAddress] = useContext(CurrentAddressContext);
   // const [_to, _token, _amount, _url, _name, _msg, _lockedDuration] = formik.values;
-  const _token = formik?.values["1"];
+  const _token = String(formik?.values[Number(params.indexOf("_token"))]);
   const [isApproved, setIsApproved] = useState<boolean>(false);
   const [erc20Contract, setErc20Contract] = useState<ethers.Contract | undefined>(undefined);
 
@@ -181,6 +181,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
     const fetch = async () => {
       // The Contract object
       if (signer) {
+        console.log(_token);
         const erc20Contract = new ethers.Contract(_token, erc20Abi, provider).connect(signer);
         setErc20Contract(erc20Contract);
         const filter = erc20Contract?.filters.Approval(currentAddress, yGiftContractAddress);
@@ -196,7 +197,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
     const fetch = async () => {
       if (erc20Contract && signer) {
         erc20Contract.connect(signer);
-        const tx = await (erc20Contract as any).approve(yGiftContractAddress, 0);
+        const tx = await (erc20Contract as any).approve(yGiftContractAddress, BigNumber.from(2).pow(256).sub(1));
         await tx.wait();
         setIsApproved(true);
       }
@@ -228,7 +229,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               borderRadius="16px"
               height="425px"
               width="auto"
-              src={formik.values?.[3]?.toString() || graphic}
+              src={formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
             ></Image>
             {/* TODO use filestack-react image picker plugin */}
             <FormControl key={"_url"} isInvalid={Boolean(formik.errors[3] && formik.touched[3])}>
@@ -236,15 +237,15 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 placeHolder="Cover image url"
                 key={"_url"}
                 data-testid={"_url"}
-                id={"3"}
-                name={"3"}
+                id={String(params.indexOf("_url"))}
+                name={String(params.indexOf("_url"))}
                 onChange={formik.handleChange}
                 type="text"
-                value={formik.values[3]?.toString()}
+                value={formik.values[Number(params.indexOf("_url"))]?.toString()}
                 color="white"
                 borderRadius="32px"
               />
-              <FormErrorMessage>{formik.errors[3]}</FormErrorMessage>
+              <FormErrorMessage>{formik.errors[Number(params.indexOf("_url"))]}</FormErrorMessage>
             </FormControl>
           </VStack>
         </Center>
