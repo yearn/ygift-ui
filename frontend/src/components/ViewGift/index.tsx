@@ -39,7 +39,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
     fetch();
   }, [yGift, tokenId]);
 
-  const isRecipient = gift?.["2"] === currentAddress ?? false;
+  const isRecipient = true;
 
   return (
     <VStack height={"70vh"} borderRadius="32px">

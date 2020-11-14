@@ -15,15 +15,20 @@ import { BigNumber } from "ethers";
   uint256 lockedDuration;
 */
 export type GiftModel = {
+  token: string;
+  amount: BigNumber;
+  start: BigNumber;
+  duration: BigNumber;
+  name: string;
+  message: string;
+  url: string;
   0: string;
-  1: string;
-  2: string;
-  3: string;
-  4: BigNumber;
+  1: BigNumber;
+  2: BigNumber;
+  3: BigNumber;
+  4: string;
   5: string;
-  6: boolean;
-  7: BigNumber;
-  8: BigNumber;
+  6: string;
 };
 
 const giftName = "#013A6D";

@@ -19,7 +19,8 @@ export function useGiftTransactionHistory(tokenId: string) {
       const transactions: TransactionModel[] = [];
 
       if (giftMintedSentEventFilter) {
-        const logs = await provider?.[0]?.getLogs(giftMintedSentEventFilter);
+        console.log(giftMintedSentEventFilter);
+        const logs = await provider?.[0]?.getLogs({ ...giftMintedSentEventFilter, fromBlock: 0 });
         const [giftMinted] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (giftMinted) {
           const [from, to] = giftMinted;
@@ -35,7 +36,7 @@ export function useGiftTransactionHistory(tokenId: string) {
 
       // Now do giftsReceived/Owned
       if (giftMintedOwnedEventFilter) {
-        const logs = await provider?.[0]?.getLogs(giftMintedOwnedEventFilter);
+        const logs = await provider?.[0]?.getLogs({ ...giftMintedOwnedEventFilter, fromBlock: 0 });
         const [giftMinted] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (giftMinted) {
           const [from, to] = giftMinted;
@@ -51,7 +52,7 @@ export function useGiftTransactionHistory(tokenId: string) {
 
       //
       if (collectedEventFilter) {
-        const logs = await provider?.[0]?.getLogs(collectedEventFilter);
+        const logs = await provider?.[0]?.getLogs({ ...collectedEventFilter, fromBlock: 0 });
         const [redeemed] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (redeemed) {
           const block = await provider?.[0]?.getBlock(logs[0].blockHash);
@@ -67,7 +68,7 @@ export function useGiftTransactionHistory(tokenId: string) {
         }
       }
       if (tipEventFilter) {
-        const logs = await provider?.[0]?.getLogs(tipEventFilter);
+        const logs = await provider?.[0]?.getLogs({ ...tipEventFilter, fromBlock: 0 });
         const [redeemed] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (redeemed) {
           const block = await provider?.[0]?.getBlock(logs[0].blockHash);
