@@ -88,10 +88,10 @@ const Submitting: React.FC = () => (
 );
 
 interface ISubmittedProps {
-  imageURL: string;
+  url: string;
 }
 export const Submitted: React.FC<ISubmittedProps> = (props) => {
-  const { hasCopied, onCopy } = useClipboard(props.imageURL);
+  const { hasCopied, onCopy } = useClipboard(props.url);
   return (
     <Center
       {...{
@@ -114,7 +114,7 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
         >
           Your gift has been created succesfully
         </Heading>
-        <Image src={props.imageURL} width="425px" height="425px"></Image>
+        <Image src={props.url} width="425px" height="425px"></Image>
         <HStack spacing={3}>
           <Text
             {...{
@@ -129,7 +129,7 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
               color: "white",
             }}
           >
-            {props.imageURL}
+            {props.url}
           </Text>
           {hasCopied ? <Text>Copied</Text> : <CopyIcon id="add" cursor="pointer" onClick={onCopy}></CopyIcon>}
         </HStack>
@@ -172,7 +172,6 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   const [provider] = useContext(ProviderContext);
   const [signer] = useContext(SignerContext);
   const [currentAddress] = useContext(CurrentAddressContext);
-  // const [_to, _token, _amount, _url, _name, _msg, _lockedDuration] = formik.values;
   const _token = String(formik?.values[Number(params.indexOf("_token"))]);
   const [isApproved, setIsApproved] = useState<boolean>(false);
   const [erc20Contract, setErc20Contract] = useState<ethers.Contract | undefined>(undefined);
@@ -207,7 +206,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   }, [erc20Contract, signer]);
 
   if (management.hasSubmitted) {
-    return <Submitted imageURL={formik.values?.[3]}></Submitted>;
+    return <Submitted url={formik.values?.["5"]}></Submitted>;
   }
   return (
     <form onSubmit={formik.handleSubmit}>
