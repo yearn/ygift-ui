@@ -17,17 +17,21 @@ export function useGiftTransactionHistory(tokenId: string) {
       const tipEventFilter = yGift?.instance?.filters?.Tip(null, tokenId, null, null, null);
 
       const transactions: TransactionModel[] = [];
+      let minter,
+        recipient = "";
 
       if (giftMintedSentEventFilter) {
         console.log(giftMintedSentEventFilter);
         const logs = await provider?.[0]?.getLogs({ ...giftMintedSentEventFilter, fromBlock: 0 });
         const [giftMinted] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (giftMinted) {
-          const [from, to] = giftMinted;
+          const [mintedFrom, mintedTo] = giftMinted;
+          minter = mintedFrom;
+          recipient = mintedTo;
           const block = await provider?.[0]?.getBlock(logs[0].blockHash);
           const transaction: TransactionModel = {
-            minter: from,
-            recipient: to,
+            minter,
+            recipient,
             date: block.timestamp,
           };
           transactions.push(transaction);
@@ -39,11 +43,10 @@ export function useGiftTransactionHistory(tokenId: string) {
         const logs = await provider?.[0]?.getLogs({ ...giftMintedOwnedEventFilter, fromBlock: 0 });
         const [giftMinted] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (giftMinted) {
-          const [from, to] = giftMinted;
           const block = await provider?.[0]?.getBlock(logs[0].blockHash);
           const transaction: TransactionModel = {
-            minter: from,
-            recipient: to,
+            minter,
+            recipient,
             date: block.timestamp,
           };
           transactions.push(transaction);
@@ -53,14 +56,14 @@ export function useGiftTransactionHistory(tokenId: string) {
       //
       if (collectedEventFilter) {
         const logs = await provider?.[0]?.getLogs({ ...collectedEventFilter, fromBlock: 0 });
-        const [redeemed] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
-        if (redeemed) {
+        const [collected] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
+        if (collected) {
           const block = await provider?.[0]?.getBlock(logs[0].blockHash);
-          const gift = await yGift?.instance?.getGift(tokenId);
+          const gift = await yGift?.instance?.gifts(tokenId);
           if (gift) {
             const transaction: TransactionModel = {
-              minter: gift?.[1],
-              recipient: gift?.[2],
+              minter,
+              recipient,
               date: block.timestamp,
             };
             transactions.push(transaction);
@@ -72,11 +75,11 @@ export function useGiftTransactionHistory(tokenId: string) {
         const [redeemed] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (redeemed) {
           const block = await provider?.[0]?.getBlock(logs[0].blockHash);
-          const gift = await yGift?.instance?.getGift(tokenId);
+          const gift = await yGift?.instance?.gifts(tokenId);
           if (gift) {
             const transaction: TransactionModel = {
-              minter: gift?.[1],
-              recipient: gift?.[2],
+              minter,
+              recipient,
               date: block.timestamp,
             };
             transactions.push(transaction);
