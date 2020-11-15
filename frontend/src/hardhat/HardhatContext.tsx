@@ -97,7 +97,9 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
     switch (_provider.constructor.name) {
       case "Web3Provider":
         const web3provider = _provider as ethers.providers.Web3Provider;
-        return await web3provider.getSigner();
+        const signer = await web3provider.getSigner();
+        console.log("getSigner: ", signer);
+        return signer;
       case "JsonRpcProvider":
         return ethers.Wallet.fromMnemonic("test test test test test test test test test test test junk").connect(
           _provider
@@ -129,9 +131,11 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
         setProviderName(_providerName);
         setMessages((old) => [...old, "Useing provider: " + _providerName]);
         const _signer = await getSigner(_provider);
+        console.log(_signer);
         if (subscribed && _signer) {
           setSigner(_signer);
           const address = await _signer.getAddress();
+          console.log(address);
           if (subscribed && address) {
             console.debug("address", address);
             console.log("address", address);
