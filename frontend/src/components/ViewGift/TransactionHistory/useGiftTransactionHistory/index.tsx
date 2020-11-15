@@ -52,17 +52,19 @@ export function useGiftTransactionHistory(id: string) {
       //
       if (collectedEventFilter) {
         const logs = await provider?.[0]?.getLogs({ ...collectedEventFilter, fromBlock: 0 });
-        const [collected] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
-        if (collected) {
+        const collected = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
+        if (collected.length > 0) {
           const gift = await yGift?.instance?.gifts(id);
           if (gift) {
             const blocks = await Promise.all(logs.map((log) => provider?.[0]?.getBlock(log.blockHash)));
-            blocks.forEach((block) => {
+            blocks.forEach((block, index) => {
+              console.log(collected);
               const transaction: TransactionModel = {
-                minter: collected?.[0],
+                minter: collected?.[0]?.[0],
                 recipient,
                 date: block.timestamp,
                 event: "Collected",
+                amount: collected?.[index]?.amount,
               };
               transactions.push(transaction);
             });
@@ -71,19 +73,25 @@ export function useGiftTransactionHistory(id: string) {
       }
       if (tipEventFilter) {
         const logs = await provider?.[0]?.getLogs({ ...tipEventFilter, fromBlock: 0 });
-        const [tipped] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
-        if (tipped) {
+        const tipped = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
+        if (tipped.length > 1) {
           const gift = await yGift?.instance?.gifts(id);
           if (gift) {
             const blocks = await Promise.all(logs.map((log) => provider?.[0]?.getBlock(log.blockHash)));
-            blocks.forEach((block) => {
-              const transaction: TransactionModel = {
-                minter: tipped?.[0],
-                recipient,
-                date: block.timestamp,
-                event: "Tipped",
-              };
-              transactions.push(transaction);
+            blocks.forEach((block, index) => {
+              if (index === 0) {
+                return;
+              } else {
+                const transaction: TransactionModel = {
+                  minter: tipped?.[0]?.[0],
+                  recipient,
+                  date: block.timestamp,
+                  event: "Tipped",
+                  message: tipped?.[index]?.message,
+                  amount: tipped?.[index]?.amount,
+                };
+                transactions.push(transaction);
+              }
             });
           }
         }

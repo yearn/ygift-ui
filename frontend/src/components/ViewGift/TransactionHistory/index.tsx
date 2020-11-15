@@ -25,12 +25,24 @@ const Transaction: React.FC<TransactionModel> = (props) => (
         <Text>{`${props.event} by`}</Text>
         <Text>{props.minter}</Text>
       </VStack>
+      {props.event === "Tipped" && (
+        <VStack>
+          <Text>Message</Text>
+          <Text>{props.message}</Text>
+        </VStack>
+      )}
     </VStack>
     <VStack spacing={2}>
       <VStack>
         <Text>Gifted to</Text>
         <Text>{props.recipient}</Text>
       </VStack>
+      {props.amount && (
+        <VStack>
+          <Text>Amount</Text>
+          <Text>{props.amount?.toString()}</Text>
+        </VStack>
+      )}
     </VStack>
   </HStack>
 );

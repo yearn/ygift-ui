@@ -25,7 +25,7 @@ const Tip: React.FunctionComponent<IProps> = (props) => {
           }
           return (
             <FormControl key={param} isInvalid={Boolean(formik.errors[index] && formik.touched[index])}>
-              <FormLabel htmlFor={param}>{param}</FormLabel>
+              <FormLabel htmlFor={param}>{param === "_amount" ? "Amount" : "Message"}</FormLabel>
               <Input
                 key={param}
                 data-testid={param}
