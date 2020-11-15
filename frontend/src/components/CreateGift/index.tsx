@@ -26,7 +26,7 @@ import { YGift } from "../../hardhat/typechain/YGift";
 
 export const componentDataTestId = createDataTestId("CreateGift");
 
-export const params = ["_to", "_token", "_amount", "_name", "_msg", "_url", "_start", "_duration"];
+export const params = ["_to", "_token", "_amount", "_name", "_msg", "_url", "_start", "_duration"] as const;
 const yGiftContractAddress = yGiftDeployment.receipt.contractAddress;
 const erc20Abi = [
   // Some details about the token
@@ -123,7 +123,7 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
               fontWeight: "normal",
               fontSize: "16px",
               textOverflow: "ellipsis",
-              width: "300px",
+              width: "290px",
               whiteSpace: "nowrap",
               overflow: "hidden",
               color: "white",
@@ -164,6 +164,34 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
       </VStack>
     </Center>
   );
+};
+
+export type ValuesOf<T extends readonly any[]> = T[number];
+
+const getPlaceholder = (param: ValuesOf<typeof params>) => {
+  switch (param) {
+    case "_to": {
+      return "To (ETH address)";
+    }
+    case "_name": {
+      return "Gift Name";
+    }
+    case "_msg": {
+      return "Message";
+    }
+    case "_amount": {
+      return "Gift Amount";
+    }
+    case "_token": {
+      return "Token contract address";
+    }
+    case "_duration": {
+      return "Vesting duration";
+    }
+    default: {
+      return param;
+    }
+  }
 };
 
 const CreateGift: React.FunctionComponent<IProps> = (props) => {
@@ -226,8 +254,8 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           <VStack spacing={8} py={4}>
             <Image
               borderRadius="16px"
-              height="425px"
-              width="auto"
+              height="auto"
+              width="290px"
               src={formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
             ></Image>
             {/* TODO use filestack-react image picker plugin */}
@@ -291,6 +319,9 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 if (param === "_url") {
                   return null;
                 }
+                if (param === "_start") {
+                  return null;
+                }
 
                 return (
                   <FormControl
@@ -300,13 +331,13 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                     borderRadius="24px"
                   >
                     <Input
-                      placeholder={param}
+                      placeholder={getPlaceholder(param)}
                       key={param}
                       data-testid={param}
                       id={index.toString()}
                       name={index.toString()}
                       onChange={formik.handleChange}
-                      type={param === "_lockedDuration" || param === "_amount" ? "number" : "text"}
+                      type={param === "_duration" || param === "_amount" ? "number" : "text"}
                       value={formik.values[index]?.toString()}
                       color="#013A6D"
                       {...{

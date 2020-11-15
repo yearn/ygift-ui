@@ -51,6 +51,7 @@ const Links = () => (
     <HStack spacing={10}>
       <OurLink to="/create-gift">Create Gift</OurLink>
       <OurLink to="/gifts">Gifts</OurLink>
+      <OurLink to="/about">About</OurLink>
     </HStack>
   </Center>
 );
@@ -61,7 +62,7 @@ const formatAddress = (currentAddress: string) =>
 const Navbar: React.FunctionComponent<IProps> = (props) => {
   const currentAddress = useContext(CurrentAddressContext);
   return (
-    <Flex width="100%" px={[2, 10]} mb={4} py={2}>
+    <Flex width="100%" px={[2, 10]} py={2} mb={8}>
       <Logo></Logo>
       <Links></Links>
       <Center>

@@ -31,6 +31,9 @@ function App() {
                 <Route path="/gift/:id">
                   <ViewGift />
                 </Route>
+                <Route path="/about">
+                  <About></About>
+                </Route>
               </Switch>
             </Layout>
           </HardhatContext>
