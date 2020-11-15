@@ -3,6 +3,7 @@ import { createDataTestId } from "../../../lib/create-data-testid";
 import { Flex, Stack, Text, Button, VStack, Heading, HStack, Divider } from "@chakra-ui/core";
 import { BigNumberish } from "ethers";
 import { useGiftTransactionHistory } from "./useGiftTransactionHistory";
+import { DateTime } from "luxon";
 
 export const componentDataTestId = createDataTestId("TransactionHistory");
 
@@ -19,7 +20,7 @@ export type TransactionModel = {
 
 const Transaction: React.FC<TransactionModel> = (props) => (
   <HStack key={props.date} spacing={4}>
-    <Text>{new Date(props.date).valueOf()}</Text>
+    <Text>{DateTime.fromSeconds(props.date).toHTTP()}</Text>
     <VStack spacing={2}>
       <VStack>
         <Text>{`${props.event} by`}</Text>
@@ -60,7 +61,7 @@ const TransactionHistory: React.FunctionComponent<IProps> = (props) => {
         Gift History
       </Heading>
       {transactionHistory.map((transaction, index) =>
-        index % 2 ? (
+        index !== transactionHistory.length - 1 ? (
           <>
             <Transaction key={`${transaction?.date}-${index}`} {...transaction}></Transaction>
             <Divider></Divider>

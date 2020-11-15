@@ -20,6 +20,7 @@ import { Tip } from "../Tip";
 import { Collect } from "../Collect";
 import { formatUnits } from "ethers/lib/utils";
 import { BigNumber } from "ethers";
+import { DateTime } from "luxon";
 
 export const componentDataTestId = createDataTestId("ViewGift");
 
@@ -101,7 +102,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
               <VStack alignItems="flex-start" spacing={2}>
                 <Text>Received</Text>
                 {/* TODO: Date.fn */}
-                <Text>{gift?.start?.toString()}</Text>
+                <Text fontSize="sm">{DateTime.fromSeconds(gift?.start?.toNumber()).toHTTP()}</Text>
               </VStack>
             </HStack>
             {/*  */}
