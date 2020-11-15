@@ -62,8 +62,8 @@ const Submitting: React.FC = () => (
   <Center
     {...{
       position: "absolute",
-      width: "100%",
-      height: "90%",
+      width: "80vw",
+      height: "100%",
       background: "#013A6D",
       opacity: 0.9,
       borderRadius: "16px",
@@ -89,9 +89,12 @@ const Submitting: React.FC = () => (
 
 interface ISubmittedProps {
   url: string;
+  id: string;
 }
 export const Submitted: React.FC<ISubmittedProps> = (props) => {
   const { hasCopied, onCopy } = useClipboard(props.url);
+  const giftIdUrl = `${window.location.href.replace("/create-gift", `/gift/${props.id}`)}`;
+  const { hasCopied: hasIdCopied, onCopy: onIdCopy } = useClipboard(giftIdUrl);
   return (
     <Center
       {...{
@@ -132,6 +135,24 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
             {props.url}
           </Text>
           {hasCopied ? <Text>Copied</Text> : <CopyIcon id="add" cursor="pointer" onClick={onCopy}></CopyIcon>}
+        </HStack>
+        <HStack spacing={3}>
+          <Text
+            {...{
+              fontFamily: "Roboto",
+              fontStyle: "normal",
+              fontWeight: "normal",
+              fontSize: "16px",
+              textOverflow: "ellipsis",
+              width: "290px",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              color: "white",
+            }}
+          >
+            {giftIdUrl}
+          </Text>
+          {hasIdCopied ? <Text>Copied</Text> : <CopyIcon id="add" cursor="pointer" onClick={onIdCopy}></CopyIcon>}
         </HStack>
         <VStack spacing={1}>
           <Text
@@ -207,7 +228,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   useEffect(() => {
     const fetch = async () => {
       // The Contract object
-      if (signer) {
+      if (signer && _token) {
         console.log(_token);
         const erc20Contract = new ethers.Contract(_token, erc20Abi, provider).connect(signer);
         setErc20Contract(erc20Contract);
@@ -234,7 +255,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   }, [erc20Contract, signer]);
 
   if (management.hasSubmitted) {
-    return <Submitted url={formik.values?.["5"]}></Submitted>;
+    return <Submitted id={management.giftCreatedId} url={formik.values?.["5"]}></Submitted>;
   }
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -261,7 +282,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
             {/* TODO use filestack-react image picker plugin */}
             <FormControl key={"_url"} isInvalid={Boolean(formik.errors[3] && formik.touched[3])}>
               <Input
-                placeHolder="Cover image url"
+                placeholder="Cover image url"
                 key={"_url"}
                 data-testid={"_url"}
                 id={String(params.indexOf("_url"))}

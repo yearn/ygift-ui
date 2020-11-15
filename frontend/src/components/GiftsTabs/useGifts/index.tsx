@@ -13,18 +13,8 @@ export function useGifts() {
     const fetch = async () => {
       const address = await signer?.[0]?.getAddress();
       console.log(address);
-      const giftMintedSentEventFilter = yGift?.instance?.filters?.GiftMinted(
-        String(address),
-        String(address),
-        null,
-        null
-      );
-      const giftMintedOwnedEventFilter = yGift?.instance?.filters?.GiftMinted(
-        String(address),
-        String(address),
-        null,
-        null
-      );
+      const giftMintedSentEventFilter = yGift?.instance?.filters?.GiftMinted(String(address), null, null, null);
+      const giftMintedOwnedEventFilter = yGift?.instance?.filters?.GiftMinted(null, String(address), null, null);
 
       if (giftMintedSentEventFilter) {
         const logs = await provider?.[0]?.getLogs({ ...giftMintedSentEventFilter, fromBlock: 0 });

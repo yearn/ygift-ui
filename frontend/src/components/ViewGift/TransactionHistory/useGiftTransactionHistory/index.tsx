@@ -19,12 +19,6 @@ export function useGiftTransactionHistory(id: string) {
         BigNumber.from(id).toHexString(),
         null
       );
-      const giftMintedOwnedEventFilter = yGift?.instance?.filters?.GiftMinted(
-        null,
-        null,
-        BigNumber.from(id).toHexString(),
-        null
-      );
       const collectedEventFilter = yGift?.instance?.filters?.Collected(
         null,
         BigNumber.from(id).toHexString(),
