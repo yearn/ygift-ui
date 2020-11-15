@@ -11,171 +11,183 @@ import { Erc721 } from "./typechain/Erc721";
 import { Erc721Factory } from "./typechain/Erc721Factory";
 
 export const emptyContract = {
-    instance: undefined,
-    factory: undefined
+  instance: undefined,
+  factory: undefined,
 };
 export const defaultProvider: providers.Provider = ethers.providers.getDefaultProvider();
-export const ProviderContext = React.createContext<[providers.Provider, React.Dispatch<React.SetStateAction<providers.Provider>>]>([defaultProvider, () => { }]);
+export const ProviderContext = React.createContext<
+  [providers.Provider, React.Dispatch<React.SetStateAction<providers.Provider>>]
+>([defaultProvider, () => {}]);
 export const defaultCurrentAddress: string = "";
-export const CurrentAddressContext = React.createContext<[string, React.Dispatch<React.SetStateAction<string>>]>([defaultCurrentAddress, () => { }]);
+export const CurrentAddressContext = React.createContext<[string, React.Dispatch<React.SetStateAction<string>>]>([
+  defaultCurrentAddress,
+  () => {},
+]);
 export const defaultSigner: Signer | undefined = undefined;
-export const SignerContext = React.createContext<[Signer | undefined, React.Dispatch<React.SetStateAction<Signer | undefined>>]>([defaultSigner, () => { }]);
+export const SignerContext = React.createContext<
+  [Signer | undefined, React.Dispatch<React.SetStateAction<Signer | undefined>>]
+>([defaultSigner, () => {}]);
 export const yGiftContext = React.createContext<SymfoniYGift>(emptyContract);
 export const ERC721Context = React.createContext<SymfoniErc721>(emptyContract);
 
-export interface HardhatContextProps {
-}
+export interface HardhatContextProps {}
 
 export interface SymfoniYGift {
-    instance?: YGift;
-    factory?: YGiftFactory;
+  instance?: YGift;
+  factory?: YGiftFactory;
 }
 
 export interface SymfoniErc721 {
-    instance?: Erc721;
-    factory?: Erc721Factory;
+  instance?: Erc721;
+  factory?: Erc721Factory;
 }
 
 export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
-    const [ready, setReady] = useState(false);
-    const [messages, setMessages] = useState<string[]>([]);
-    const [/* providerName */, setProviderName] = useState<string>();
-    const [signer, setSigner] = useState<Signer | undefined>(defaultSigner);
-    const [provider, setProvider] = useState<providers.Provider>(defaultProvider);
-    const [currentAddress, setCurrentAddress] = useState<string>(defaultCurrentAddress);
-    const providerPriority = ["web3modal", "hardhat"];
-    const [yGift, setyGift] = useState<SymfoniYGift>(emptyContract);
-    const [ERC721, setERC721] = useState<SymfoniErc721>(emptyContract);
-    useEffect(() => {
-        console.debug(messages.pop())
-    }, [messages])
+  const [ready, setReady] = useState(false);
+  const [messages, setMessages] = useState<string[]>([]);
+  const [, /* providerName */ setProviderName] = useState<string>();
+  const [signer, setSigner] = useState<Signer | undefined>(defaultSigner);
+  const [provider, setProvider] = useState<providers.Provider>(defaultProvider);
+  const [currentAddress, setCurrentAddress] = useState<string>(defaultCurrentAddress);
+  const providerPriority = ["web3modal", "hardhat"];
+  const [yGift, setyGift] = useState<SymfoniYGift>(emptyContract);
+  const [ERC721, setERC721] = useState<SymfoniErc721>(emptyContract);
+  useEffect(() => {
+    console.debug(messages.pop());
+  }, [messages]);
 
-    const getProvider = async (): Promise<providers.Provider | undefined> => {
-        const provider = await providerPriority.reduce(async (maybeProvider: Promise<providers.Provider | undefined>, providerIdentification) => {
-            let foundProvider = await maybeProvider
-            if (foundProvider) {
-                return Promise.resolve(foundProvider)
-            }
-            else {
-                switch (providerIdentification.toLowerCase()) {
-                    case "web3modal":
-                        try {
-                            const provider = await getWeb3ModalProvider()
-                            const web3provider = new ethers.providers.Web3Provider(provider);
-                            return Promise.resolve(web3provider)
-                        } catch (error) {
-                            return Promise.resolve(undefined)
-                        }
-                    case "hardhat":
-                        try {
-                            const provider = new ethers.providers.JsonRpcProvider({ // TODO make this param
-                                url: "http://localhost:8545"
-                            });
-                            return Promise.resolve(provider)
-                        } catch (error) {
-                            return Promise.resolve(undefined)
-                        }
-                    default:
-                        return Promise.resolve(undefined)
-                }
-            }
-        }, Promise.resolve(undefined)) // end reduce
-        return provider;
-    };
-    const getSigner = async (_provider: providers.Provider): Promise<Signer | undefined> => {
-        switch (_provider.constructor.name) {
-            case "Web3Provider":
-                const web3provider = _provider as ethers.providers.Web3Provider
-                return await web3provider.getSigner()
-            case "JsonRpcProvider":
-                return ethers.Wallet.fromMnemonic("test test test test test test test test test test test junk").connect(_provider)
-
+  const getProvider = async (): Promise<providers.Provider | undefined> => {
+    const provider = await providerPriority.reduce(
+      async (maybeProvider: Promise<providers.Provider | undefined>, providerIdentification) => {
+        let foundProvider = await maybeProvider;
+        if (foundProvider) {
+          return Promise.resolve(foundProvider);
+        } else {
+          switch (providerIdentification.toLowerCase()) {
+            case "web3modal":
+              try {
+                const provider = await getWeb3ModalProvider();
+                console.log(provider);
+                const web3provider = new ethers.providers.Web3Provider(provider);
+                console.log(web3provider);
+                return Promise.resolve(web3provider);
+              } catch (error) {
+                return Promise.resolve(undefined);
+              }
+            case "hardhat":
+              try {
+                const provider = new ethers.providers.JsonRpcProvider({
+                  // TODO make this param
+                  url: "http://localhost:8545",
+                });
+                return Promise.resolve(provider);
+              } catch (error) {
+                return Promise.resolve(undefined);
+              }
             default:
-                return undefined
+              return Promise.resolve(undefined);
+          }
         }
-    };
-    const getWeb3ModalProvider = async (): Promise<any> => {
-        const providerOptions: IProviderOptions = {};
-        const web3Modal = new Web3Modal({
-            // network: "mainnet",
-            cacheProvider: true,
-            providerOptions, // required
-        });
-        return await web3Modal.connect();
-    };
-    useEffect(() => {
-        let subscribed = true
-        const doAsync = async () => {
-            setMessages(old => [...old, "Initiating Hardhat React"])
-            const _provider = await getProvider() // getProvider can actually return undefined, see issue https://github.com/microsoft/TypeScript/issues/11094
-            if (subscribed && _provider) {
-                const _providerName = _provider.constructor.name;
-                console.debug("_providerName", _providerName)
-                setProvider(_provider)
-                setProviderName(_providerName)
-                setMessages(old => [...old, "Useing provider: " + _providerName])
-                const _signer = await getSigner(_provider);
-                if (subscribed && _signer) {
-                    setSigner(_signer)
-                    const address = await _signer.getAddress()
-                    if (subscribed && address) {
-                        console.debug("address", address)
-                        setCurrentAddress(address)
-                    }
-                }
+      },
+      Promise.resolve(undefined)
+    ); // end reduce
+    return provider;
+  };
+  const getSigner = async (_provider: providers.Provider): Promise<Signer | undefined> => {
+    switch (_provider.constructor.name) {
+      case "Web3Provider":
+        const web3provider = _provider as ethers.providers.Web3Provider;
+        return await web3provider.getSigner();
+      case "JsonRpcProvider":
+        return ethers.Wallet.fromMnemonic("test test test test test test test test test test test junk").connect(
+          _provider
+        );
 
-                setyGift(getyGift(_provider, _signer))
-                setERC721(getERC721(_provider, _signer))
-                setReady(true)
-            }
-        };
-        doAsync();
-        return () => { subscribed = false }
-    }, [])
-
-    const getyGift = (_provider: providers.Provider, _signer?: Signer) => {
-
-
-
-        const contractAddress = yGiftDeployment.receipt.contractAddress
-        const instance = _signer ? YGiftFactory.connect(contractAddress, _signer) : YGiftFactory.connect(contractAddress, _provider)
-        const contract: SymfoniYGift = {
-            instance: instance,
-            factory: _signer ? new YGiftFactory(_signer) : undefined,
+      default:
+        return undefined;
+    }
+  };
+  const getWeb3ModalProvider = async (): Promise<any> => {
+    const providerOptions: IProviderOptions = {};
+    const web3Modal = new Web3Modal({
+      // network: "rinkeby",
+      cacheProvider: true,
+      providerOptions, // required
+    });
+    return await web3Modal.connect();
+  };
+  useEffect(() => {
+    let subscribed = true;
+    const doAsync = async () => {
+      setMessages((old) => [...old, "Initiating Hardhat React"]);
+      const _provider = await getProvider(); // getProvider can actually return undefined, see issue https://github.com/microsoft/TypeScript/issues/11094
+      console.log(_provider);
+      if (subscribed && _provider) {
+        const _providerName = _provider.constructor.name;
+        console.debug("_providerName", _providerName);
+        setProvider(_provider);
+        setProviderName(_providerName);
+        setMessages((old) => [...old, "Useing provider: " + _providerName]);
+        const _signer = await getSigner(_provider);
+        if (subscribed && _signer) {
+          setSigner(_signer);
+          const address = await _signer.getAddress();
+          if (subscribed && address) {
+            console.debug("address", address);
+            console.log("address", address);
+            setCurrentAddress(address);
+          }
         }
-        return contract
+
+        setyGift(getyGift(_provider, _signer));
+        setERC721(getERC721(_provider, _signer));
+        setReady(true);
+      }
     };
-    const getERC721 = (_provider: providers.Provider, _signer?: Signer) => {
-
-
-
-        let instance = undefined
-        const contract: SymfoniErc721 = {
-            instance: instance,
-            factory: _signer ? new Erc721Factory(_signer) : undefined,
-        }
-        return contract
+    doAsync();
+    return () => {
+      subscribed = false;
     };
-    return (
-        <ProviderContext.Provider value={[provider, setProvider]}>
-            <SignerContext.Provider value={[signer, setSigner]}>
-                <CurrentAddressContext.Provider value={[currentAddress, setCurrentAddress]}>
-                    <yGiftContext.Provider value={yGift}>
-                        <ERC721Context.Provider value={ERC721}>
-                            {ready &&
-                                (props.children)
-                            }
-                            {!ready &&
-                                <div>
-                                    {messages.map((msg, i) => (
-                                        <p key={i}>{msg}</p>
-                                    ))}
-                                </div>
-                            }
-                        </ERC721Context.Provider >
-                    </yGiftContext.Provider >
-                </CurrentAddressContext.Provider>
-            </SignerContext.Provider>
-        </ProviderContext.Provider>
-    )
+  }, []);
+
+  const getyGift = (_provider: providers.Provider, _signer?: Signer) => {
+    const contractAddress = yGiftDeployment.receipt.contractAddress;
+    const instance = _signer
+      ? YGiftFactory.connect(contractAddress, _signer)
+      : YGiftFactory.connect(contractAddress, _provider);
+    const contract: SymfoniYGift = {
+      instance: instance,
+      factory: _signer ? new YGiftFactory(_signer) : undefined,
+    };
+    console.log(contract);
+    return contract;
+  };
+  const getERC721 = (_provider: providers.Provider, _signer?: Signer) => {
+    let instance = undefined;
+    const contract: SymfoniErc721 = {
+      instance: instance,
+      factory: _signer ? new Erc721Factory(_signer) : undefined,
+    };
+    return contract;
+  };
+  return (
+    <ProviderContext.Provider value={[provider, setProvider]}>
+      <SignerContext.Provider value={[signer, setSigner]}>
+        <CurrentAddressContext.Provider value={[currentAddress, setCurrentAddress]}>
+          <yGiftContext.Provider value={yGift}>
+            <ERC721Context.Provider value={ERC721}>
+              {ready && props.children}
+              {!ready && (
+                <div>
+                  {messages.map((msg, i) => (
+                    <p key={i}>{msg}</p>
+                  ))}
+                </div>
+              )}
+            </ERC721Context.Provider>
+          </yGiftContext.Provider>
+        </CurrentAddressContext.Provider>
+      </SignerContext.Provider>
+    </ProviderContext.Provider>
+  );
 };
