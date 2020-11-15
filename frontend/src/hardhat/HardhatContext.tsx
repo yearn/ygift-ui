@@ -105,8 +105,16 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
           _provider
         );
 
-      default:
+      default: {
+        if (process.env.NODE_ENV === "production") {
+          const web3provider = _provider as ethers.providers.Web3Provider;
+          const signer = await web3provider.getSigner();
+          console.log("getSigner: ", signer);
+          return signer;
+        }
+
         return undefined;
+      }
     }
   };
   const getWeb3ModalProvider = async (): Promise<any> => {
