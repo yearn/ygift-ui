@@ -113,8 +113,8 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
             <VStack spacing={2} alignItems="flex-start">
               <Text>Owned by</Text>
               <HStack>
-                <Text>{currentAddress}</Text>
-                <CopyIcon></CopyIcon>
+                <Text>{to}</Text>
+                {/* <CopyIcon></CopyIcon> */}
               </HStack>
             </VStack>
             {/*  */}
@@ -122,7 +122,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
               <Text>Gifted by</Text>
               <HStack>
                 <Text>{currentAddress}</Text>
-                <CopyIcon></CopyIcon>
+                {/* <CopyIcon></CopyIcon> */}
               </HStack>
             </VStack>
           </VStack>
