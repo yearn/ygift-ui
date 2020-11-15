@@ -1,7 +1,7 @@
 import { useCallback, useContext, useState } from "react";
 import { CurrentAddressContext, ProviderContext, yGiftContext } from "../../../hardhat/HardhatContext";
 import { YGift } from "../../../hardhat/typechain/YGift";
-import { DateTime } from "luxon";
+import { DateTime, Duration } from "luxon";
 
 export function useCreateGiftFormManagement() {
   const yGift = useContext(yGiftContext);
@@ -9,9 +9,17 @@ export function useCreateGiftFormManagement() {
   const [provider] = useContext(ProviderContext);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [giftCreatedId, setGiftCreatedId] = useState("");
+  const _start = Math.floor(DateTime.local().toSeconds());
+  const dayInSeconds = 86400;
+
   const submitHandler = async (params: Parameters<YGift["mint"]>) => {
     console.log(params);
     return new Promise(async (resolve) => {
+      // Convert days to seconds
+      console.log(params[7]);
+      params[7] = dayInSeconds * Number(params[7]);
+      console.log(params[7]);
+
       const tx = yGift?.instance?.mint.apply(null, params.concat({ gasLimit: 5000000 }) as any);
       const createGiftTx = await tx;
       const result = await createGiftTx?.wait();
@@ -35,16 +43,7 @@ export function useCreateGiftFormManagement() {
   };
   const onSubmit = useCallback(submitHandler, [yGift?.instance, provider, currentAddress]);
   // _to: string, _token: string, _amount: BigNumberish, _name: string, _msg: string, _url: string, _start: BigNumberish, _duration: BigNumberish,
-  const initialValues: Parameters<YGift["mint"]> = [
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    Math.floor(DateTime.local().toSeconds()),
-    "",
-  ];
+  const initialValues: Parameters<YGift["mint"]> = ["", "", "", "", "", "", _start, ""];
   return {
     onSubmit,
     initialValues,

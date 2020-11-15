@@ -107,6 +107,12 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
               </VStack>
             </HStack>
             {/*  */}
+            {gift?.duration?.toNumber() > 0 && (
+              <VStack spacing={2} alignItems="flex-start">
+                <Text>Vested Duration in Days</Text>
+                <Text>{gift?.duration?.toNumber() / 86400}</Text>
+              </VStack>
+            )}
             <VStack spacing={2} alignItems="flex-start">
               <Text>Message</Text>
               <Text>{gift?.message}</Text>
