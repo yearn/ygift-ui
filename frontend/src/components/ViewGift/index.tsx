@@ -15,7 +15,7 @@ import {
 import { AddIcon, InfoIcon, CloseIcon, CopyIcon, MinusIcon } from "@chakra-ui/icons";
 import { TransactionHistory } from "./TransactionHistory";
 import { useParams } from "react-router-dom";
-import { CurrentAddressContext, yGiftContext } from "../../hardhat/HardhatContext";
+import { CurrentAddressContext, ProviderContext, yGiftContext } from "../../hardhat/HardhatContext";
 import { Tip } from "../Tip";
 import { Collect } from "../Collect";
 import { formatUnits } from "ethers/lib/utils";
@@ -32,21 +32,31 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const { id } = useParams<{ id: string }>();
   const yGift = useContext(yGiftContext);
   const [currentAddress] = useContext(CurrentAddressContext);
+  const [provider] = useContext(ProviderContext);
   const [gift, setGift] = useState<GiftModel>();
+  const [to, setTo] = useState<string>("");
   useEffect(() => {
     const fetch = async () => {
       if (yGift?.instance) {
         const gift = await yGift?.instance?.gifts(id);
-        console.log(gift);
+        const giftMintedEventFilter = yGift?.instance?.filters?.GiftMinted(
+          null,
+          null,
+          BigNumber.from(id).toHexString(),
+          null
+        );
+        const [log] = await provider?.getLogs({ ...giftMintedEventFilter, fromBlock: 0 });
+        const [, to] = yGift?.instance?.interface?.parseLog(log)?.args;
         setGift(gift);
+        setTo(to);
       }
     };
     fetch();
-  }, [yGift, id]);
+  }, [yGift, id, provider]);
 
-  const isRecipient = true;
+  const isRecipient = currentAddress === to;
 
-  if (gift) {
+  if (gift && to) {
     return (
       <VStack height={"70vh"} borderRadius="32px">
         <HStack height="100%">
@@ -82,7 +92,11 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
             <HStack spacing={4}>
               <VStack alignItems="flex-start" spacing={2}>
                 <Text>Gift Amount</Text>
-                <Text>{formatUnits(BigNumber.from(gift?.amount), "wei")}</Text>
+                <Text>{BigNumber.from(gift?.amount).toString()}</Text>
+              </VStack>
+              <VStack alignItems="flex-start" spacing={2}>
+                <Text>Gift Tipped Amount</Text>
+                <Text>{BigNumber.from(gift?.tipped).toString()}</Text>
               </VStack>
               <VStack alignItems="flex-start" spacing={2}>
                 <Text>Received</Text>
