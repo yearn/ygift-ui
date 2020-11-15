@@ -17,6 +17,7 @@
     "ethers": "^5.0.17",
     "formik": "^2.2.3",
     "framer-motion": "^2.9.4",
+    "luxon": "^1.25.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "react-test-renderer": "^17.0.1",

@@ -17,13 +17,15 @@ export const dataTestIds = {};
 interface IProps {}
 
 const Logo = () => (
-  <Heading
-    textTransform="uppercase"
-    color={"#013A6D"}
-    {...{ fontFamily: "Roboto", fontStyle: "normal", fontWeight: "900", fontSize: "40px" }}
-  >
-    yGift
-  </Heading>
+  <NavLink to="/">
+    <Heading
+      textTransform="uppercase"
+      color={"#013A6D"}
+      {...{ fontFamily: "Roboto", fontStyle: "normal", fontWeight: "900", fontSize: "40px" }}
+    >
+      yGift
+    </Heading>
+  </NavLink>
 );
 
 const OurLink = (props: any) => (
@@ -59,7 +61,7 @@ const formatAddress = (currentAddress: string) =>
 const Navbar: React.FunctionComponent<IProps> = (props) => {
   const currentAddress = useContext(CurrentAddressContext);
   return (
-    <Flex width="100%" px={[2, 10]} mb={4}>
+    <Flex width="100%" px={[2, 10]} mb={4} py={2}>
       <Logo></Logo>
       <Links></Links>
       <Center>
