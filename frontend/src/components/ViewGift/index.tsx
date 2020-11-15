@@ -12,7 +12,7 @@ import {
   PopoverArrow,
   PopoverCloseButton,
 } from "@chakra-ui/core";
-import { AddIcon, InfoIcon, CloseIcon, CopyIcon } from "@chakra-ui/icons";
+import { AddIcon, InfoIcon, CloseIcon, CopyIcon, MinusIcon } from "@chakra-ui/icons";
 import { TransactionHistory } from "./TransactionHistory";
 import { useParams } from "react-router-dom";
 import { CurrentAddressContext, yGiftContext } from "../../hardhat/HardhatContext";
@@ -58,7 +58,17 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
               <HStack spacing={4}>
                 <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} placement="bottom" closeOnBlur={false}>
                   <PopoverTrigger>
-                    <AddIcon></AddIcon>
+                    {isRecipient ? (
+                      <HStack cursor="pointer" spacing={1}>
+                        <Text>Collect</Text>
+                        <MinusIcon></MinusIcon>
+                      </HStack>
+                    ) : (
+                      <HStack cursor="pointer" spacing={1}>
+                        <Text>Tip</Text>
+                        <AddIcon></AddIcon>
+                      </HStack>
+                    )}
                   </PopoverTrigger>
                   <PopoverContent p={5}>
                     <PopoverArrow />
@@ -66,8 +76,6 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                     {isRecipient ? <Collect tokenId={id} /> : <Tip tokenId={id}></Tip>}
                   </PopoverContent>
                 </Popover>
-                <InfoIcon></InfoIcon>
-                <CloseIcon></CloseIcon>
               </HStack>
             </HStack>
             {/*  */}

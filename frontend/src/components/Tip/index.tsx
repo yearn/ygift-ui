@@ -19,21 +19,26 @@ const Tip: React.FunctionComponent<IProps> = (props) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <VStack spacing={2}>
-        {params.map((param, index) => (
-          <FormControl key={param} isInvalid={Boolean(formik.errors[index] && formik.touched[index])}>
-            <FormLabel htmlFor={param}>{param}</FormLabel>
-            <Input
-              key={param}
-              data-testid={param}
-              id={index.toString()}
-              name={index.toString()}
-              onChange={formik.handleChange}
-              type="text"
-              value={formik.values[index]?.toString()}
-            />
-            <FormErrorMessage>{formik.errors[index]}</FormErrorMessage>
-          </FormControl>
-        ))}
+        {params.map((param, index) => {
+          if (param === "_tokenId") {
+            return null;
+          }
+          return (
+            <FormControl key={param} isInvalid={Boolean(formik.errors[index] && formik.touched[index])}>
+              <FormLabel htmlFor={param}>{param}</FormLabel>
+              <Input
+                key={param}
+                data-testid={param}
+                id={index.toString()}
+                name={index.toString()}
+                onChange={formik.handleChange}
+                type="text"
+                value={formik.values[index]?.toString()}
+              />
+              <FormErrorMessage>{formik.errors[index]}</FormErrorMessage>
+            </FormControl>
+          );
+        })}
 
         <Button data-testid={"submit"} type="submit" disabled={formik.isSubmitting}>
           Tip

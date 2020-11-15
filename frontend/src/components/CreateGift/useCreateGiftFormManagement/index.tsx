@@ -42,7 +42,7 @@ export function useCreateGiftFormManagement() {
     "",
     "",
     Math.floor(new Date().getTime() / 1000) + 1000,
-    1000,
+    "",
   ];
   return {
     onSubmit,

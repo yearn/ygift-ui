@@ -4,10 +4,13 @@ import { YGift } from "../../../hardhat/typechain/YGift";
 
 export function useTipFormManagement(tokenId: string) {
   const yGift = useContext(yGiftContext);
-  const submitHandler = (params: Parameters<YGift["tip"]>) =>
-    yGift?.instance?.tip.apply(null, params.concat({ gasLimit: 500000 }) as any)?.then(() => {
-      console.debug("hello");
-    });
+
+  const submitHandler = async (params: Parameters<YGift["tip"]>) => {
+    const tx = yGift?.instance?.tip.apply(null, params.concat({ gasLimit: 5000000 }) as any);
+    const tipTx = await tx;
+    await tipTx?.wait();
+    window.location.reload();
+  };
   const onSubmit = useCallback(submitHandler, [yGift?.instance]);
   const initialValues: Parameters<YGift["tip"]> = [tokenId, 0, ""];
   return {
