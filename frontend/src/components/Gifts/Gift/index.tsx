@@ -35,7 +35,7 @@ export type GiftModel = {
   7: string;
 };
 
-const giftName = "#013A6D";
+const giftNameColour = "#013A6D";
 const giftMessageColour = "#809EBD";
 const giftAmountColour = giftMessageColour;
 
@@ -48,13 +48,18 @@ const Gift: React.FunctionComponent<GiftModel> = (props) => (
     <VStack spacing={0} width="220px" boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)" cursor="pointer">
       <Image width="220px" height="220px" src={props?.url} borderRadius="16px"></Image>
       <VStack p={2} width="100%" spacing={1} alignItems="flex-start">
-        <Heading as="h4" fontFamily="Roboto" fontSize="18px" fontWeight="700" color={giftName}>
+        <Heading as="h4" fontFamily="Roboto" fontSize="18px" fontWeight="700" color={giftNameColour}>
           {props?.name}
         </Heading>
         {props?.amount && (
-          <Text fontFamily="Roboto" fontSize="16px" fontWeight="bold" color={giftAmountColour}>
-            {`${props?.amount.toString()}`}
-          </Text>
+          <>
+            <Text fontFamily="Roboto" fontSize="16px" fontWeight="bold" color={"#1a4b77"}>
+              Amount left
+            </Text>
+            <Text fontFamily="Roboto" fontSize="16px" fontWeight="bold" color={giftAmountColour}>
+              {`${props?.amount.toString()}`}
+            </Text>
+          </>
         )}
         {props.message && (
           <Text fontFamily="Roboto" fontSize="14px" fontWeight="400" color={giftMessageColour}>
