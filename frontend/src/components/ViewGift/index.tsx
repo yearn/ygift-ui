@@ -133,6 +133,13 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                 {/* <CopyIcon></CopyIcon> */}
               </HStack>
             </VStack>
+            <VStack spacing={2} alignItems="flex-start">
+              <Text>Gift token contract address</Text>
+              <HStack>
+                <Text>{gift?.token}</Text>
+                {/* <CopyIcon></CopyIcon> */}
+              </HStack>
+            </VStack>
           </VStack>
         </HStack>
 
