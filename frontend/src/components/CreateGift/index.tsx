@@ -207,7 +207,7 @@ const getPlaceholder = (param: ValuesOf<typeof params>) => {
       return "Token contract address";
     }
     case "_duration": {
-      return "Vesting duration in days";
+      return "Vesting duration in days - (0 is instant)";
     }
     default: {
       return param;
