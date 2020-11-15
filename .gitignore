@@ -4,4 +4,3 @@ package-lock.json
 #hardhat files
 cache
 artifacts
-frontend/src/hardhat

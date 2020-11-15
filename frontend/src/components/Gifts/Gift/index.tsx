@@ -19,6 +19,7 @@ export type GiftModel = {
   id?: string;
   token: string;
   amount: BigNumber;
+  tipped: BigNumber;
   start: BigNumber;
   duration: BigNumber;
   name: string;
@@ -28,9 +29,10 @@ export type GiftModel = {
   1: BigNumber;
   2: BigNumber;
   3: BigNumber;
-  4: string;
+  4: BigNumber;
   5: string;
   6: string;
+  7: string;
 };
 
 const giftName = "#013A6D";
