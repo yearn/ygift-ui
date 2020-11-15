@@ -58,6 +58,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const isRecipient = currentAddress === to;
 
   if (gift && to) {
+    console.log(gift);
     return (
       <VStack height={"70vh"} borderRadius="32px">
         <HStack height="100%">
@@ -91,15 +92,15 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
             </HStack>
             {/*  */}
             <HStack spacing={4}>
-              <VStack alignItems="flex-start" spacing={2}>
+              <VStack alignItems="flex-start" spacing={2} textAlign="left">
                 <Text>Gift Amount</Text>
                 <Text>{BigNumber.from(gift?.amount).toString()}</Text>
               </VStack>
-              <VStack alignItems="flex-start" spacing={2}>
-                <Text>Gift Tipped Amount</Text>
+              <VStack alignItems="flex-start" spacing={2} textAlign="left">
+                <Text>Tipped Amount</Text>
                 <Text>{BigNumber.from(gift?.tipped).toString()}</Text>
               </VStack>
-              <VStack alignItems="flex-start" spacing={2}>
+              <VStack alignItems="flex-start" spacing={2} textAlign="left">
                 <Text>Received</Text>
                 {/* TODO: Date.fn */}
                 <Text fontSize="sm">{DateTime.fromSeconds(gift?.start?.toNumber()).toHTTP()}</Text>

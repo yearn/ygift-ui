@@ -62,7 +62,7 @@ const Submitting: React.FC = () => (
   <Center
     {...{
       position: "absolute",
-      width: "80vw",
+      width: "60vw",
       height: "100%",
       background: "#013A6D",
       opacity: 0.9,
@@ -207,7 +207,7 @@ const getPlaceholder = (param: ValuesOf<typeof params>) => {
       return "Token contract address";
     }
     case "_duration": {
-      return "Vesting duration";
+      return "Vesting duration in days";
     }
     default: {
       return param;

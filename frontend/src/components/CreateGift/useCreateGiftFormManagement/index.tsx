@@ -1,6 +1,7 @@
 import { useCallback, useContext, useState } from "react";
 import { CurrentAddressContext, ProviderContext, yGiftContext } from "../../../hardhat/HardhatContext";
 import { YGift } from "../../../hardhat/typechain/YGift";
+import { DateTime } from "luxon";
 
 export function useCreateGiftFormManagement() {
   const yGift = useContext(yGiftContext);
@@ -41,7 +42,7 @@ export function useCreateGiftFormManagement() {
     "",
     "",
     "",
-    Math.floor(new Date().getTime() / 1000) + 1000,
+    Math.floor(DateTime.local().toSeconds()),
     "",
   ];
   return {
