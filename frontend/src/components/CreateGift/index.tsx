@@ -245,8 +245,9 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
     const fetch = async () => {
       if (erc20Contract && signer) {
         erc20Contract.connect(signer);
-        const tx = await (erc20Contract as any).approve(yGiftContractAddress, BigNumber.from(2).pow(256).sub(1));
-        await tx.wait();
+        const tx = (erc20Contract as any).approve(yGiftContractAddress, BigNumber.from(2).pow(256).sub(1));
+        const approveTx = await tx;
+        await approveTx?.wait();
         setIsApproved(true);
       }
     };
@@ -358,7 +359,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                       id={index.toString()}
                       name={index.toString()}
                       onChange={formik.handleChange}
-                      type={param === "_duration" || param === "_amount" ? "number" : "text"}
+                      type={param === "_duration" ? "number" : "text"}
                       value={formik.values[index]?.toString()}
                       color="#013A6D"
                       {...{

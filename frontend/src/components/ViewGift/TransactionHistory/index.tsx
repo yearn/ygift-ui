@@ -1,7 +1,7 @@
 import React from "react";
 import { createDataTestId } from "../../../lib/create-data-testid";
 import { Flex, Stack, Text, Button, VStack, Heading, HStack, Divider } from "@chakra-ui/core";
-import { BigNumberish } from "ethers";
+import { BigNumberish, ethers } from "ethers";
 import { useGiftTransactionHistory } from "./useGiftTransactionHistory";
 import { DateTime } from "luxon";
 
@@ -41,7 +41,7 @@ const Transaction: React.FC<TransactionModel> = (props) => (
       {props.amount && (
         <VStack>
           <Text>Amount</Text>
-          <Text>{props.amount?.toString()}</Text>
+          <Text>{ethers.utils.formatEther(props.amount)}</Text>
         </VStack>
       )}
     </VStack>

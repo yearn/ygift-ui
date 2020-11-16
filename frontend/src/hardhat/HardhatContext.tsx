@@ -129,7 +129,7 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
   useEffect(() => {
     let subscribed = true;
     const doAsync = async () => {
-      setMessages((old) => [...old, "Initiating Hardhat React"]);
+      setMessages((old) => [...old, "Initiating Web3"]);
       const _provider = await getProvider(); // getProvider can actually return undefined, see issue https://github.com/microsoft/TypeScript/issues/11094
       console.log(_provider);
       if (subscribed && _provider) {

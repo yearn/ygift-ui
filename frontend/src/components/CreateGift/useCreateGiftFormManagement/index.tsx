@@ -2,6 +2,7 @@ import { useCallback, useContext, useState } from "react";
 import { CurrentAddressContext, ProviderContext, yGiftContext } from "../../../hardhat/HardhatContext";
 import { YGift } from "../../../hardhat/typechain/YGift";
 import { DateTime, Duration } from "luxon";
+import { BigNumber, ethers } from "ethers";
 
 export function useCreateGiftFormManagement() {
   const yGift = useContext(yGiftContext);
@@ -15,6 +16,10 @@ export function useCreateGiftFormManagement() {
   const submitHandler = async (params: Parameters<YGift["mint"]>) => {
     console.log(params);
     return new Promise(async (resolve) => {
+      // Convert ether to gwei
+      console.log(params[2]);
+      params[2] = ethers.utils.parseEther(params[2].toString());
+      console.log(params[2]);
       // Convert days to seconds
       console.log(params[7]);
       params[7] = dayInSeconds * Number(params[7]);
@@ -22,7 +27,7 @@ export function useCreateGiftFormManagement() {
 
       const tx = yGift?.instance?.mint.apply(null, params.concat({ gasLimit: 5000000 }) as any);
       const createGiftTx = await tx;
-      const result = await createGiftTx?.wait();
+      await createGiftTx?.wait();
       setHasSubmitted(true);
       const giftMintedSentEventFilter = yGift?.instance?.filters?.GiftMinted(String(currentAddress), null, null, null);
       if (giftMintedSentEventFilter) {
@@ -34,8 +39,6 @@ export function useCreateGiftFormManagement() {
           setGiftCreatedId(giftMinted?.[2]);
         }
       }
-      console.log(result);
-      console.log(result?.logs);
       // const parsedLogs = result?.logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
       // console.log(parsedLogs);
       resolve(true);

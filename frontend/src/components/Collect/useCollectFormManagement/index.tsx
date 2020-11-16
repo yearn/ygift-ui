@@ -1,3 +1,4 @@
+import { BigNumber, ethers } from "ethers";
 import { useCallback, useContext } from "react";
 import { yGiftContext } from "../../../hardhat/HardhatContext";
 import { YGift } from "../../../hardhat/typechain/YGift";
@@ -5,6 +6,7 @@ import { YGift } from "../../../hardhat/typechain/YGift";
 export function useCollectFormManagement(tokenId: string) {
   const yGift = useContext(yGiftContext);
   const submitHandler = async (params: Parameters<YGift["collect"]>) => {
+    params[1] = ethers.utils.parseEther(params[1].toString());
     const tx = yGift?.instance?.collect.apply(null, params.concat({ gasLimit: 5000000 }) as any);
     const collectTx = await tx;
     await collectTx?.wait();

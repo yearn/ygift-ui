@@ -1,7 +1,7 @@
 import React from "react";
 import { createDataTestId } from "../../../lib/create-data-testid";
 import { Flex, Stack, Text, Button, Image, VStack, Heading } from "@chakra-ui/core";
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { Link } from "react-router-dom";
 
 /*
@@ -57,7 +57,7 @@ const Gift: React.FunctionComponent<GiftModel> = (props) => (
               Amount left
             </Text>
             <Text fontFamily="Roboto" fontSize="16px" fontWeight="bold" color={giftAmountColour}>
-              {`${props?.amount.toString()}`}
+              {`${ethers.utils.formatEther(props?.amount.toString())}`}
             </Text>
           </>
         )}

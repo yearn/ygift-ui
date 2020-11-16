@@ -19,7 +19,7 @@ import { CurrentAddressContext, ProviderContext, yGiftContext } from "../../hard
 import { Tip } from "../Tip";
 import { Collect } from "../Collect";
 import { formatUnits } from "ethers/lib/utils";
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { DateTime } from "luxon";
 
 export const componentDataTestId = createDataTestId("ViewGift");
@@ -94,11 +94,11 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
             <HStack spacing={4}>
               <VStack alignItems="flex-start" spacing={2} textAlign="left">
                 <Text>Gift Amount</Text>
-                <Text>{BigNumber.from(gift?.amount).toString()}</Text>
+                <Text> {`${ethers.utils.formatEther(gift?.amount)}`}</Text>
               </VStack>
               <VStack alignItems="flex-start" spacing={2} textAlign="left">
                 <Text>Tipped Amount</Text>
-                <Text>{BigNumber.from(gift?.tipped).toString()}</Text>
+                <Text>{ethers.utils.formatEther(gift?.tipped)}</Text>
               </VStack>
               <VStack alignItems="flex-start" spacing={2} textAlign="left">
                 <Text>Received</Text>
