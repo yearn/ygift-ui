@@ -20,6 +20,9 @@ export function useCreateGiftFormManagement() {
       console.log(params[2]);
       params[2] = ethers.utils.parseEther(params[2].toString());
       console.log(params[2]);
+      // Resolve ens for _to and _token
+      params[0] = (await provider?.resolveName(params[0])) || params[0];
+      params[1] = (await provider?.resolveName(params[1])) || params[1];
       // Convert days to seconds
       console.log(params[7]);
       params[7] = dayInSeconds * Number(params[7]);

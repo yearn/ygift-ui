@@ -6,13 +6,11 @@ import { BigNumber, ethers } from "ethers";
 export function useGiftTransactionHistory(id: string) {
   const yGift = useContext(yGiftContext);
   const signer = useContext(SignerContext);
-  const provider = useContext(ProviderContext);
+  const [provider] = useContext(ProviderContext);
   const [transactionHistory, setTransactionHistory] = useState<TransactionModel[]>([]);
 
   useEffect(() => {
     const fetch = async () => {
-      // const address = await signer?.[0]?.getAddress();
-      // console.log(BigNumber.from(id).toHexString());
       const giftMintedSentEventFilter = yGift?.instance?.filters?.GiftMinted(
         null,
         null,
@@ -33,13 +31,14 @@ export function useGiftTransactionHistory(id: string) {
         recipient = "";
 
       if (giftMintedSentEventFilter) {
-        const logs = await provider?.[0]?.getLogs({ ...giftMintedSentEventFilter, fromBlock: 0 });
+        const logs = await provider?.getLogs({ ...giftMintedSentEventFilter, fromBlock: 0 });
         const [giftMinted] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (giftMinted) {
           const [mintedFrom, mintedFor] = giftMinted;
-          minter = mintedFrom;
-          recipient = mintedFor;
-          const block = await provider?.[0]?.getBlock(logs[0].blockHash);
+          minter = (await provider?.resolveName(mintedFrom)) || mintedFrom;
+          recipient = (await provider?.resolveName(mintedFor)) || mintedFor;
+
+          const block = await provider?.getBlock(logs[0].blockHash);
           const transaction: TransactionModel = {
             minter,
             recipient,
@@ -52,16 +51,18 @@ export function useGiftTransactionHistory(id: string) {
 
       //
       if (collectedEventFilter) {
-        const logs = await provider?.[0]?.getLogs({ ...collectedEventFilter, fromBlock: 0 });
+        const logs = await provider?.getLogs({ ...collectedEventFilter, fromBlock: 0 });
         const collected = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (collected.length > 0) {
           const gift = await yGift?.instance?.gifts(id);
           if (gift) {
-            const blocks = await Promise.all(logs.map((log) => provider?.[0]?.getBlock(log.blockHash)));
-            blocks.forEach((block, index) => {
+            const blocks = await Promise.all(logs.map((log) => provider?.getBlock(log.blockHash)));
+            blocks.forEach(async (block, index) => {
               console.log(collected);
+              const collectedMinter = (await provider?.resolveName(collected?.[index]?.[0])) || collected?.[index]?.[0];
+
               const transaction: TransactionModel = {
-                minter: collected?.[0]?.[0],
+                minter: collectedMinter,
                 recipient,
                 date: block.timestamp,
                 event: "Collected",
@@ -73,18 +74,20 @@ export function useGiftTransactionHistory(id: string) {
         }
       }
       if (tipEventFilter) {
-        const logs = await provider?.[0]?.getLogs({ ...tipEventFilter, fromBlock: 0 });
+        const logs = await provider?.getLogs({ ...tipEventFilter, fromBlock: 0 });
         const tipped = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (tipped.length > 1) {
           const gift = await yGift?.instance?.gifts(id);
           if (gift) {
-            const blocks = await Promise.all(logs.map((log) => provider?.[0]?.getBlock(log.blockHash)));
-            blocks.forEach((block, index) => {
+            const blocks = await Promise.all(logs.map((log) => provider?.getBlock(log.blockHash)));
+            blocks.forEach(async (block, index) => {
               if (index === 0) {
                 return;
               } else {
+                const tippedMinter = (await provider?.resolveName(tipped?.[index]?.[0])) || tipped?.[index]?.[0];
+
                 const transaction: TransactionModel = {
-                  minter: tipped?.[0]?.[0],
+                  minter: tippedMinter,
                   recipient,
                   date: block.timestamp,
                   event: "Tipped",
@@ -99,19 +102,24 @@ export function useGiftTransactionHistory(id: string) {
       }
 
       if (transferEventFilter) {
-        const logs = await provider?.[0]?.getLogs({ ...transferEventFilter, fromBlock: 0 });
+        const logs = await provider?.getLogs({ ...transferEventFilter, fromBlock: 0 });
         const transferred = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
         if (transferred.length > 1) {
           const gift = await yGift?.instance?.gifts(id);
           if (gift) {
-            const blocks = await Promise.all(logs.map((log) => provider?.[0]?.getBlock(log.blockHash)));
-            blocks.forEach((block, index) => {
+            const blocks = await Promise.all(logs.map((log) => provider?.getBlock(log.blockHash)));
+            blocks.forEach(async (block, index) => {
               if (index === 0) {
                 return;
               } else {
+                const transferMinter =
+                  (await provider?.resolveName(transferred?.[index]?.[0])) || transferred?.[index]?.[0];
+                const transferRecipient =
+                  (await provider?.resolveName(transferred?.[index]?.[1])) || transferred?.[index]?.[1];
+
                 const transaction: TransactionModel = {
-                  minter: transferred?.[index]?.[0],
-                  recipient: transferred?.[index]?.[1],
+                  minter: transferMinter,
+                  recipient: transferRecipient,
                   date: block.timestamp,
                   event: "Transferred",
                 };

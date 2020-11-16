@@ -193,7 +193,7 @@ export type ValuesOf<T extends readonly any[]> = T[number];
 const getPlaceholder = (param: ValuesOf<typeof params>) => {
   switch (param) {
     case "_to": {
-      return "To (ETH address)";
+      return "To (ETH or ENS address)";
     }
     case "_name": {
       return "Gift Name";
@@ -205,7 +205,7 @@ const getPlaceholder = (param: ValuesOf<typeof params>) => {
       return "Gift Amount";
     }
     case "_token": {
-      return "Token contract address";
+      return "Token (Contract or ENS) address";
     }
     case "_duration": {
       return "Vesting duration in days - (0 is instant)";
@@ -374,6 +374,8 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                       onChange={formik.handleChange}
                       type={param === "_duration" || param === "_amount" ? "number" : "text"}
                       max={param === "_amount" ? ethers.utils.formatEther(maxAmount) : undefined}
+                      min={param === "_amount" ? "0" : undefined}
+                      step={param === "_amount" ? "0.0001" : undefined}
                       value={formik.values[index]?.toString()}
                       color="#013A6D"
                       {...{

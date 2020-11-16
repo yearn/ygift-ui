@@ -54,9 +54,11 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
         const transferLogs = await provider?.getLogs({ ...transferEventFilter, fromBlock: 0 });
         const [, ownedBy] = yGift?.instance?.interface?.parseLog(transferLogs[transferLogs.length - 1])?.args;
 
-        setGift(gift);
-        setOwnedBy(ownedBy);
-        setFrom(from);
+        // gift resolveName parsed
+        setGift({ ...gift, token: (await provider?.resolveName(gift.token)) || gift.token });
+
+        setOwnedBy((await provider?.resolveName(ownedBy)) || ownedBy);
+        setFrom((await provider?.resolveName(from)) || from);
       }
     };
     fetch();
