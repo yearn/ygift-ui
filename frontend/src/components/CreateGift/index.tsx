@@ -230,14 +230,24 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   useEffect(() => {
     const fetch = async () => {
       // The Contract object
+      if (_token === "") {
+        setMaxAmount(0);
+      }
+      // Resolve ens for _token
+      const resolvedToken = (_token.length > 3 && (await provider?.resolveName(_token))) || _token;
+      if (!ethers.utils.isAddress(resolvedToken)) {
+        return;
+      }
       if (signer && _token) {
         console.log(_token);
-        const erc20Contract = new ethers.Contract(_token, erc20Abi, provider).connect(signer);
+        const erc20Contract = new ethers.Contract(resolvedToken, erc20Abi, provider).connect(signer);
         setErc20Contract(erc20Contract);
+
         const filter = erc20Contract?.filters.Approval(currentAddress, yGiftContractAddress);
         const events = await erc20Contract.queryFilter(filter);
         console.log(events);
         setIsApproved(events?.length > 0);
+
         if (events?.length > 0) {
           const balance = await erc20Contract.balanceOf(currentAddress);
           console.log(balance?.toString());
