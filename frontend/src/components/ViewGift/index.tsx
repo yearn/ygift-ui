@@ -69,7 +69,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
     return (
       <VStack height={"70vh"} borderRadius="32px">
         <HStack height="100%">
-          <Image height="400px" width="400px" src={gift?.url} />
+          <Image borderRadius={16} height="auto" width="400px" src={gift?.url} />
           <VStack height="100%" width="520px" alignItems="flex-start" p={4}>
             {/*  */}
             <HStack width="100%">

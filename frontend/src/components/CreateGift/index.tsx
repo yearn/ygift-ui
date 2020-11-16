@@ -117,7 +117,7 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
         >
           Your gift has been created succesfully
         </Heading>
-        <Image src={props.url} width="425px" height="425px"></Image>
+        <Image src={props.url} width="425px" height="auto"></Image>
         <HStack spacing={3}>
           <Text
             {...{
