@@ -4,6 +4,7 @@ import { Button, VStack, Input, FormControl, FormLabel, FormErrorMessage, Text, 
 import { useCollectFormManagement } from "./useCollectFormManagement";
 import { useFormik } from "formik";
 import { yGiftContext } from "../../hardhat/HardhatContext";
+import { ethers } from "ethers";
 
 export const componentDataTestId = createDataTestId("Collect");
 
@@ -37,7 +38,7 @@ const Collect: React.FunctionComponent<IProps> = (props) => {
       <VStack spacing={2}>
         <HStack spacing={1}>
           <Text>Available to collect:</Text>
-          <Text>{collectible}</Text>
+          <Text>{ethers.utils.formatEther(collectible)}</Text>
         </HStack>
         {params.map((param, index) => {
           if (param === "_tokenId") {
