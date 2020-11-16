@@ -55,6 +55,11 @@ const Collect: React.FunctionComponent<IProps> = (props) => {
                 id={index.toString()}
                 name={index.toString()}
                 onChange={formik.handleChange}
+                max={
+                  collectible && param === "_amount" && Number(ethers.utils.formatEther(collectible)) > 0
+                    ? Number(ethers.utils.formatEther(collectible))
+                    : undefined
+                }
                 type="number"
                 value={formik.values[index]?.toString()}
               />
