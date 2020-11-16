@@ -372,7 +372,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                   >
                     {maxAmount && param === "_amount" ? (
                       <FormLabel textAlign="center" for="_amount">
-                        {`Max: ${Number(ethers.utils.formatEther(maxAmount)).toPrecision(3)}`}
+                        {`Max: ${Math.floor(Number(ethers.utils.formatEther(maxAmount)) * 100) / 100}`}
                       </FormLabel>
                     ) : null}
                     <Input
