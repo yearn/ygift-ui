@@ -26,6 +26,7 @@ export function useGiftTransactionHistory(id: string) {
         null
       );
       const tipEventFilter = yGift?.instance?.filters?.Tip(null, BigNumber.from(id).toHexString(), null, null, null);
+      const transferEventFilter = yGift?.instance?.filters?.Transfer(null, null, BigNumber.from(id).toHexString());
 
       const transactions: TransactionModel[] = [];
       let minter,
@@ -89,6 +90,30 @@ export function useGiftTransactionHistory(id: string) {
                   event: "Tipped",
                   message: tipped?.[index]?.message,
                   amount: tipped?.[index]?.amount,
+                };
+                transactions.push(transaction);
+              }
+            });
+          }
+        }
+      }
+
+      if (transferEventFilter) {
+        const logs = await provider?.[0]?.getLogs({ ...transferEventFilter, fromBlock: 0 });
+        const transferred = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
+        if (transferred.length > 1) {
+          const gift = await yGift?.instance?.gifts(id);
+          if (gift) {
+            const blocks = await Promise.all(logs.map((log) => provider?.[0]?.getBlock(log.blockHash)));
+            blocks.forEach((block, index) => {
+              if (index === 0) {
+                return;
+              } else {
+                const transaction: TransactionModel = {
+                  minter: transferred?.[index]?.[0],
+                  recipient: transferred?.[index]?.[1],
+                  date: block.timestamp,
+                  event: "Transferred",
                 };
                 transactions.push(transaction);
               }

@@ -35,7 +35,8 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const [currentAddress] = useContext(CurrentAddressContext);
   const [provider] = useContext(ProviderContext);
   const [gift, setGift] = useState<GiftModel>();
-  const [to, setTo] = useState<string>("");
+  const [ownedBy, setOwnedBy] = useState<string>("");
+  const [from, setFrom] = useState<string>("");
   useEffect(() => {
     const fetch = async () => {
       if (yGift?.instance) {
@@ -46,18 +47,24 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           BigNumber.from(id).toHexString(),
           null
         );
+        const transferEventFilter = yGift?.instance?.filters?.Transfer(null, null, BigNumber.from(id).toHexString());
         const [log] = await provider?.getLogs({ ...giftMintedEventFilter, fromBlock: 0 });
-        const [, to] = yGift?.instance?.interface?.parseLog(log)?.args;
+        const [from] = yGift?.instance?.interface?.parseLog(log)?.args;
+
+        const transferLogs = await provider?.getLogs({ ...transferEventFilter, fromBlock: 0 });
+        const [, ownedBy] = yGift?.instance?.interface?.parseLog(transferLogs[transferLogs.length - 1])?.args;
+
         setGift(gift);
-        setTo(to);
+        setOwnedBy(ownedBy);
+        setFrom(from);
       }
     };
     fetch();
   }, [yGift, id, provider]);
 
-  const isRecipient = currentAddress === to;
+  const isRecipient = currentAddress === ownedBy;
 
-  if (gift && to) {
+  if (gift && ownedBy) {
     console.log(gift);
     return (
       <VStack height={"70vh"} borderRadius="32px">
@@ -121,15 +128,15 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
             <VStack spacing={2} alignItems="flex-start">
               <Text>Owned by</Text>
               <HStack>
-                <Text>{to}</Text>
+                <Text>{ownedBy}</Text>
                 {/* <CopyIcon></CopyIcon> */}
               </HStack>
             </VStack>
             {/*  */}
             <VStack spacing={2} alignItems="flex-start">
-              <Text>Gifted by</Text>
+              <Text>Minted by</Text>
               <HStack>
-                <Text>{currentAddress}</Text>
+                <Text>{from}</Text>
                 {/* <CopyIcon></CopyIcon> */}
               </HStack>
             </VStack>

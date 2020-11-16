@@ -15,7 +15,7 @@ export type TransactionModel = {
   recipient: string;
   message?: string;
   amount?: BigNumberish;
-  event: "Minted" | "Collected" | "Tipped";
+  event: "Minted" | "Collected" | "Tipped" | "Transferred";
 };
 
 const Transaction: React.FC<TransactionModel> = (props) => (
@@ -35,7 +35,7 @@ const Transaction: React.FC<TransactionModel> = (props) => (
     </VStack>
     <VStack spacing={2}>
       <VStack>
-        <Text>Gifted to</Text>
+        <Text>{`${props.event === "Transferred" ? "Transferred" : "Gifted"} to`}</Text>
         <Text>{props.recipient}</Text>
       </VStack>
       {props.amount && (
