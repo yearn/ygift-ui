@@ -36,10 +36,12 @@ const Collect: React.FunctionComponent<IProps> = (props) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <VStack spacing={2}>
-        <HStack spacing={1}>
-          <Text>Available to collect:</Text>
-          <Text>{ethers.utils.formatEther(collectible)}</Text>
-        </HStack>
+        {collectible && (
+          <HStack spacing={1}>
+            <Text>Available to collect:</Text>
+            <Text>{ethers.utils.formatEther(collectible)}</Text>
+          </HStack>
+        )}
         {params.map((param, index) => {
           if (param === "_tokenId") {
             return null;
