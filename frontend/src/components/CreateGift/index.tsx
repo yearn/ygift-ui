@@ -13,6 +13,7 @@ import {
   Heading,
   useClipboard,
   Text,
+  FormLabel,
 } from "@chakra-ui/core";
 import { CopyIcon } from "@chakra-ui/icons";
 import { useCreateGiftFormManagement } from "./useCreateGiftFormManagement";
@@ -223,6 +224,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   const [currentAddress] = useContext(CurrentAddressContext);
   const _token = String(formik?.values[Number(params.indexOf("_token"))]);
   const [isApproved, setIsApproved] = useState<boolean>(false);
+  const [maxAmount, setMaxAmount] = useState<number>(0);
   const [erc20Contract, setErc20Contract] = useState<ethers.Contract | undefined>(undefined);
 
   useEffect(() => {
@@ -236,6 +238,12 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
         const events = await erc20Contract.queryFilter(filter);
         console.log(events);
         setIsApproved(events?.length > 0);
+        if (events?.length > 0) {
+          const balance = await erc20Contract.balanceOf(currentAddress);
+          console.log(balance?.toString());
+          console.log(ethers.utils.formatEther(balance));
+          setMaxAmount(balance);
+        }
       }
     };
     fetch();
@@ -352,6 +360,11 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                     background="#ECF4FA"
                     borderRadius="24px"
                   >
+                    {maxAmount && param === "_amount" ? (
+                      <FormLabel textAlign="center" for="_amount">
+                        {`Max: ${Number(ethers.utils.formatEther(maxAmount)).toPrecision(3)}`}
+                      </FormLabel>
+                    ) : null}
                     <Input
                       placeholder={getPlaceholder(param)}
                       key={param}
@@ -359,7 +372,8 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                       id={index.toString()}
                       name={index.toString()}
                       onChange={formik.handleChange}
-                      type={param === "_duration" ? "number" : "text"}
+                      type={param === "_duration" || param === "_amount" ? "number" : "text"}
+                      max={param === "_amount" ? ethers.utils.formatEther(maxAmount) : undefined}
                       value={formik.values[index]?.toString()}
                       color="#013A6D"
                       {...{
