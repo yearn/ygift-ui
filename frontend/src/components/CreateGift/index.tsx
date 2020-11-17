@@ -376,6 +376,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                       </FormLabel>
                     ) : null}
                     <Input
+                      required={true}
                       placeholder={getPlaceholder(param)}
                       key={param}
                       data-testid={param}
