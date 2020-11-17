@@ -12,8 +12,8 @@ interface IProps {}
 
 interface IContentProps {}
 const Content: React.FC<IContentProps> = (props) => {
-  const [address, setAddress] = React.useState("");
-  const history = useHistory();
+  // const [address, setAddress] = React.useState("");
+  // const history = useHistory();
   return (
     <VStack spacing={4}>
       <Heading
