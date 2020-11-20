@@ -37,7 +37,5 @@
     "url": "https://github.com/symfoni/hardhat-react-boilerplate/issues"
   },
   "homepage": "https://github.com/symfoni/hardhat-react-boilerplate#readme",
-  "dependencies": {
-    "ipfs-http-client": "^48.1.1"
-  }
+  "dependencies": {}
 }
