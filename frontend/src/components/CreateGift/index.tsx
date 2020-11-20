@@ -443,7 +443,6 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                   key={param}
                   isInvalid={Boolean(formik.errors[index] && formik.touched[index])}
                   background="#ECF4FA"
-                  color="#A1C5E2"
                   borderRadius="24px"
                 >
                   {maxAmount && param === "_amount" ? (
