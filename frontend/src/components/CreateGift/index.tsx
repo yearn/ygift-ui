@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
+import ipfsClient from "ipfs-http-client";
 import {
   Button,
   VStack,
@@ -273,9 +274,36 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
     fetch();
   }, [erc20Contract, signer]);
 
+  async function saveToIpfs(files: FileList) {
+    if (files) {
+      const ipfs = ipfsClient({ url: "https://ipfs.infura.io:5001" });
+      ipfs
+        .add([...(files as any)], {
+          progress: (prog: any) => console.log(`received: ${prog}`),
+        })
+        .then((file) => {
+          console.log(file);
+          const ipfsHash = file.path;
+          const ipfsGateway = "https://cloudflare-ipfs.com/ipfs/";
+          formik.setFieldValue(String(params.indexOf("_url")), ipfsGateway + ipfsHash);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      // try {
+      //   for (const file of await source) {
+      //     console.log(file);
+      //   }
+      // } catch (err) {
+      //   console.error(err);
+      // }
+    }
+  }
+
   if (management.hasSubmitted) {
     return <Submitted id={management.giftCreatedId} url={formik.values?.["5"]}></Submitted>;
   }
+
   return (
     <form onSubmit={formik.handleSubmit}>
       {(props.isSubmitting || formik.isSubmitting) && <Submitting></Submitting>}
@@ -287,7 +315,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           background: "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
         }}
         minWidth="60vw"
-        height="700px"
+        height="600px"
       >
         <Center height={"100%"} width="50%">
           {" "}
@@ -302,7 +330,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
             <FormControl borderRadius="24px" key={"_url"} isInvalid={Boolean(formik.errors[3] && formik.touched[3])}>
               <Input
                 width={"350px"}
-                placeholder="Cover image url"
+                placeholder="Cover image URL"
                 key={"_url"}
                 data-testid={"_url"}
                 id={String(params.indexOf("_url"))}
@@ -310,11 +338,53 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 onChange={formik.handleChange}
                 type="text"
                 value={formik.values[Number(params.indexOf("_url"))]?.toString()}
-                color="white"
-                borderRadius={"24px"}
+                borderRadius={"32px"}
+                border="none"
+                color="#A1C5E2"
+                bg="#336da6"
+                {...{
+                  fontFamily: "Roboto",
+                  fontStyle: "normal",
+                  fontWeight: "normal",
+                  fontSize: "13px",
+                  lineHeight: "137.88%",
+                }}
               />
               <FormErrorMessage>{formik.errors[Number(params.indexOf("_url"))]}</FormErrorMessage>
             </FormControl>
+
+            <FormLabel
+              display="inline-block"
+              cursor="pointer"
+              {...{
+                fontFamily: "Roboto",
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontSize: "13px",
+                lineHeight: "137.88%",
+              }}
+              color="white"
+              borderRadius="32px"
+              width="350px"
+              border="1px solid white"
+              px={5}
+              py={"9px"}
+              m={0}
+              textAlign="center"
+            >
+              Choose image
+              <Input
+                onChange={(event) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  if (event.target.files) {
+                    saveToIpfs(event.target.files);
+                  }
+                }}
+                display="none"
+                type="file"
+              ></Input>
+            </FormLabel>
           </VStack>
         </Center>
 
