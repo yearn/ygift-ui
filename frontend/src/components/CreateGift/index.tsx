@@ -323,7 +323,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
             <Image
               borderRadius="16px"
               height="auto"
-              width="250px"
+              width="270px"
               src={formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
             ></Image>
             {/* TODO use filestack-react image picker plugin */}
@@ -398,7 +398,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           borderTopLeftRadius="none"
           borderBottomLeftRadius="none"
         >
-          <VStack spacing={4} width={"420px"}>
+          <VStack spacing={5} width={"420px"}>
             <Heading
               {...{
                 fontFamily: "Roboto",
@@ -470,8 +470,8 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                       fontWeight: "normal",
                       fontSize: "14px",
                       textAlign: "left",
-                      color: "#A1C5E2",
                     }}
+                    borderRadius="32px"
                   />
                   <FormErrorMessage>{formik.errors[index]}</FormErrorMessage>
                 </FormControl>
