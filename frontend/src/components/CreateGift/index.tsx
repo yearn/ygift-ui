@@ -287,20 +287,21 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           background: "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
         }}
         minWidth="60vw"
-        height="100%"
+        height="700px"
       >
         <Center height={"100%"} width="50%">
           {" "}
-          <VStack spacing={8} py={4}>
+          <VStack spacing={8}>
             <Image
               borderRadius="16px"
               height="auto"
-              width="290px"
+              width="250px"
               src={formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
             ></Image>
             {/* TODO use filestack-react image picker plugin */}
-            <FormControl key={"_url"} isInvalid={Boolean(formik.errors[3] && formik.touched[3])}>
+            <FormControl borderRadius="24px" key={"_url"} isInvalid={Boolean(formik.errors[3] && formik.touched[3])}>
               <Input
+                width={"350px"}
                 placeholder="Cover image url"
                 key={"_url"}
                 data-testid={"_url"}
@@ -310,120 +311,125 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 type="text"
                 value={formik.values[Number(params.indexOf("_url"))]?.toString()}
                 color="white"
-                borderRadius="32px"
+                borderRadius={"24px"}
               />
               <FormErrorMessage>{formik.errors[Number(params.indexOf("_url"))]}</FormErrorMessage>
             </FormControl>
           </VStack>
         </Center>
 
-        <Box
+        <Center
           background="white"
           width="50%"
           height="100%"
           py={10}
-          px={16}
+          px={20}
           borderRadius="16px"
           borderTopLeftRadius="none"
           borderBottomLeftRadius="none"
         >
-          <Center>
-            <VStack spacing={4} maxWidth={"450px"}>
-              <Heading
-                {...{
-                  fontFamily: "Roboto",
-                  fontStyle: "normal",
-                  fontWeight: "bold",
-                  fontSize: "24px",
-                  lineHeight: "126.39%",
-                  color: "#013A6D",
-                  alignSelf: "flex-start",
-                }}
-              >
-                Create a new gift
-              </Heading>
-              <Text
-                {...{
-                  fontFamily: "Roboto",
-                  fontStyle: "normal",
-                  fontWeight: "normal",
-                  fontSize: "16px",
-                  lineHeight: "137.88%",
-                  color: "#809EBD",
-                  alignSelf: "flex-start",
-                }}
-              >
-                Add artwork, a special message, and yUSD if you like.
-              </Text>
-              {params.map((param, index) => {
-                if (param === "_url") {
-                  return null;
-                }
-                if (param === "_start") {
-                  return null;
-                }
+          <VStack spacing={4} width={"420px"}>
+            <Heading
+              {...{
+                fontFamily: "Roboto",
+                fontStyle: "normal",
+                fontWeight: "bold",
+                fontSize: "24px",
+                lineHeight: "126.39%",
+                color: "#013A6D",
+                alignSelf: "flex-start",
+              }}
+              mt={`0px !important`}
+              mb={2}
+            >
+              Create a new gift
+            </Heading>
+            <Text
+              {...{
+                fontFamily: "Roboto",
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontSize: "12px",
+                lineHeight: "137.88%",
+                color: "#809EBD",
+                textAlign: "left",
+                alignSelf: "flex-start",
+              }}
+              mt={`0px !important`}
+              mb={3}
+            >
+              Add artwork, a special message, and yUSD if you like.
+            </Text>
+            {params.map((param, index) => {
+              if (param === "_url") {
+                return null;
+              }
+              if (param === "_start") {
+                return null;
+              }
 
-                return (
-                  <FormControl
+              return (
+                <FormControl
+                  key={param}
+                  isInvalid={Boolean(formik.errors[index] && formik.touched[index])}
+                  background="#ECF4FA"
+                  color="#A1C5E2"
+                  borderRadius="24px"
+                >
+                  {maxAmount && param === "_amount" ? (
+                    <FormLabel textAlign="center" for="_amount">
+                      {`Max: ${Math.floor(Number(ethers.utils.formatEther(maxAmount)) * 100) / 100}`}
+                    </FormLabel>
+                  ) : null}
+                  <Input
+                    required={true}
+                    placeholder={getPlaceholder(param)}
                     key={param}
-                    isInvalid={Boolean(formik.errors[index] && formik.touched[index])}
-                    background="#ECF4FA"
-                    borderRadius="24px"
-                  >
-                    {maxAmount && param === "_amount" ? (
-                      <FormLabel textAlign="center" for="_amount">
-                        {`Max: ${Math.floor(Number(ethers.utils.formatEther(maxAmount)) * 100) / 100}`}
-                      </FormLabel>
-                    ) : null}
-                    <Input
-                      required={true}
-                      placeholder={getPlaceholder(param)}
-                      key={param}
-                      data-testid={param}
-                      id={index.toString()}
-                      name={index.toString()}
-                      onChange={formik.handleChange}
-                      type={param === "_duration" || param === "_amount" ? "number" : "text"}
-                      max={param === "_amount" ? ethers.utils.formatEther(maxAmount) : undefined}
-                      min={param === "_amount" ? "0" : undefined}
-                      step={param === "_amount" ? "0.0001" : undefined}
-                      value={formik.values[index]?.toString()}
-                      color="#013A6D"
-                      {...{
-                        fontFamily: "Roboto",
-                        fontStyle: "normal",
-                        fontWeight: "normal",
-                        fontSize: "16px",
-                      }}
-                    />
-                    <FormErrorMessage>{formik.errors[index]}</FormErrorMessage>
-                  </FormControl>
-                );
-              })}
-              <Button
-                data-testid={"submit"}
-                type={isApproved ? "submit" : "button"}
-                onClick={() => {
-                  !isApproved && erc20Approve();
-                }}
-                variant="outline"
-                background="#0065D0"
-                borderRadius="32px"
-                width={"100%"}
-                color="white"
-                {...{
-                  fontFamily: "Roboto",
-                  fontStyle: "normal",
-                  fontWeight: "normal",
-                  fontSize: "16px",
-                  lineHeight: "137.88%",
-                }}
-              >
-                {isApproved ? "Submit" : "Approve"}
-              </Button>
-            </VStack>
-          </Center>
-        </Box>
+                    data-testid={param}
+                    id={index.toString()}
+                    name={index.toString()}
+                    onChange={formik.handleChange}
+                    type={param === "_duration" || param === "_amount" ? "number" : "text"}
+                    max={param === "_amount" ? ethers.utils.formatEther(maxAmount) : undefined}
+                    min={param === "_amount" ? "0" : undefined}
+                    step={param === "_amount" ? "0.0001" : undefined}
+                    value={formik.values[index]?.toString()}
+                    {...{
+                      fontFamily: "Roboto",
+                      fontStyle: "normal",
+                      fontWeight: "normal",
+                      fontSize: "14px",
+                      textAlign: "left",
+                      color: "#A1C5E2",
+                    }}
+                  />
+                  <FormErrorMessage>{formik.errors[index]}</FormErrorMessage>
+                </FormControl>
+              );
+            })}
+            <Button
+              data-testid={"submit"}
+              type={isApproved ? "submit" : "button"}
+              onClick={() => {
+                !isApproved && erc20Approve();
+              }}
+              variant="outline"
+              background="#0065D0"
+              borderRadius="32px"
+              width={"100%"}
+              color="white"
+              {...{
+                fontFamily: "Roboto",
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontSize: "16px",
+                lineHeight: "137.88%",
+              }}
+            >
+              {isApproved ? "Submit" : "Approve"}
+            </Button>
+          </VStack>
+        </Center>
       </HStack>
     </form>
   );

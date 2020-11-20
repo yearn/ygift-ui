@@ -15,31 +15,48 @@ const Content: React.FC<IContentProps> = (props) => {
   // const [address, setAddress] = React.useState("");
   // const history = useHistory();
   return (
-    <VStack spacing={4}>
+    <VStack spacing={4} textAlign="left">
       <Heading
         as="h2"
+        fontSize={["xl", "5xl"]}
         {...{
           fontFamily: "Roboto",
           fontStyle: "normal",
           fontWeight: "bold",
-          fontSize: "50px",
+          lineHeight: "126.39%",
           color: "#013A6D",
         }}
         mb={8}
       >
         NFTs for gifts, grants, and gratitude
       </Heading>
-      <Text
-        {...{
-          fontFamily: "Roboto",
-          fontStyle: "normal",
-          fontWeight: "normal",
-          fontSize: "16px",
-        }}
-      >
-        Send a thank you with a custom NFT—or add yUSD to reward contributors with a sharable NFT that stays meaningful
-        and memorable forever.
-      </Text>
+      <VStack textAlign="left" alignItems="flex-start">
+        <Text
+          {...{
+            fontFamily: "Roboto",
+            fontStyle: "normal",
+            fontWeight: "normal",
+            fontSize: "16px",
+            color: "#809EBD",
+          }}
+        >
+          {/* Send a thank you with a custom NFT—or add yUSD to reward contributors with a sharable NFT that stays meaningful */}
+          {/* and memorable forever. */}
+          NFTs for gifts, grants, and gratitude
+        </Text>
+        <Text
+          {...{
+            fontFamily: "Roboto",
+            fontStyle: "normal",
+            fontWeight: "normal",
+            fontSize: "16px",
+            color: "#809EBD",
+          }}
+        >
+          Send a thank you with a custom NFT—or add yUSD to reward contributors with a sharable NFT that stays
+          meaningful and memorable forever.
+        </Text>
+      </VStack>
       {/* TODO: Hide until route implemented */}
       {/* <HStack spacing={4}>
         <Input
@@ -72,9 +89,9 @@ const Content: React.FC<IContentProps> = (props) => {
 };
 
 const About: React.FunctionComponent<IProps> = (props) => (
-  <HStack spacing={10} px={20}>
+  <HStack spacing={10} px={[5, 10, 40]}>
     <Content></Content>
-    <Image src={graphic} width="450px" height="auto"></Image>
+    <Image src={graphic} width={["300px", "450px"]} height="auto"></Image>
   </HStack>
 );
 

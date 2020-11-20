@@ -16,28 +16,26 @@ export const AppRouter = () => {
   const location = useLocation();
 
   return (
-    <main>
-      <ErrorBoundary key={location.pathname}>
-        <Switch>
-          <Route exact path="/">
-            <About></About>
-          </Route>
-          <Route path="/create-gift">
-            <CreateGift />
-          </Route>
-          <Route path="/gifts/">
-            <GiftsTabs />
-          </Route>
-          <Route path="/gift/:id">
-            <ViewGift />
-          </Route>
-          <Route path="/about">
-            <About></About>
-          </Route>
-          <Route component={Error}></Route>
-        </Switch>
-      </ErrorBoundary>
-    </main>
+    <ErrorBoundary key={location.pathname}>
+      <Switch>
+        <Route exact path="/">
+          <About></About>
+        </Route>
+        <Route path="/create-gift">
+          <CreateGift />
+        </Route>
+        <Route path="/gifts/">
+          <GiftsTabs />
+        </Route>
+        <Route path="/gift/:id">
+          <ViewGift />
+        </Route>
+        <Route path="/about">
+          <About></About>
+        </Route>
+        <Route component={Error}></Route>
+      </Switch>
+    </ErrorBoundary>
   );
 };
 

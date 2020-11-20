@@ -18,11 +18,7 @@ interface IProps {}
 
 const Logo = () => (
   <NavLink to="/">
-    <Heading
-      textTransform="uppercase"
-      color={"#013A6D"}
-      {...{ fontFamily: "Roboto", fontStyle: "normal", fontWeight: "900", fontSize: "40px" }}
-    >
+    <Heading color={"#013A6D"} {...{ fontFamily: "Roboto", fontStyle: "normal", fontWeight: "900", fontSize: "40px" }}>
       yGift
     </Heading>
   </NavLink>
@@ -49,7 +45,7 @@ const OurLink = (props: any) => (
 const Links = () => (
   <Center mx="auto">
     <HStack spacing={10}>
-      <OurLink to="/create-gift">Create Gift</OurLink>
+      <OurLink to="/create-gift">Create gift</OurLink>
       <OurLink to="/gifts">Gifts</OurLink>
       {/* <OurLink to="/about">About</OurLink> */}
     </HStack>
@@ -62,7 +58,7 @@ const formatAddress = (currentAddress: string) =>
 const Navbar: React.FunctionComponent<IProps> = (props) => {
   const currentAddress = useContext(CurrentAddressContext);
   return (
-    <Flex width="100%" px={[2, 10]} py={2} mb={8}>
+    <Flex width="100%" px={[2, 10]} py={4}>
       <Logo></Logo>
       <Links></Links>
       <Center>

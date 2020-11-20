@@ -13,7 +13,7 @@ interface IProps {}
 const GiftsTabs: React.FunctionComponent<IProps> = (props) => {
   const { giftsOwned, giftsSent } = useGifts();
   return (
-    <Tabs align="center" variant="enclosed">
+    <Tabs align="center" variant="enclosed" alignSelf="flex-start">
       <TabList borderBottom="none">
         <Tab
           _selected={{
