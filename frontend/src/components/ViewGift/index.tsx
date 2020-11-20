@@ -94,7 +94,11 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                   <PopoverContent p={5}>
                     <PopoverArrow />
                     <PopoverCloseButton />
-                    {isRecipient ? <Collect tokenId={id} /> : <Tip tokenId={id}></Tip>}
+                    {isRecipient ? (
+                      <Collect tokenId={id} />
+                    ) : (
+                      <Tip isOpen={isOpen} tokenId={id} tokenContractAddress={gift?.token}></Tip>
+                    )}
                   </PopoverContent>
                 </Popover>
               </HStack>

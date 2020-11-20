@@ -29,7 +29,7 @@ import { YGift } from "../../hardhat/typechain/YGift";
 export const componentDataTestId = createDataTestId("CreateGift");
 
 export const params = ["_to", "_token", "_amount", "_name", "_msg", "_url", "_start", "_duration"] as const;
-const yGiftContractAddress = yGiftDeployment.receipt.contractAddress;
+export const yGiftContractAddress = yGiftDeployment.receipt.contractAddress;
 export const erc20Abi = [
   // Some details about the token
   "function name() view returns (string)",

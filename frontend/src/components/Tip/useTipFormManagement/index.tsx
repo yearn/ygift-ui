@@ -21,7 +21,7 @@ export function useTipFormManagement(tokenId: string) {
     }
   };
   const onSubmit = useCallback(submitHandler, [yGift?.instance, history]);
-  const initialValues: Parameters<YGift["tip"]> = [tokenId, 0, ""];
+  const initialValues: Parameters<YGift["tip"]> = [tokenId, "", ""];
   return {
     onSubmit,
     initialValues,
