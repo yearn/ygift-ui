@@ -319,16 +319,20 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
       >
         <Center height={"100%"} width="50%">
           {" "}
-          <VStack spacing={0}>
+          <VStack spacing={0} py={"36px"} height={"100%"}>
             <Image
               borderRadius="16px"
-              height="463px"
-              width="304px"
+              height={(formik.values?.[Number(params.indexOf("_url"))] && "auto") || "463px"}
+              maxWidth={(formik.values?.[Number(params.indexOf("_url"))] && "424px") || "304px"}
               src={formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
               mb={"18px"}
             ></Image>
-            {/* TODO use filestack-react image picker plugin */}
-            <FormControl borderRadius="24px" key={"_url"} isInvalid={Boolean(formik.errors[3] && formik.touched[3])}>
+            <FormControl
+              borderRadius="24px"
+              key={"_url"}
+              isInvalid={Boolean(formik.errors[3] && formik.touched[3])}
+              mt={(formik.values?.[Number(params.indexOf("_url"))] && "auto !important") || "inherit"}
+            >
               <Input
                 height={"56px"}
                 width={"424px"}
