@@ -1,4 +1,4 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, theme } from "@chakra-ui/react";
 import { HardhatContext } from "../src/hardhat/HardhatContext";
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -8,7 +8,7 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <HardhatContext>
         <Router>
           <Story />

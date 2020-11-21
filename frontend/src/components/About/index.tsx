@@ -15,15 +15,15 @@ const Content: React.FC<IContentProps> = (props) => {
   // const [address, setAddress] = React.useState("");
   // const history = useHistory();
   return (
-    <VStack spacing={4} textAlign="left">
+    <VStack spacing={4} textAlign="left" width="543px">
       <Heading
         as="h2"
-        fontSize={["xl", "5xl"]}
+        fontSize="58px"
         {...{
           fontFamily: "Roboto",
           fontStyle: "normal",
           fontWeight: "bold",
-          lineHeight: "126.39%",
+          lineHeight: "73px",
           color: "#013A6D",
         }}
         mb={8}
@@ -91,7 +91,7 @@ const Content: React.FC<IContentProps> = (props) => {
 const About: React.FunctionComponent<IProps> = (props) => (
   <HStack spacing={10} px={[5, 10, 40]}>
     <Content></Content>
-    <Image src={graphic} width={["350px", "450px"]} height="auto"></Image>
+    <Image src={graphic} width={"574px"} height="auto"></Image>
   </HStack>
 );
 

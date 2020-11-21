@@ -314,22 +314,24 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           borderRadius: "16px",
           background: "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
         }}
-        minWidth="60vw"
-        height="600px"
+        width="1200px"
+        height="700px"
       >
         <Center height={"100%"} width="50%">
           {" "}
-          <VStack spacing={8}>
+          <VStack spacing={0}>
             <Image
               borderRadius="16px"
-              height="auto"
-              width="270px"
+              height="463px"
+              width="304px"
               src={formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
+              mb={"18px"}
             ></Image>
             {/* TODO use filestack-react image picker plugin */}
             <FormControl borderRadius="24px" key={"_url"} isInvalid={Boolean(formik.errors[3] && formik.touched[3])}>
               <Input
-                width={"350px"}
+                height={"56px"}
+                width={"424px"}
                 placeholder="Cover image URL"
                 key={"_url"}
                 data-testid={"_url"}
@@ -346,9 +348,10 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                   fontFamily: "Roboto",
                   fontStyle: "normal",
                   fontWeight: "normal",
-                  fontSize: "13px",
+                  fontSize: "16px",
                   lineHeight: "137.88%",
                 }}
+                mb={"32px"}
               />
               <FormErrorMessage>{formik.errors[Number(params.indexOf("_url"))]}</FormErrorMessage>
             </FormControl>
@@ -360,17 +363,18 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 fontFamily: "Roboto",
                 fontStyle: "normal",
                 fontWeight: "normal",
-                fontSize: "13px",
+                fontSize: "16px",
                 lineHeight: "137.88%",
               }}
               color="white"
               borderRadius="32px"
-              width="350px"
               border="1px solid white"
-              px={5}
-              py={"9px"}
-              m={0}
               textAlign="center"
+              height={"56px"}
+              width={"424px"}
+              m={0}
+              px={5}
+              py={"17px"}
             >
               Choose image
               <Input
@@ -392,13 +396,12 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           background="white"
           width="50%"
           height="100%"
-          py={10}
           px={20}
           borderRadius="16px"
           borderTopLeftRadius="none"
           borderBottomLeftRadius="none"
         >
-          <VStack spacing={5} width={"420px"}>
+          <VStack spacing={"24px"} width={"420px"}>
             <Heading
               {...{
                 fontFamily: "Roboto",
@@ -410,7 +413,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 alignSelf: "flex-start",
               }}
               mt={`0px !important`}
-              mb={2}
+              mb={"8px"}
             >
               Create a new gift
             </Heading>
@@ -419,14 +422,14 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 fontFamily: "Roboto",
                 fontStyle: "normal",
                 fontWeight: "normal",
-                fontSize: "12px",
+                fontSize: "16px",
                 lineHeight: "137.88%",
                 color: "#809EBD",
                 textAlign: "left",
                 alignSelf: "flex-start",
               }}
               mt={`0px !important`}
-              mb={3}
+              mb={"32px"}
             >
               Add artwork, a special message, and yUSD if you like.
             </Text>
@@ -444,6 +447,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                   isInvalid={Boolean(formik.errors[index] && formik.touched[index])}
                   background="#ECF4FA"
                   borderRadius="24px"
+                  mt={index === 0 ? `0px !important` : "inherit"}
                 >
                   {maxAmount && param === "_amount" ? (
                     <FormLabel textAlign="center" for="_amount">
@@ -467,9 +471,11 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                       fontFamily: "Roboto",
                       fontStyle: "normal",
                       fontWeight: "normal",
-                      fontSize: "14px",
+                      fontSize: "16px",
                       textAlign: "left",
                     }}
+                    height={"56px"}
+                    width={"424px"}
                     borderRadius="32px"
                   />
                   <FormErrorMessage>{formik.errors[index]}</FormErrorMessage>
@@ -486,6 +492,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               background="#0065D0"
               borderRadius="32px"
               width={"100%"}
+              height={"56px"}
               color="white"
               {...{
                 fontFamily: "Roboto",

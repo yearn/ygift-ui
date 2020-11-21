@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Erc20Select } from ".";
+import { Layout } from "../Layout";
 
 const story = {
   component: Erc20Select,
@@ -8,7 +9,11 @@ const story = {
 };
 export default story;
 
-const Template: any = (args: any) => <Erc20Select {...args} />;
+const Template: any = (args: any) => (
+  <Layout>
+    <Erc20Select {...args} />
+  </Layout>
+);
 
 export const Default = Template.bind({});
 Default.args = {};
