@@ -1,6 +1,6 @@
 import React from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import { Center, VStack } from "@chakra-ui/core";
+import { Center, VStack } from "@chakra-ui/react";
 import { Navbar } from "../Navbar";
 
 export const componentDataTestId = createDataTestId("Layout");

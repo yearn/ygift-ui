@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import { Flex, Text, Button, HStack, Heading, Link as CLink, Center } from "@chakra-ui/core";
+import { Flex, Text, Button, HStack, Heading, Link as CLink, Center } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 import Web3Modal from "web3modal";
 import { CurrentAddressContext } from "../../hardhat/HardhatContext";

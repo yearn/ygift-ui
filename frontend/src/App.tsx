@@ -7,7 +7,7 @@ import { CreateGift } from "./components/CreateGift";
 import { Layout } from "./components/Layout";
 import { About } from "./components/About";
 import { ViewGift } from "./components/ViewGift";
-import { ChakraProvider } from "@chakra-ui/core";
+import { ChakraProvider } from "@chakra-ui/react";
 import { GiftsTabs } from "./components/GiftsTabs";
 import { Error } from "./components/Error";
 import ErrorBoundary from "./components/Error/ErrorBoundary";

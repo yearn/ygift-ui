@@ -1,6 +1,6 @@
 import React from "react";
 import { createDataTestId } from "../../../lib/create-data-testid";
-import { Flex, Stack, Text, Button, VStack, Heading, HStack, Divider } from "@chakra-ui/core";
+import { Flex, Stack, Text, Button, VStack, Heading, HStack, Divider } from "@chakra-ui/react";
 import { BigNumberish, ethers } from "ethers";
 import { useGiftTransactionHistory } from "./useGiftTransactionHistory";
 import { DateTime } from "luxon";

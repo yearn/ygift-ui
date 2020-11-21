@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import { Flex, Stack, Text, Button, Wrap, WrapItem, Center, VStack, Heading } from "@chakra-ui/core";
+import { Flex, Stack, Text, Button, Wrap, WrapItem, Center, VStack, Heading } from "@chakra-ui/react";
 import { yGiftContext } from "../../hardhat/HardhatContext";
 import { Gift, GiftModel } from "./Gift";
 import { useHistory } from "react-router-dom";

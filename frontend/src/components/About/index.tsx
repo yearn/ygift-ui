@@ -1,6 +1,6 @@
 import React from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import { Flex, Stack, Text, Button, VStack, Heading, HStack, Input, Image } from "@chakra-ui/core";
+import { Flex, Stack, Text, Button, VStack, Heading, HStack, Input, Image } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 import graphic from "./graphic.png";
 
@@ -53,7 +53,7 @@ const Content: React.FC<IContentProps> = (props) => {
             color: "#809EBD",
           }}
         >
-          Send a thank you with a custom NFT collectible—or add erc20s to reward contributors with a sharable NFT that
+          Send a thank you with a custom NFT collectible—or add tokens to reward contributors with a sharable NFT that
           stays meaningful and memorable forever.
         </Text>
       </VStack>

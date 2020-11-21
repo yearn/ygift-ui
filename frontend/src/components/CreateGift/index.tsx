@@ -15,7 +15,7 @@ import {
   useClipboard,
   Text,
   FormLabel,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { CopyIcon } from "@chakra-ui/icons";
 import { useCreateGiftFormManagement } from "./useCreateGiftFormManagement";
 import { useFormik } from "formik";

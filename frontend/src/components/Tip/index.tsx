@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import { Button, VStack, Input, FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/core";
+import { Button, VStack, Input, FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
 import { useTipFormManagement } from "./useTipFormManagement";
 import { useFormik } from "formik";
 import { BigNumber, ethers } from "ethers";

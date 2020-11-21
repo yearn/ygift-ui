@@ -1,6 +1,6 @@
 import React from "react";
 import { createDataTestId } from "../../../lib/create-data-testid";
-import { Flex, Stack, Text, Button, Image, VStack, Heading } from "@chakra-ui/core";
+import { Flex, Stack, Text, Button, Image, VStack, Heading } from "@chakra-ui/react";
 import { BigNumber, ethers } from "ethers";
 import { Link } from "react-router-dom";
 

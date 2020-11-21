@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import { Button, VStack, Input, FormControl, FormLabel, FormErrorMessage, Text, HStack } from "@chakra-ui/core";
+import { Button, VStack, Input, FormControl, FormLabel, FormErrorMessage, Text, HStack } from "@chakra-ui/react";
 import { useCollectFormManagement } from "./useCollectFormManagement";
 import { useFormik } from "formik";
 import { yGiftContext } from "../../hardhat/HardhatContext";

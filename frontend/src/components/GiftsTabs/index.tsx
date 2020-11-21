@@ -1,6 +1,6 @@
 import React from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import { Tabs, TabList, Tab, TabPanels, TabPanel, Heading } from "@chakra-ui/core";
+import { Tabs, TabList, Tab, TabPanels, TabPanel, Heading } from "@chakra-ui/react";
 import { Gifts } from "../Gifts";
 import { useGifts } from "./useGifts";
 

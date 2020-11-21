@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import { Flex, Stack, Text, Button, VStack, HStack, Image, useDisclosure, Heading } from "@chakra-ui/core";
+import { Flex, Stack, Text, Button, VStack, HStack, Image, useDisclosure, Heading } from "@chakra-ui/react";
 import { GiftModel } from "../Gifts/Gift";
 import {
   Popover,
@@ -11,7 +11,7 @@ import {
   PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { AddIcon, InfoIcon, CloseIcon, CopyIcon, MinusIcon } from "@chakra-ui/icons";
 import { TransactionHistory } from "./TransactionHistory";
 import { useParams } from "react-router-dom";

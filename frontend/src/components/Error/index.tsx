@@ -1,6 +1,6 @@
 import React from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import { Button, VStack, Heading, Center, Image } from "@chakra-ui/core";
+import { Button, VStack, Heading, Center, Image } from "@chakra-ui/react";
 import graphic from "./error-graphic.png";
 import { useHistory } from "react-router-dom";
 

@@ -1,4 +1,4 @@
-import { ChakraProvider } from "@chakra-ui/core";
+import { ChakraProvider } from "@chakra-ui/react";
 import { HardhatContext } from "../src/hardhat/HardhatContext";
 import { BrowserRouter as Router } from "react-router-dom";
 
