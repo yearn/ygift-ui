@@ -31,6 +31,19 @@ const Content: React.FC<IContentProps> = (props) => {
         NFTs for gifts, grants, and gratitude
       </Heading>
       <VStack textAlign="left" alignItems="flex-start">
+        {/* <Text
+          {...{
+            fontFamily: "Roboto",
+            fontStyle: "normal",
+            fontWeight: "normal",
+            fontSize: "16px",
+            color: "#809EBD",
+          }}
+        > */}
+        {/* Send a thank you with a custom NFT—or add yUSD to reward contributors with a sharable NFT that stays meaningful */}
+        {/* and memorable forever. */}
+        {/* NFTs for gifts, grants, and gratitude
+        </Text>{" "} */}
         <Text
           {...{
             fontFamily: "Roboto",
@@ -40,21 +53,8 @@ const Content: React.FC<IContentProps> = (props) => {
             color: "#809EBD",
           }}
         >
-          {/* Send a thank you with a custom NFT—or add yUSD to reward contributors with a sharable NFT that stays meaningful */}
-          {/* and memorable forever. */}
-          NFTs for gifts, grants, and gratitude
-        </Text>
-        <Text
-          {...{
-            fontFamily: "Roboto",
-            fontStyle: "normal",
-            fontWeight: "normal",
-            fontSize: "16px",
-            color: "#809EBD",
-          }}
-        >
-          Send a thank you with a custom NFT—or add yUSD to reward contributors with a sharable NFT that stays
-          meaningful and memorable forever.
+          Send a thank you with a custom NFT collectible—or add erc20s to reward contributors with a sharable NFT that
+          stays meaningful and memorable forever.
         </Text>
       </VStack>
       {/* TODO: Hide until route implemented */}

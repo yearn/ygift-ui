@@ -17,7 +17,7 @@ const NoGifts: React.FC = () => {
     <Center width="100%" height="100%" py={"30vh"}>
       <VStack spacing={4}>
         <Heading as="h2" fontFamily="Roboto" fontWeight="bold" fontSize="40px">
-          You don't have any gifts :(
+          You don't have any gifts
         </Heading>
         <Button
           borderColor="#0065D0"
