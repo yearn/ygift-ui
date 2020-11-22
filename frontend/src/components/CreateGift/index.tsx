@@ -16,13 +16,14 @@ import {
   Text,
   FormLabel,
 } from "@chakra-ui/react";
-import { CopyIcon } from "@chakra-ui/icons";
+import { CloseIcon, CopyIcon, SmallCloseIcon, SpinnerIcon } from "@chakra-ui/icons";
 import { useCreateGiftFormManagement } from "./useCreateGiftFormManagement";
 import { useFormik } from "formik";
 import graphic from "./graphic.png";
 import { BigNumber, ethers } from "ethers";
 import { CurrentAddressContext, ProviderContext, SignerContext } from "../../hardhat/HardhatContext";
 import yGiftDeployment from "../../hardhat/deployments/localhost/yGift.json";
+import DeleteIcon from "./delete-icon.png";
 import { YGift } from "../../hardhat/typechain/YGift";
 // /src/hardhat/deployments/localhost/yGift.json
 
@@ -227,6 +228,8 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   const [isApproved, setIsApproved] = useState<boolean>(false);
   const [maxAmount, setMaxAmount] = useState<number>(0);
   const [erc20Contract, setErc20Contract] = useState<ethers.Contract | undefined>(undefined);
+  const [isUploadingCoverImageUrl, setIsUploadingImage] = useState<boolean>(false);
+  const [uploadedCoverImageUrls, setUploadedCoverImageUrls] = useState<string[]>([]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -277,6 +280,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   async function saveToIpfs(files: FileList) {
     if (files) {
       const ipfs = ipfsClient({ url: "https://ipfs.infura.io:5001" });
+      setIsUploadingImage(true);
       ipfs
         .add([...(files as any)], {
           progress: (prog: any) => console.log(`received: ${prog}`),
@@ -285,7 +289,11 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           console.log(file);
           const ipfsHash = file.path;
           const ipfsGateway = "https://cloudflare-ipfs.com/ipfs/";
+          console.log(uploadedCoverImageUrls.concat(ipfsGateway + ipfsHash));
+          const newUploadedCoverImageUrls = uploadedCoverImageUrls.concat(ipfsGateway + ipfsHash);
           formik.setFieldValue(String(params.indexOf("_url")), ipfsGateway + ipfsHash);
+          setIsUploadingImage(false);
+          setUploadedCoverImageUrls(newUploadedCoverImageUrls);
         })
         .catch((err) => {
           console.error(err);
@@ -320,13 +328,52 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
         <Center height={"100%"} width="50%">
           {" "}
           <VStack spacing={0} py={"36px"} height={"100%"}>
-            <Image
-              borderRadius="16px"
-              height={(formik.values?.[Number(params.indexOf("_url"))] && "auto") || "463px"}
-              maxWidth={(formik.values?.[Number(params.indexOf("_url"))] && "424px") || "304px"}
-              src={formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
-              mb={"18px"}
-            ></Image>
+            <Box position="relative">
+              <Image
+                borderRadius="16px"
+                height={(formik.values?.[Number(params.indexOf("_url"))] && "auto") || "463px"}
+                maxWidth={(formik.values?.[Number(params.indexOf("_url"))] && "424px") || "304px"}
+                src={formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
+                mb={"18px"}
+              ></Image>
+              {formik.values?.[Number(params.indexOf("_url"))] && (
+                <Box
+                  {...{
+                    position: "absolute",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "40px",
+                    height: "40px",
+                    right: "8px",
+                    top: "8px",
+                    // background: "#FFFFFF",
+                    background: "rgba(255, 255, 255, 0.3)",
+                    borderRadius: "32px",
+                  }}
+                  cursor="pointer"
+                  onClick={() => {
+                    const uploadedCoverImageUrlsWithLastRemoved = uploadedCoverImageUrls.slice(
+                      0,
+                      uploadedCoverImageUrls.length - 1
+                    );
+                    console.log(uploadedCoverImageUrls);
+                    console.log(
+                      uploadedCoverImageUrlsWithLastRemoved[uploadedCoverImageUrlsWithLastRemoved.length - 1]
+                    );
+                    formik.setFieldValue(
+                      String(params.indexOf("_url")),
+                      uploadedCoverImageUrlsWithLastRemoved.length
+                        ? uploadedCoverImageUrlsWithLastRemoved[uploadedCoverImageUrlsWithLastRemoved.length - 1]
+                        : ""
+                    );
+                    setUploadedCoverImageUrls(uploadedCoverImageUrlsWithLastRemoved);
+                  }}
+                >
+                  <CloseIcon height="12px" width="12px"></CloseIcon>
+                </Box>
+              )}
+            </Box>
             <FormControl
               borderRadius="24px"
               key={"_url"}
@@ -380,7 +427,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               px={5}
               py={"17px"}
             >
-              Choose image
+              {isUploadingCoverImageUrl ? <SpinnerIcon /> : "Choose Image"}
               <Input
                 onChange={(event) => {
                   event.stopPropagation();
