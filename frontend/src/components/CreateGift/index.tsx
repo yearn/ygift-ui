@@ -65,8 +65,8 @@ const Submitting: React.FC = () => (
   <Center
     {...{
       position: "absolute",
-      width: "60vw",
-      height: "100%",
+      width: "1200px",
+      height: "700px",
       background: "#013A6D",
       opacity: 0.9,
       borderRadius: "16px",
@@ -75,6 +75,7 @@ const Submitting: React.FC = () => (
   >
     <VStack spacing={4}>
       <Heading
+        as="h3"
         {...{
           fontFamily: "Roboto",
           fontStyle: "normal",
@@ -103,11 +104,12 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
       {...{
         background: "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
         borderRadius: "16px",
-        width: "70vw",
+        width: "1200px",
+        height: "700px",
         py: 8,
       }}
     >
-      <VStack spacing={2}>
+      <VStack spacing={0}>
         <Heading
           as="h3"
           {...{
@@ -117,11 +119,12 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
             fontSize: "24px",
             color: "white",
           }}
+          mb={"24px"}
         >
           Your gift has been created succesfully
         </Heading>
-        <Image src={props.url} width="425px" height="auto"></Image>
-        <HStack spacing={3}>
+        <Image src={props.url} width="425px" height="auto" mb={"26px"}></Image>
+        <HStack spacing={3} mb={"12px"}>
           <Text
             {...{
               fontFamily: "Roboto",
@@ -137,9 +140,13 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
           >
             {props.url}
           </Text>
-          {hasCopied ? <Text>Copied</Text> : <CopyIcon id="add" cursor="pointer" onClick={onCopy}></CopyIcon>}
+          {hasCopied ? (
+            <Text>Copied</Text>
+          ) : (
+            <CopyIcon color="white" id="add" cursor="pointer" onClick={onCopy}></CopyIcon>
+          )}
         </HStack>
-        <HStack spacing={3}>
+        <HStack spacing={3} mb={"24px"}>
           <Text
             {...{
               fontFamily: "Roboto",
@@ -155,7 +162,11 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
           >
             {giftIdUrl}
           </Text>
-          {hasIdCopied ? <Text>Copied</Text> : <CopyIcon id="add" cursor="pointer" onClick={onIdCopy}></CopyIcon>}
+          {hasIdCopied ? (
+            <Text>Copied</Text>
+          ) : (
+            <CopyIcon color="white" id="add" cursor="pointer" onClick={onIdCopy}></CopyIcon>
+          )}
         </HStack>
         <VStack spacing={1}>
           <Text
