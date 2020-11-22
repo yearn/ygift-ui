@@ -4,6 +4,7 @@ import { Flex, Stack, Text, Button, VStack, Heading, HStack, Divider } from "@ch
 import { BigNumberish, ethers } from "ethers";
 import { useGiftTransactionHistory } from "./useGiftTransactionHistory";
 import { DateTime } from "luxon";
+import { formatAddress } from "../../../lib/format-address";
 
 export const componentDataTestId = createDataTestId("TransactionHistory");
 
@@ -20,28 +21,130 @@ export type TransactionModel = {
 
 const Transaction: React.FC<TransactionModel> = (props) => (
   <HStack key={props.date} spacing={4}>
-    <Text>{DateTime.fromSeconds(props.date).toHTTP()}</Text>
-    <VStack spacing={2}>
-      <VStack>
-        <Text>{`${props.event} by`}</Text>
-        <Text>{props.minter}</Text>
+    <Flex alignSelf="flex-start">
+      <Text
+        color="#013A6D"
+        {...{
+          fontFamily: "Roboto",
+          fontStyle: "normal",
+          fontWeight: "bold",
+          fontSize: "16px",
+          lineHeight: "137.88%",
+        }}
+        width="150px"
+        textAlign="left"
+      >
+        {DateTime.fromSeconds(props.date).toHTTP()}
+      </Text>
+    </Flex>
+    <VStack spacing={2} width="340px" alignSelf="flex-start" alignItems="flex-start">
+      <VStack alignItems="flex-start">
+        <Text
+          color="#0065D0"
+          {...{
+            fontFamily: "Roboto",
+            fontStyle: "normal",
+            fontWeight: "normal",
+            fontSize: "12px",
+            lineHeight: "137.88%",
+          }}
+          textAlign="left"
+        >{`${props.event} by`}</Text>
+        <Text
+          color="#013A6D"
+          {...{
+            fontFamily: "Roboto",
+            fontStyle: "normal",
+            fontWeight: "normal",
+            fontSize: "16px",
+            lineHeight: "137.88%",
+          }}
+        >
+          {formatAddress(props.minter)}
+        </Text>
       </VStack>
       {props.event === "Tipped" && (
-        <VStack>
-          <Text>Message</Text>
-          <Text>{props.message}</Text>
+        <VStack alignItems="flex-start">
+          <Text
+            color="#0065D0"
+            {...{
+              fontFamily: "Roboto",
+              fontStyle: "normal",
+              fontWeight: "normal",
+              fontSize: "12px",
+              lineHeight: "137.88%",
+            }}
+            textAlign="left"
+          >
+            Message
+          </Text>
+          <Text
+            color="#809EBD"
+            {...{
+              fontFamily: "Roboto",
+              fontStyle: "normal",
+              fontWeight: "normal",
+              fontSize: "16px",
+              lineHeight: "137.88%",
+            }}
+            textAlign="left"
+          >
+            {props.message}
+          </Text>
         </VStack>
       )}
     </VStack>
-    <VStack spacing={2}>
-      <VStack>
-        <Text>{`${props.event === "Transferred" ? "Transferred" : "Gifted"} to`}</Text>
-        <Text>{props.recipient}</Text>
+    <VStack spacing={2} width="340px" alignSelf="flex-start" alignItems="flex-start">
+      <VStack alignItems="flex-start">
+        <Text
+          color="#0065D0"
+          {...{
+            fontFamily: "Roboto",
+            fontStyle: "normal",
+            fontWeight: "normal",
+            fontSize: "12px",
+            lineHeight: "137.88%",
+          }}
+        >{`${props.event === "Transferred" ? "Transferred" : "Gifted"} to`}</Text>
+        <Text
+          color="#013A6D"
+          {...{
+            fontFamily: "Roboto",
+            fontStyle: "normal",
+            fontWeight: "normal",
+            fontSize: "16px",
+            lineHeight: "137.88%",
+          }}
+        >
+          {formatAddress(props.recipient)}
+        </Text>
       </VStack>
       {props.amount && (
-        <VStack>
-          <Text>Amount</Text>
-          <Text>{ethers.utils.formatEther(props.amount)}</Text>
+        <VStack alignItems="flex-start">
+          <Text
+            color="#0065D0"
+            {...{
+              fontFamily: "Roboto",
+              fontStyle: "normal",
+              fontWeight: "normal",
+              fontSize: "12px",
+              lineHeight: "137.88%",
+            }}
+          >
+            Amount
+          </Text>
+          <Text
+            color="#013A6D"
+            {...{
+              fontFamily: "Roboto",
+              fontStyle: "normal",
+              fontWeight: "normal",
+              fontSize: "16px",
+              lineHeight: "137.88%",
+            }}
+          >
+            {ethers.utils.formatEther(props.amount)}
+          </Text>
         </VStack>
       )}
     </VStack>
@@ -55,23 +158,36 @@ interface IProps {
 const TransactionHistory: React.FunctionComponent<IProps> = (props) => {
   const { transactionHistory } = useGiftTransactionHistory(props.id);
   console.log(transactionHistory);
-  return (
-    <VStack minHeight="400px" alignItems="flex-start" spacing={1} p={4} overflowY="scroll">
-      <Heading as="h3" fontFamily="Roboto" fontSize="24px">
-        Gift History
-      </Heading>
-      {transactionHistory.map((transaction, index) =>
-        index !== transactionHistory.length - 1 ? (
-          <>
+  if (transactionHistory?.length) {
+    return (
+      <VStack height="400px" alignItems="flex-start" spacing={"24px"} py={"32px"} px={"24px"} overflowY="scroll">
+        <Heading
+          as="h3"
+          {...{
+            fontFamily: "Roboto",
+            fontStyle: "normal",
+            fontWeight: "bold",
+            fontSize: "24px",
+            lineHeight: "126.39%",
+            color: "#013A6D",
+          }}
+        >
+          Gift History
+        </Heading>
+        {transactionHistory.map((transaction, index) =>
+          index !== transactionHistory.length - 1 ? (
+            <>
+              <Transaction key={`${transaction?.date}-${index}`} {...transaction}></Transaction>
+              <Divider></Divider>
+            </>
+          ) : (
             <Transaction key={`${transaction?.date}-${index}`} {...transaction}></Transaction>
-            <Divider></Divider>
-          </>
-        ) : (
-          <Transaction key={`${transaction?.date}-${index}`} {...transaction}></Transaction>
-        )
-      )}
-    </VStack>
-  );
+          )
+        )}
+      </VStack>
+    );
+  }
+  return null;
 };
 
 export { TransactionHistory };

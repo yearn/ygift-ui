@@ -4,6 +4,7 @@ import { Flex, Text, Button, HStack, Heading, Link as CLink, Center } from "@cha
 import { NavLink } from "react-router-dom";
 import Web3Modal from "web3modal";
 import { CurrentAddressContext } from "../../hardhat/HardhatContext";
+import { formatAddress } from "../../lib/format-address";
 
 const web3Modal = new Web3Modal({
   network: "mainnet", // optional
@@ -51,9 +52,6 @@ const Links = () => (
     </HStack>
   </Center>
 );
-
-const formatAddress = (currentAddress: string) =>
-  `${currentAddress.slice(0, 8)}...${currentAddress.slice(currentAddress.length - 7, currentAddress.length)}`;
 
 const Navbar: React.FunctionComponent<IProps> = (props) => {
   const currentAddress = useContext(CurrentAddressContext);

@@ -69,24 +69,62 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
   if (gift && ownedBy) {
     console.log(gift);
     return (
-      <VStack height={"70vh"} borderRadius="32px">
-        <HStack height="100%">
-          <Image borderRadius={16} height="auto" width="400px" src={gift?.url} />
-          <VStack height="100%" width="520px" alignItems="flex-start" p={4}>
+      <VStack minHeight={"884px"} width="920px" borderRadius="16px" boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)">
+        <HStack boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)" borderRadius="16px" pb={2}>
+          <Image borderRadius={"16px"} height="auto" width="400px" src={gift?.url} alignSelf="flex-start" />
+          <VStack height="100%" width="520px" alignItems="flex-start" p={4} spacing={"24px"}>
             {/*  */}
             <HStack width="100%">
-              <Heading mr="auto">{gift?.name}</Heading>
+              <Heading
+                {...{
+                  fontFamily: "Roboto",
+                  fontStyle: "normal",
+                  fontWeight: "bold",
+                  fontSize: "24px",
+                  lineHeight: "126.39%",
+                }}
+                color="#013A6D"
+                mr="auto"
+              >
+                {gift?.name}
+              </Heading>
               <HStack spacing={4}>
                 <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} placement="bottom" closeOnBlur={false}>
                   <PopoverTrigger>
                     {isRecipient ? (
                       <HStack cursor="pointer" spacing={1}>
-                        <Text>Collect</Text>
+                        <Text
+                          {...{
+                            fontFamily: "Roboto",
+                            fontStyle: "normal",
+                            fontWeight: "normal",
+                            fontSize: "16px",
+                            lineHeight: "137.88%",
+                            display: "flex",
+                            alignItems: "center",
+                            color: "#013A6D;",
+                          }}
+                        >
+                          Collect
+                        </Text>
                         <MinusIcon></MinusIcon>
                       </HStack>
                     ) : (
                       <HStack cursor="pointer" spacing={1}>
-                        <Text>Tip</Text>
+                        <Text
+                          {...{
+                            fontFamily: "Roboto",
+                            fontStyle: "normal",
+                            fontWeight: "normal",
+                            fontSize: "16px",
+                            lineHeight: "137.88%",
+                            display: "flex",
+                            alignItems: "center",
+                            color: "#013A6D;",
+                          }}
+                        >
+                          Tip
+                        </Text>
                         <AddIcon></AddIcon>
                       </HStack>
                     )}
@@ -106,50 +144,259 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
             {/*  */}
             <HStack spacing={4}>
               <VStack alignItems="flex-start" spacing={2} textAlign="left">
-                <Text>Gift Amount</Text>
-                <Text> {`${ethers.utils.formatEther(gift?.amount)}`}</Text>
+                <Text
+                  {...{
+                    fontFamily: "Roboto",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: "12px",
+                    lineHeight: "137.88%",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#809EBD",
+                  }}
+                >
+                  Gift Amount
+                </Text>
+                <Text
+                  {...{
+                    fontFamily: "Roboto",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: "16px",
+                    lineHeight: "137.88%",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#013A6D;",
+                  }}
+                >
+                  {" "}
+                  {`${ethers.utils.formatEther(gift?.amount)}`}
+                </Text>
               </VStack>
               <VStack alignItems="flex-start" spacing={2} textAlign="left">
-                <Text>Tipped Amount</Text>
-                <Text>{ethers.utils.formatEther(gift?.tipped)}</Text>
+                <Text
+                  {...{
+                    fontFamily: "Roboto",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: "12px",
+                    lineHeight: "137.88%",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#809EBD",
+                  }}
+                >
+                  Tipped Amount
+                </Text>
+                <Text
+                  {...{
+                    fontFamily: "Roboto",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: "16px",
+                    lineHeight: "137.88%",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#013A6D;",
+                  }}
+                >
+                  {ethers.utils.formatEther(gift?.tipped)}
+                </Text>
               </VStack>
               <VStack alignItems="flex-start" spacing={2} textAlign="left">
-                <Text>Received</Text>
+                <Text
+                  {...{
+                    fontFamily: "Roboto",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: "12px",
+                    lineHeight: "137.88%",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#809EBD",
+                  }}
+                >
+                  Received
+                </Text>
                 {/* TODO: Date.fn */}
-                <Text fontSize="sm">{DateTime.fromSeconds(gift?.start?.toNumber()).toHTTP()}</Text>
+                <Text
+                  {...{
+                    fontFamily: "Roboto",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: "16px",
+                    lineHeight: "137.88%",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#013A6D;",
+                  }}
+                >
+                  {DateTime.fromSeconds(gift?.start?.toNumber()).toHTTP()}
+                </Text>
               </VStack>
             </HStack>
             {/*  */}
             {gift?.duration?.toNumber() > 0 && (
               <VStack spacing={2} alignItems="flex-start">
-                <Text>Vested Duration in Days</Text>
-                <Text>{gift?.duration?.toNumber() / 86400}</Text>
+                <Text
+                  {...{
+                    fontFamily: "Roboto",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: "12px",
+                    lineHeight: "137.88%",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#809EBD",
+                  }}
+                >
+                  Vested Duration in Days
+                </Text>
+                <Text
+                  {...{
+                    fontFamily: "Roboto",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: "16px",
+                    lineHeight: "137.88%",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#013A6D;",
+                  }}
+                >
+                  {gift?.duration?.toNumber() / 86400}
+                </Text>
               </VStack>
             )}
             <VStack spacing={2} alignItems="flex-start">
-              <Text>Message</Text>
-              <Text>{gift?.message}</Text>
+              <Text
+                {...{
+                  fontFamily: "Roboto",
+                  fontStyle: "normal",
+                  fontWeight: "normal",
+                  fontSize: "12px",
+                  lineHeight: "137.88%",
+                  display: "flex",
+                  alignItems: "center",
+                  color: "#809EBD",
+                }}
+              >
+                Message
+              </Text>
+              <Text
+                {...{
+                  fontFamily: "Roboto",
+                  fontStyle: "normal",
+                  fontWeight: "normal",
+                  fontSize: "16px",
+                  lineHeight: "137.88%",
+                  display: "flex",
+                  alignItems: "center",
+                  color: "#013A6D;",
+                }}
+              >
+                {gift?.message}
+              </Text>
             </VStack>
             {/*  */}
             <VStack spacing={2} alignItems="flex-start">
-              <Text>Owned by</Text>
+              <Text
+                {...{
+                  fontFamily: "Roboto",
+                  fontStyle: "normal",
+                  fontWeight: "normal",
+                  fontSize: "12px",
+                  lineHeight: "137.88%",
+                  display: "flex",
+                  alignItems: "center",
+                  color: "#809EBD",
+                }}
+              >
+                Owned by
+              </Text>
               <HStack>
-                <Text>{ownedBy}</Text>
+                <Text
+                  {...{
+                    fontFamily: "Roboto",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: "16px",
+                    lineHeight: "137.88%",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#013A6D;",
+                  }}
+                >
+                  {ownedBy}
+                </Text>
                 {/* <CopyIcon></CopyIcon> */}
               </HStack>
             </VStack>
             {/*  */}
             <VStack spacing={2} alignItems="flex-start">
-              <Text>Minted by</Text>
+              <Text
+                {...{
+                  fontFamily: "Roboto",
+                  fontStyle: "normal",
+                  fontWeight: "normal",
+                  fontSize: "12px",
+                  lineHeight: "137.88%",
+                  display: "flex",
+                  alignItems: "center",
+                  color: "#809EBD",
+                }}
+              >
+                Minted by
+              </Text>
               <HStack>
-                <Text>{from}</Text>
+                <Text
+                  {...{
+                    fontFamily: "Roboto",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: "16px",
+                    lineHeight: "137.88%",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#013A6D;",
+                  }}
+                >
+                  {from}
+                </Text>
                 {/* <CopyIcon></CopyIcon> */}
               </HStack>
             </VStack>
             <VStack spacing={2} alignItems="flex-start">
-              <Text>Gift token contract address</Text>
+              <Text
+                {...{
+                  fontFamily: "Roboto",
+                  fontStyle: "normal",
+                  fontWeight: "normal",
+                  fontSize: "12px",
+                  lineHeight: "137.88%",
+                  display: "flex",
+                  alignItems: "center",
+                  color: "#809EBD",
+                }}
+              >
+                Gift token contract address
+              </Text>
               <HStack>
-                <Text>{gift?.token}</Text>
+                <Text
+                  {...{
+                    fontFamily: "Roboto",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: "16px",
+                    lineHeight: "137.88%",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#013A6D;",
+                  }}
+                >
+                  {gift?.token}
+                </Text>
                 {/* <CopyIcon></CopyIcon> */}
               </HStack>
             </VStack>
