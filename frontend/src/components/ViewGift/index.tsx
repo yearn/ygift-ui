@@ -69,7 +69,13 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
   if (gift && ownedBy) {
     console.log(gift);
     return (
-      <VStack minHeight={"884px"} width="920px" borderRadius="16px" boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)">
+      <VStack
+        minHeight={"884px"}
+        width="920px"
+        borderRadius="16px"
+        boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)"
+        mb={8}
+      >
         <HStack boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)" borderRadius="16px" pb={2} spacing={"32px"}>
           <Image borderRadius={"16px"} height="auto" width="400px" src={gift?.url} alignSelf="flex-start" />
           <VStack height="100%" width="520px" alignItems="flex-start" p={4} spacing={"24px"}>
@@ -404,7 +410,6 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
         </HStack>
 
         <TransactionHistory id={id}></TransactionHistory>
-        <VStack></VStack>
       </VStack>
     );
   } else {

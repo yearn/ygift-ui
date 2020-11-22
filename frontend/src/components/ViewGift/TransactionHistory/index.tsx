@@ -160,7 +160,7 @@ const TransactionHistory: React.FunctionComponent<IProps> = (props) => {
   console.log(transactionHistory);
   if (transactionHistory?.length) {
     return (
-      <VStack height="400px" alignItems="flex-start" spacing={"24px"} py={"32px"} px={"24px"} overflowY="scroll">
+      <VStack minHeight="400px" alignItems="flex-start" spacing={"24px"} py={"32px"} px={"24px"} overflowY="scroll">
         <Heading
           as="h3"
           {...{
