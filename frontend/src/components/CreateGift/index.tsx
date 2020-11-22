@@ -23,8 +23,6 @@ import graphic from "./graphic.png";
 import { BigNumber, ethers } from "ethers";
 import { CurrentAddressContext, ProviderContext, SignerContext } from "../../hardhat/HardhatContext";
 import yGiftDeployment from "../../hardhat/deployments/localhost/yGift.json";
-import DeleteIcon from "./delete-icon.png";
-import { YGift } from "../../hardhat/typechain/YGift";
 // /src/hardhat/deployments/localhost/yGift.json
 
 export const componentDataTestId = createDataTestId("CreateGift");
@@ -240,7 +238,8 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   const [maxAmount, setMaxAmount] = useState<number>(0);
   const [erc20Contract, setErc20Contract] = useState<ethers.Contract | undefined>(undefined);
   const [isUploadingCoverImageUrl, setIsUploadingImage] = useState<boolean>(false);
-  const [uploadedCoverImageUrls, setUploadedCoverImageUrls] = useState<string[]>([]);
+  const [chosenFile, setChosenFile] = useState<File | undefined>(undefined);
+  const [chosenFileUrl, setChosenFileUrl] = useState<string>("");
 
   useEffect(() => {
     const fetch = async () => {
@@ -288,23 +287,22 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
     fetch();
   }, [erc20Contract, signer]);
 
-  async function saveToIpfs(files: FileList) {
-    if (files) {
+  async function saveToIpfs(file: File) {
+    if (file) {
       const ipfs = ipfsClient({ url: "https://ipfs.infura.io:5001" });
       setIsUploadingImage(true);
       ipfs
-        .add([...(files as any)], {
+        .add(file, {
           progress: (prog: any) => console.log(`received: ${prog}`),
         })
         .then((file) => {
           console.log(file);
           const ipfsHash = file.path;
           const ipfsGateway = "https://cloudflare-ipfs.com/ipfs/";
-          console.log(uploadedCoverImageUrls.concat(ipfsGateway + ipfsHash));
-          const newUploadedCoverImageUrls = uploadedCoverImageUrls.concat(ipfsGateway + ipfsHash);
           formik.setFieldValue(String(params.indexOf("_url")), ipfsGateway + ipfsHash);
           setIsUploadingImage(false);
-          setUploadedCoverImageUrls(newUploadedCoverImageUrls);
+          setChosenFile(undefined);
+          setChosenFileUrl("");
         })
         .catch((err) => {
           console.error(err);
@@ -316,6 +314,28 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
       // } catch (err) {
       //   console.error(err);
       // }
+    }
+  }
+
+  function handleChooseFile(files: FileList) {
+    const fileExtension = files?.[0]["name"].substring(files?.[0]["name"].lastIndexOf(".") + 1).toLowerCase();
+
+    if (
+      files &&
+      files[0] &&
+      (fileExtension === "gif" || fileExtension === "png" || fileExtension === "jpeg" || fileExtension === "jpg")
+    ) {
+      setChosenFile(files[0]);
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        if (e?.target?.result) {
+          console.log(e.target.result);
+          setChosenFileUrl(e.target.result.toString());
+        }
+      };
+
+      reader.readAsDataURL(files[0]);
     }
   }
 
@@ -342,12 +362,12 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
             <Box position="relative">
               <Image
                 borderRadius="16px"
-                height={(formik.values?.[Number(params.indexOf("_url"))] && "auto") || "463px"}
-                maxWidth={(formik.values?.[Number(params.indexOf("_url"))] && "424px") || "304px"}
-                src={formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
+                height={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "auto") || "463px"}
+                maxWidth={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "424px") || "304px"}
+                src={chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
                 mb={"18px"}
               ></Image>
-              {formik.values?.[Number(params.indexOf("_url"))] && (
+              {chosenFileUrl && (
                 <Box
                   {...{
                     position: "absolute",
@@ -364,21 +384,12 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                   }}
                   cursor="pointer"
                   onClick={() => {
-                    const uploadedCoverImageUrlsWithLastRemoved = uploadedCoverImageUrls.slice(
-                      0,
-                      uploadedCoverImageUrls.length - 1
-                    );
-                    console.log(uploadedCoverImageUrls);
-                    console.log(
-                      uploadedCoverImageUrlsWithLastRemoved[uploadedCoverImageUrlsWithLastRemoved.length - 1]
-                    );
-                    formik.setFieldValue(
-                      String(params.indexOf("_url")),
-                      uploadedCoverImageUrlsWithLastRemoved.length
-                        ? uploadedCoverImageUrlsWithLastRemoved[uploadedCoverImageUrlsWithLastRemoved.length - 1]
-                        : ""
-                    );
-                    setUploadedCoverImageUrls(uploadedCoverImageUrlsWithLastRemoved);
+                    if (chosenFileUrl.length) {
+                      setChosenFile(undefined);
+                      setChosenFileUrl("");
+                    } else {
+                      formik.setFieldValue(String(params.indexOf("_url")), "");
+                    }
                   }}
                 >
                   <CloseIcon height="12px" width="12px"></CloseIcon>
@@ -389,7 +400,9 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               borderRadius="24px"
               key={"_url"}
               isInvalid={Boolean(formik.errors[3] && formik.touched[3])}
-              mt={(formik.values?.[Number(params.indexOf("_url"))] && "auto !important") || "inherit"}
+              mt={
+                ((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "auto !important") || "inherit"
+              }
             >
               <Input
                 height={"56px"}
@@ -418,39 +431,67 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               <FormErrorMessage>{formik.errors[Number(params.indexOf("_url"))]}</FormErrorMessage>
             </FormControl>
 
-            <FormLabel
-              display="inline-block"
-              cursor="pointer"
-              {...{
-                fontFamily: "Roboto",
-                fontStyle: "normal",
-                fontWeight: "normal",
-                fontSize: "16px",
-                lineHeight: "137.88%",
-              }}
-              color="white"
-              borderRadius="32px"
-              border="1px solid white"
-              textAlign="center"
-              height={"56px"}
-              width={"424px"}
-              m={0}
-              px={5}
-              py={"17px"}
-            >
-              {isUploadingCoverImageUrl ? <SpinnerIcon /> : "Choose Image"}
-              <Input
-                onChange={(event) => {
-                  event.stopPropagation();
-                  event.preventDefault();
-                  if (event.target.files) {
-                    saveToIpfs(event.target.files);
+            {chosenFileUrl.length ? (
+              <Button
+                variant="outline"
+                cursor="pointer"
+                {...{
+                  fontFamily: "Roboto",
+                  fontStyle: "normal",
+                  fontWeight: "normal",
+                  fontSize: "16px",
+                  lineHeight: "137.88%",
+                }}
+                color="white"
+                borderRadius="32px"
+                border="1px solid white"
+                textAlign="center"
+                height={"56px"}
+                width={"424px"}
+                m={0}
+                onClick={() => {
+                  if (chosenFile) {
+                    saveToIpfs(chosenFile);
                   }
                 }}
-                display="none"
-                type="file"
-              ></Input>
-            </FormLabel>
+              >
+                {isUploadingCoverImageUrl ? <SpinnerIcon /> : "Upload Image to IPFS"}
+              </Button>
+            ) : (
+              <FormLabel
+                display="inline-block"
+                cursor="pointer"
+                {...{
+                  fontFamily: "Roboto",
+                  fontStyle: "normal",
+                  fontWeight: "normal",
+                  fontSize: "16px",
+                  lineHeight: "137.88%",
+                }}
+                color="white"
+                borderRadius="32px"
+                border="1px solid white"
+                textAlign="center"
+                height={"56px"}
+                width={"424px"}
+                m={0}
+                px={5}
+                py={"17px"}
+              >
+                {"Choose Image"}
+                <Input
+                  onChange={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    if (event.target.files) {
+                      return handleChooseFile(event.target.files);
+                    }
+                  }}
+                  display="none"
+                  type="file"
+                />
+              </FormLabel>
+            )}
           </VStack>
         </Center>
 
