@@ -107,7 +107,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                         >
                           Collect
                         </Text>
-                        <MinusIcon></MinusIcon>
+                        <MinusIcon color="#0065D0"></MinusIcon>
                       </HStack>
                     ) : (
                       <HStack cursor="pointer" spacing={1}>
@@ -125,7 +125,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                         >
                           Tip
                         </Text>
-                        <AddIcon></AddIcon>
+                        <AddIcon color="#0065D0"></AddIcon>
                       </HStack>
                     )}
                   </PopoverTrigger>
