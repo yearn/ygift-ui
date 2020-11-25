@@ -120,7 +120,7 @@ const Navbar: React.FunctionComponent<IProps> = (props) => {
               color: "#809EBD",
             }}
           >
-            {formatAddress(currentAddress?.[0])}
+            {formatAddress(currentAddress)}
           </Text>
         ) : (
           <Button
