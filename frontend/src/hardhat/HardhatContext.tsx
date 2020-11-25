@@ -49,9 +49,10 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
   const [signer, setSigner] = useState<Signer | undefined>(defaultSigner);
   const [provider, setProvider] = useState<providers.Provider>(defaultProvider);
   const [currentAddress, setCurrentAddress] = useState<string>(defaultCurrentAddress);
-  const providerPriority = ["web3modal", "hardhat"];
+  const providerPriority = ["web3modal", "none"];
   const [yGift, setyGift] = useState<SymfoniYGift>(emptyContract);
   const [ERC721, setERC721] = useState<SymfoniErc721>(emptyContract);
+  const network = "rinkeby";
   useEffect(() => {
     console.debug(messages.pop());
   }, [messages]);
@@ -59,6 +60,15 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
   const getProvider = async (): Promise<providers.Provider | undefined> => {
     const provider = await providerPriority.reduce(
       async (maybeProvider: Promise<providers.Provider | undefined>, providerIdentification) => {
+        if (!window.ethereum) {
+          try {
+            const defaultProvider = new ethers.providers.InfuraProvider(network, "c6b047a0e8a14a96ac331a47ec96c508");
+            console.log(defaultProvider);
+            return Promise.resolve(defaultProvider);
+          } catch (error) {
+            return Promise.resolve(undefined);
+          }
+        }
         let foundProvider = await maybeProvider;
         if (foundProvider) {
           return Promise.resolve(foundProvider);
@@ -120,18 +130,20 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
   const getWeb3ModalProvider = async (): Promise<any> => {
     const providerOptions: IProviderOptions = {};
     const web3Modal = new Web3Modal({
-      // network: "rinkeby",
-      cacheProvider: true,
+      network,
+      // cacheProvider: true,
       providerOptions, // required
     });
-    return await web3Modal.connect();
+    const provider = await web3Modal.connect();
+    console.log(provider);
+    return provider;
   };
   useEffect(() => {
     let subscribed = true;
     const doAsync = async () => {
       setMessages((old) => [...old, "Initiating Web3"]);
       const _provider = await getProvider(); // getProvider can actually return undefined, see issue https://github.com/microsoft/TypeScript/issues/11094
-      console.log(_provider);
+      console.log("_provider ", _provider);
       if (subscribed && _provider) {
         const _providerName = _provider.constructor.name;
         console.debug("_providerName", _providerName);
@@ -188,14 +200,14 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
         <CurrentAddressContext.Provider value={[currentAddress, setCurrentAddress]}>
           <yGiftContext.Provider value={yGift}>
             <ERC721Context.Provider value={ERC721}>
-              {ready && props.children}
-              {!ready && (
+              {props.children}
+              {/* {!ready && (
                 <div>
                   {messages.map((msg, i) => (
                     <p key={i}>{msg}</p>
                   ))}
                 </div>
-              )}
+              )} */}
             </ERC721Context.Provider>
           </yGiftContext.Provider>
         </CurrentAddressContext.Provider>

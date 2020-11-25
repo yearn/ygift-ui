@@ -176,10 +176,10 @@ const TransactionHistory: React.FunctionComponent<IProps> = (props) => {
         </Heading>
         {transactionHistory.map((transaction, index) =>
           index !== transactionHistory.length - 1 ? (
-            <>
+            <React.Fragment key={`${transaction?.date}-${index}`}>
               <Transaction key={`${transaction?.date}-${index}`} {...transaction}></Transaction>
               <Divider></Divider>
-            </>
+            </React.Fragment>
           ) : (
             <Transaction key={`${transaction?.date}-${index}`} {...transaction}></Transaction>
           )
