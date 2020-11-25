@@ -288,6 +288,10 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
         const approveTx = await tx;
         await approveTx?.wait();
         setIsApproved(true);
+        const balance = await erc20Contract.balanceOf(currentAddress);
+        console.log(balance?.toString());
+        console.log(ethers.utils.formatEther(balance));
+        setMaxAmount(balance);
       }
     };
 
@@ -582,7 +586,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                     type={param === "_duration" || param === "_amount" ? "number" : "text"}
                     max={param === "_amount" ? ethers.utils.formatEther(maxAmount) : undefined}
                     min={param === "_amount" ? "0" : undefined}
-                    step={param === "_amount" ? "0.0001" : undefined}
+                    step={param === "_amount" ? "any" : undefined}
                     value={formik.values[index]?.toString()}
                     {...{
                       fontFamily: "Roboto",
