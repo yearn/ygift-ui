@@ -43,7 +43,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "vercel",
-    "deploy:prod": "npm run build && vercel --prod",
+    "deploy:prod": "vercel --prod",
     "storybook": "start-storybook -p 6006 -s public --no-dll",
     "build-storybook": "build-storybook -s public --no-dll"
   },
