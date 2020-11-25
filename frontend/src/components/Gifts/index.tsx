@@ -41,7 +41,7 @@ const NoGifts: React.FC = () => {
 };
 const Gifts: React.FunctionComponent<IProps> = (props) => {
   return (
-    <Wrap spacing={2} px={6}>
+    <Wrap spacing={"24px"} px={6} justify="center">
       {props?.gifts?.length ? (
         props.gifts.map((gift) => (
           <WrapItem>
