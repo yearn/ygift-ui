@@ -4,6 +4,7 @@
 import { providers, Signer, ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import Web3Modal, { IProviderOptions } from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 import yGiftDeployment from "./deployments/localhost/yGift.json";
 import { YGift } from "./typechain/YGift";
 import { YGiftFactory } from "./typechain/YGiftFactory";
@@ -42,6 +43,8 @@ export interface SymfoniErc721 {
   factory?: Erc721Factory;
 }
 
+export const INFURA_API_KEY = "c6b047a0e8a14a96ac331a47ec96c508";
+
 export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
   const [ready, setReady] = useState(false);
   const [messages, setMessages] = useState<string[]>([]);
@@ -62,7 +65,7 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
       async (maybeProvider: Promise<providers.Provider | undefined>, providerIdentification) => {
         if (!window.ethereum) {
           try {
-            const defaultProvider = new ethers.providers.InfuraProvider(network, "c6b047a0e8a14a96ac331a47ec96c508");
+            const defaultProvider = new ethers.providers.InfuraProvider(network, INFURA_API_KEY);
             console.log(defaultProvider);
             return Promise.resolve(defaultProvider);
           } catch (error) {
@@ -128,10 +131,17 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
     }
   };
   const getWeb3ModalProvider = async (): Promise<any> => {
-    const providerOptions: IProviderOptions = {};
+    const providerOptions: IProviderOptions = {
+      walletconnect: {
+        package: WalletConnectProvider, // required
+        options: {
+          infuraId: INFURA_API_KEY, // required
+        },
+      },
+    };
     const web3Modal = new Web3Modal({
       network,
-      // cacheProvider: true,
+      cacheProvider: true,
       providerOptions, // required
     });
     const provider = await web3Modal.connect();

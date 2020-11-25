@@ -94,58 +94,60 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
               >
                 {gift?.name}
               </Heading>
-              <HStack spacing={4}>
-                <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} placement="bottom" closeOnBlur={false}>
-                  <PopoverTrigger>
-                    {isRecipient ? (
-                      <HStack cursor="pointer" spacing={1}>
-                        <Text
-                          {...{
-                            fontFamily: "Roboto",
-                            fontStyle: "normal",
-                            fontWeight: "normal",
-                            fontSize: "16px",
-                            lineHeight: "137.88%",
-                            display: "flex",
-                            alignItems: "center",
-                            color: "#013A6D;",
-                          }}
-                        >
-                          Collect
-                        </Text>
-                        <MinusIcon color="#0065D0"></MinusIcon>
-                      </HStack>
-                    ) : (
-                      <HStack cursor="pointer" spacing={1}>
-                        <Text
-                          {...{
-                            fontFamily: "Roboto",
-                            fontStyle: "normal",
-                            fontWeight: "normal",
-                            fontSize: "16px",
-                            lineHeight: "137.88%",
-                            display: "flex",
-                            alignItems: "center",
-                            color: "#013A6D;",
-                          }}
-                        >
-                          Tip
-                        </Text>
-                        <AddIcon color="#0065D0"></AddIcon>
-                      </HStack>
-                    )}
-                  </PopoverTrigger>
-                  <PopoverContent p={5}>
-                    <PopoverArrow />
-                    <PopoverCloseButton />
-                    {isRecipient ? (
-                      <Collect tokenId={id} />
-                    ) : (
-                      <Tip isOpen={isOpen} tokenId={id} tokenContractAddress={gift?.token}></Tip>
-                    )}
-                  </PopoverContent>
-                </Popover>
-              </HStack>
+              {window.ethereum && (
+                <HStack spacing={4}>
+                  <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} placement="bottom" closeOnBlur={false}>
+                    <PopoverTrigger>
+                      {isRecipient ? (
+                        <HStack cursor="pointer" spacing={1}>
+                          <Text
+                            {...{
+                              fontFamily: "Roboto",
+                              fontStyle: "normal",
+                              fontWeight: "normal",
+                              fontSize: "16px",
+                              lineHeight: "137.88%",
+                              display: "flex",
+                              alignItems: "center",
+                              color: "#013A6D;",
+                            }}
+                          >
+                            Collect
+                          </Text>
+                          <MinusIcon color="#0065D0"></MinusIcon>
+                        </HStack>
+                      ) : (
+                        <HStack cursor="pointer" spacing={1}>
+                          <Text
+                            {...{
+                              fontFamily: "Roboto",
+                              fontStyle: "normal",
+                              fontWeight: "normal",
+                              fontSize: "16px",
+                              lineHeight: "137.88%",
+                              display: "flex",
+                              alignItems: "center",
+                              color: "#013A6D;",
+                            }}
+                          >
+                            Tip
+                          </Text>
+                          <AddIcon color="#0065D0"></AddIcon>
+                        </HStack>
+                      )}
+                    </PopoverTrigger>
+                    <PopoverContent p={5}>
+                      <PopoverArrow />
+                      <PopoverCloseButton />
+                      {isRecipient ? (
+                        <Collect tokenId={id} />
+                      ) : (
+                        <Tip isOpen={isOpen} tokenId={id} tokenContractAddress={gift?.token}></Tip>
+                      )}
+                    </PopoverContent>
+                  </Popover>
+                </HStack>
+              )}
             </HStack>
             {/*  */}
             <HStack spacing={4} alignItems="flex-start">
