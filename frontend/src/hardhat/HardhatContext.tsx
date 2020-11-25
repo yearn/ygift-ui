@@ -120,6 +120,9 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
 
       default: {
         if (process.env.NODE_ENV === "production") {
+          if ((_provider as ethers.providers.InfuraProvider).apiKey) {
+            return undefined;
+          }
           const web3provider = _provider as ethers.providers.Web3Provider;
           const signer = await web3provider.getSigner();
           console.log("getSigner: ", signer);
