@@ -625,7 +625,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 lineHeight: "137.88%",
               }}
             >
-              {isApproved ? "Submit" : "Approve"}
+              {isApproved || formik?.values?.[Number(params.indexOf("_amount"))] === 0 ? "Submit" : "Approve"}
             </Button>
           </VStack>
         </Center>
