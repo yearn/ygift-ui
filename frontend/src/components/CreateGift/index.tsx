@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
 import ipfsClient from "ipfs-http-client";
+import { darken } from "polished";
 import {
   Button,
   VStack,
@@ -434,6 +435,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
             {chosenFileUrl.length ? (
               <Button
                 variant="outline"
+                _hover={{ background: "transparent", border: "1px solid grey" }}
                 cursor="pointer"
                 {...{
                   fontFamily: "Roboto",
@@ -477,6 +479,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 m={0}
                 px={5}
                 py={"17px"}
+                _hover={{ border: "1px solid grey" }}
               >
                 {"Choose Image"}
                 <Input
@@ -593,6 +596,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               }}
               variant="outline"
               background="#0065D0"
+              _hover={{ background: darken(0.1, "#0065D0") }}
               borderRadius="32px"
               width={"100%"}
               height={"56px"}

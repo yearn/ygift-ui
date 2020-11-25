@@ -27,6 +27,7 @@
     "ipfs-http-client": "^48.1.1",
     "luxon": "^1.25.0",
     "match-sorter": "^5.0.0",
+    "polished": "^4.0.4",
     "react-highlight-words": "^0.16.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",

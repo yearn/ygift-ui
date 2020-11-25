@@ -47,8 +47,9 @@ const Error: React.FunctionComponent<IProps> = (props) => {
               fontWeight: "normal",
               fontSize: "16px",
             }}
-            _hover={{ color: "black" }}
+            _hover={{ border: "1px solid grey" }}
             width={350}
+            height={"56px"}
             variant="outline"
             onClick={(): void => {
               history.goBack();
