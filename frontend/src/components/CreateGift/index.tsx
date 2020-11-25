@@ -16,6 +16,7 @@ import {
   useClipboard,
   Text,
   FormLabel,
+  keyframes,
 } from "@chakra-ui/react";
 import { CloseIcon, CopyIcon, SmallCloseIcon, SpinnerIcon } from "@chakra-ui/icons";
 import { useCreateGiftFormManagement } from "./useCreateGiftFormManagement";
@@ -60,6 +61,11 @@ const Processing = () => (
   </svg>
 );
 
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
 const Submitting: React.FC = () => (
   <Center
     {...{
@@ -85,7 +91,7 @@ const Submitting: React.FC = () => (
       >
         Processing
       </Heading>
-      <Processing></Processing>
+      <SpinnerIcon color="white" height="90px" width="90px" animation={`${spin} 2s infinite linear`} />
     </VStack>
   </Center>
 );
@@ -214,7 +220,7 @@ const getPlaceholder = (param: ValuesOf<typeof params>) => {
       return "Message";
     }
     case "_amount": {
-      return "Gift Amount";
+      return "Gift Amount - (0 is possible)";
     }
     case "_token": {
       return "Token (Contract or ENS) address";
@@ -406,6 +412,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               }
             >
               <Input
+                isRequired
                 height={"56px"}
                 width={"424px"}
                 placeholder="Cover image URL"
@@ -457,7 +464,11 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                   }
                 }}
               >
-                {isUploadingCoverImageUrl ? <SpinnerIcon /> : "Upload Image to IPFS"}
+                {isUploadingCoverImageUrl ? (
+                  <SpinnerIcon color="white" animation={`${spin} 2s infinite linear`} />
+                ) : (
+                  "Upload Image to IPFS"
+                )}
               </Button>
             ) : (
               <FormLabel
@@ -561,7 +572,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                     </FormLabel>
                   ) : null}
                   <Input
-                    required={true}
+                    isRequired
                     placeholder={getPlaceholder(param)}
                     key={param}
                     data-testid={param}
@@ -594,6 +605,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               onClick={() => {
                 !isApproved && erc20Approve();
               }}
+              isDisabled={!formik.values?.[Number(params.indexOf("_token"))]}
               variant="outline"
               background="#0065D0"
               _hover={{ background: darken(0.1, "#0065D0") }}
