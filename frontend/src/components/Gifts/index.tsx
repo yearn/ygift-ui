@@ -23,10 +23,12 @@ const NoGifts: React.FC = () => {
           borderColor="#0065D0"
           borderRadius="32px"
           variant="outline"
+          _hover={{ border: "1px solid grey", background: "transprent" }}
           color="#0065D0"
           fontFamily="Roboto"
           fontSize="16px"
           minWidth="200px"
+          height={"56px"}
           onClick={() => {
             history.push("/create-gift");
           }}
@@ -39,8 +41,8 @@ const NoGifts: React.FC = () => {
 };
 const Gifts: React.FunctionComponent<IProps> = (props) => {
   return (
-    <Wrap spacing={6} px={4}>
-      {props.gifts?.length ? (
+    <Wrap spacing={2} px={6}>
+      {props?.gifts?.length ? (
         props.gifts.map((gift) => (
           <WrapItem>
             <Gift {...gift}></Gift>
