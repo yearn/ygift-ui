@@ -33,6 +33,7 @@ export function useGiftTransactionHistory(id: string) {
       if (giftMintedSentEventFilter) {
         const logs = await provider?.getLogs({ ...giftMintedSentEventFilter, fromBlock: 0 });
         const [giftMinted] = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
+        const gift = await yGift?.instance?.gifts(id);
         if (giftMinted) {
           const [mintedFrom, mintedFor] = giftMinted;
           minter = (await provider?.resolveName(mintedFrom)) || mintedFrom;
@@ -44,6 +45,7 @@ export function useGiftTransactionHistory(id: string) {
             recipient,
             date: block.timestamp,
             event: "Minted",
+            amount: gift?.amount,
           };
           transactions.push(transaction);
         }
