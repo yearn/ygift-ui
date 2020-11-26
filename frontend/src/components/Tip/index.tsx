@@ -27,6 +27,7 @@ const Tip: React.FunctionComponent<IProps> = ({ tokenId, isOpen, tokenContractAd
   const [isApproved, setIsApproved] = useState<boolean>(false);
   const [maxAmount, setMaxAmount] = useState<number>(0);
   const [erc20Contract, setErc20Contract] = useState<ethers.Contract | undefined>(undefined);
+  const [isApproving, setIsApproving] = useState<boolean>(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -62,13 +63,20 @@ const Tip: React.FunctionComponent<IProps> = ({ tokenId, isOpen, tokenContractAd
   }, [tokenContractAddress, currentAddress, provider, signer, isOpen]);
 
   const erc20Approve = useCallback(() => {
+    setIsApproving(true);
     const fetch = async () => {
       if (erc20Contract && signer) {
-        erc20Contract.connect(signer);
-        const tx = (erc20Contract as any).approve(yGiftContractAddress, BigNumber.from(2).pow(256).sub(1));
-        const approveTx = await tx;
-        await approveTx?.wait();
-        setIsApproved(true);
+        try {
+          erc20Contract.connect(signer);
+          const tx = (erc20Contract as any).approve(yGiftContractAddress, BigNumber.from(2).pow(256).sub(1));
+          const approveTx = await tx;
+          await approveTx?.wait();
+          setIsApproved(true);
+          setIsApproving(false);
+        } catch (e) {
+          console.error(e);
+          setIsApproving(false);
+        }
       }
     };
 
@@ -110,10 +118,11 @@ const Tip: React.FunctionComponent<IProps> = ({ tokenId, isOpen, tokenContractAd
         <Button
           data-testid={"submit"}
           type={isApproved ? "submit" : "button"}
-          disabled={formik.isSubmitting}
+          disabled={formik.isSubmitting || isApproving}
           onClick={() => {
             !isApproved && erc20Approve();
           }}
+          isLoading={isApproving}
         >
           {isApproved ? "Tip" : "Approve"}
         </Button>
