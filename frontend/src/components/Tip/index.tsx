@@ -85,7 +85,7 @@ const Tip: React.FunctionComponent<IProps> = ({ tokenId, isOpen, tokenContractAd
           return (
             <FormControl key={param} isInvalid={Boolean(formik.errors[index] && formik.touched[index])}>
               {maxAmount && param === "_amount" ? (
-                <FormLabel textAlign="center" for="_amount">
+                <FormLabel textAlign="center" htmlFor="_amount">
                   {`Max: ${Math.floor(Number(ethers.utils.formatEther(maxAmount)) * 100) / 100}`}
                 </FormLabel>
               ) : null}

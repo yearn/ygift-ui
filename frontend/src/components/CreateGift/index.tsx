@@ -25,6 +25,7 @@ import graphic from "./graphic.png";
 import { BigNumber, ethers } from "ethers";
 import { CurrentAddressContext, ProviderContext, SignerContext } from "../../hardhat/HardhatContext";
 import yGiftDeployment from "../../hardhat/deployments/localhost/yGift.json";
+import { Erc20Select } from "./Erc20Select";
 // /src/hardhat/deployments/localhost/yGift.json
 
 export const componentDataTestId = createDataTestId("CreateGift");
@@ -51,15 +52,6 @@ export const erc20Abi = [
 interface IProps {
   isSubmitting?: boolean;
 }
-
-const Processing = () => (
-  <svg width="88" height="88" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M44 88C35.2976 88 26.7907 85.4194 19.5549 80.5847C12.3191 75.7499 6.67955 68.878 3.3493 60.8381C0.0190407 52.7981 -0.852304 43.9512 0.84545 35.416C2.5432 26.8809 6.73379 19.0408 12.8873 12.8873C19.0408 6.73379 26.8809 2.54319 35.416 0.845445C43.9512 -0.852304 52.7981 0.0190432 60.8381 3.3493C68.878 6.67956 75.7499 12.3191 80.5847 19.5549C85.4194 26.7907 88 35.2976 88 44L77 44C77 37.4732 75.0646 31.093 71.4385 25.6662C67.8124 20.2394 62.6585 16.0097 56.6286 13.512C50.5986 11.0143 43.9634 10.3608 37.562 11.6341C31.1606 12.9074 25.2806 16.0503 20.6655 20.6655C16.0503 25.2806 12.9074 31.1606 11.6341 37.562C10.3608 43.9634 11.0143 50.5986 13.512 56.6285C16.0097 62.6585 20.2394 67.8124 25.6662 71.4385C31.093 75.0646 37.4732 77 44 77L44 88Z"
-      fill="white"
-    />
-  </svg>
-);
 
 const spin = keyframes`
   from { transform: rotate(0deg); }
@@ -274,6 +266,8 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           console.log(balance?.toString());
           console.log(ethers.utils.formatEther(balance));
           setMaxAmount(balance);
+        } else {
+          setMaxAmount(0);
         }
       }
     };
@@ -296,7 +290,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
     };
 
     fetch();
-  }, [erc20Contract, signer]);
+  }, [erc20Contract, signer, currentAddress]);
 
   async function saveToIpfs(file: File) {
     if (file) {
@@ -561,6 +555,9 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               if (param === "_start") {
                 return null;
               }
+              if (param === "_token") {
+                return <Erc20Select formik={formik}></Erc20Select>;
+              }
 
               return (
                 <FormControl
@@ -571,7 +568,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                   mt={index === 0 ? `0px !important` : "inherit"}
                 >
                   {maxAmount && param === "_amount" ? (
-                    <FormLabel textAlign="center" for="_amount">
+                    <FormLabel textAlign="center" htmlFor="_amount">
                       {`Max: ${Math.floor(Number(ethers.utils.formatEther(maxAmount)) * 100) / 100}`}
                     </FormLabel>
                   ) : null}
