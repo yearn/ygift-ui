@@ -18,7 +18,7 @@ interface IProps {
 // const erc20Tokens = ["YFI", "yUSD", "y3Crv", "DAI", "USDC", "ETH", "wBTC"];
 export const erc20TokensData = [
   {
-    address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    address: "0xad5fe5b0b8ec8ff4565204990e4405b2da117d8e",
     chainId: 1,
     decimals: 18,
     logoURI: "None",
@@ -125,6 +125,9 @@ const Erc20Select: React.FunctionComponent<IProps> = (props) => {
             (network === "rinkeby" &&
               props.formik?.values[Number(params.indexOf("_token"))] === "0xee71557964a9872fbf77f29b87579329462529cf" &&
               "yUSD (Rinkeby)") ||
+            (network === "rinkeby" &&
+              props.formik?.values[Number(params.indexOf("_token"))] === "0x8ad3aa5d5ff084307d28c8f514d7a193b2bfe725" &&
+              "None") ||
             "Token"}
         </MenuButton>
         <MenuList>
@@ -134,7 +137,10 @@ const Erc20Select: React.FunctionComponent<IProps> = (props) => {
               minW="415px"
               onClick={() => {
                 if (erc20Token.name === "None") {
-                  props.formik?.setFieldValue(params.indexOf("_token").toString(), erc20Token.address);
+                  props.formik?.setFieldValue(
+                    params.indexOf("_token").toString(),
+                    network === "rinkeby" ? "0x8ad3aa5d5ff084307d28c8f514d7a193b2bfe725" : erc20Token.address
+                  );
                   props.formik?.setFieldValue(params.indexOf("_amount").toString(), 0);
                   return;
                 }

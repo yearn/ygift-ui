@@ -602,9 +602,9 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
             })}
             <Button
               data-testid={"submit"}
-              type={isApproved ? "submit" : "button"}
+              type={isApproved || formik?.values?.[Number(params.indexOf("_amount"))] === 0 ? "submit" : "button"}
               onClick={() => {
-                !isApproved && erc20Approve();
+                !isApproved && formik?.values?.[Number(params.indexOf("_amount"))] !== 0 && erc20Approve();
               }}
               isDisabled={!formik.values?.[Number(params.indexOf("_token"))]}
               variant="outline"
