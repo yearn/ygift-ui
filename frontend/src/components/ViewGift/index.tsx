@@ -67,7 +67,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
 
   const isRecipient = currentAddress === ownedBy;
 
-  if (gift && ownedBy && id) {
+  if (gift && ownedBy) {
     console.log(gift);
     return (
       <VStack
