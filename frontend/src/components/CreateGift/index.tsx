@@ -367,6 +367,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
             <Box position="relative">
               <Image
                 borderRadius="16px"
+                maxHeight={(chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "463px"}
                 height={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "auto") || "463px"}
                 maxWidth={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "424px") || "304px"}
                 src={chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
