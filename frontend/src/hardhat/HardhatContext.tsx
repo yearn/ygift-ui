@@ -44,6 +44,7 @@ export interface SymfoniErc721 {
 }
 
 export const INFURA_API_KEY = "c6b047a0e8a14a96ac331a47ec96c508";
+export const network = "mainnet";
 
 export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
   const [ready, setReady] = useState(false);
@@ -55,7 +56,6 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
   const providerPriority = ["web3modal", "none"];
   const [yGift, setyGift] = useState<SymfoniYGift>(emptyContract);
   const [ERC721, setERC721] = useState<SymfoniErc721>(emptyContract);
-  const network = "rinkeby";
   useEffect(() => {
     console.debug(messages.pop());
   }, [messages]);

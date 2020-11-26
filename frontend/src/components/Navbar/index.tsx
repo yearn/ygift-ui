@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import Web3Modal, { IProviderOptions } from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
-import { CurrentAddressContext, INFURA_API_KEY, ProviderContext } from "../../hardhat/HardhatContext";
+import { CurrentAddressContext, INFURA_API_KEY, ProviderContext, network } from "../../hardhat/HardhatContext";
 import { formatAddress } from "../../lib/format-address";
 
 export const componentDataTestId = createDataTestId("Navbar");
@@ -23,7 +23,6 @@ const Logo = () => (
 );
 
 const handleWeb3ProviderConnect = (setProvider: Function) => async () => {
-  const network = "rinkeby";
   const getWeb3ModalProvider = async (): Promise<any> => {
     const providerOptions: IProviderOptions = {
       walletconnect: {
