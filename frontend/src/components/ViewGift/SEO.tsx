@@ -26,7 +26,7 @@ const SEO: React.FunctionComponent<IProps> = ({ gift }) => (
 
     {/* <!-- Twitter Meta Tags --> */}
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Reed" />
+    <meta name="twitter:title" content="yGift" />
     <meta name="twitter:description" content="NFTs for gifts, grants, and gratitude" />
     <meta name="twitter:image" content={gift?.url} />
   </Helmet>

@@ -67,7 +67,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
 
   const isRecipient = currentAddress === ownedBy;
 
-  if (gift && ownedBy) {
+  if (gift && ownedBy && id) {
     console.log(gift);
     return (
       <VStack
@@ -77,7 +77,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
         boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)"
         mb={8}
       >
-        <SEO gift={gift} />
+        <SEO gift={{ ...gift, id }} />
         <HStack boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)" borderRadius="16px" pb={2} spacing={"32px"}>
           <Image borderRadius={"16px"} height="auto" width="400px" src={gift?.url} alignSelf="flex-start" />
           <VStack height="100%" width="520px" alignItems="flex-start" p={4} spacing={"24px"}>
