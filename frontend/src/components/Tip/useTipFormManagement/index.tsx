@@ -11,7 +11,8 @@ export function useTipFormManagement(tokenId: string) {
   const submitHandler = async (params: Parameters<YGift["tip"]>) => {
     try {
       params[1] = ethers.utils.parseEther(params[1].toString());
-      const tx = yGift?.instance?.tip.apply(null, params.concat({ gasLimit: 500000 }) as any);
+      const gasLimit = await yGift?.instance?.estimateGas.tip.apply(null, params as any);
+      const tx = yGift?.instance?.tip.apply(null, params.concat({ gasLimit }) as any);
       const tipTx = await tx;
       await tipTx?.wait();
       window.location.reload();

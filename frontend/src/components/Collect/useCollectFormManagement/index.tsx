@@ -11,7 +11,8 @@ export function useCollectFormManagement(tokenId: string) {
   const submitHandler = async (params: Parameters<YGift["collect"]>) => {
     try {
       params[1] = ethers.utils.parseEther(params[1].toString());
-      const tx = yGift?.instance?.collect.apply(null, params.concat({ gasLimit: 500000 }) as any);
+      const gasLimit = await yGift?.instance?.estimateGas.collect.apply(null, params as any);
+      const tx = yGift?.instance?.collect.apply(null, params.concat({ gasLimit }) as any);
       const collectTx = await tx;
       await collectTx?.wait();
       window.location.reload();
@@ -20,7 +21,7 @@ export function useCollectFormManagement(tokenId: string) {
       history.push("/error");
     }
   };
-  const onSubmit = useCallback(submitHandler, [yGift?.instance]);
+  const onSubmit = useCallback(submitHandler, [yGift?.instance, history]);
   const initialValues: Parameters<YGift["collect"]> = [tokenId, ""];
   return {
     onSubmit,
