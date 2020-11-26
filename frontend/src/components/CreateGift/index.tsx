@@ -190,7 +190,7 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
               color: "white",
             }}
           >
-            Share the image and URL so that others can add tips in yUSD.
+            Share the image and URL so that others can add tips with the same gifted token.
           </Text>
         </VStack>
       </VStack>
