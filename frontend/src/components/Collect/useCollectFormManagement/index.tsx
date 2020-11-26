@@ -12,7 +12,7 @@ export function useCollectFormManagement(tokenId: string) {
     try {
       params[1] = ethers.utils.parseEther(params[1].toString());
       const gasLimit = await yGift?.instance?.estimateGas.collect.apply(null, params as any);
-      const tx = yGift?.instance?.collect.apply(null, params.concat({ gasLimit }) as any);
+      const tx = yGift?.instance?.collect.apply(null, params.concat({ gasLimit: gasLimit?.add("80000") }) as any);
       const collectTx = await tx;
       await collectTx?.wait();
       window.location.reload();

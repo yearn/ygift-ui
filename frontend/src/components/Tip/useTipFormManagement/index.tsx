@@ -12,7 +12,7 @@ export function useTipFormManagement(tokenId: string) {
     try {
       params[1] = ethers.utils.parseEther(params[1].toString());
       const gasLimit = await yGift?.instance?.estimateGas.tip.apply(null, params as any);
-      const tx = yGift?.instance?.tip.apply(null, params.concat({ gasLimit }) as any);
+      const tx = yGift?.instance?.tip.apply(null, params.concat({ gasLimit: gasLimit?.add("80000") }) as any);
       const tipTx = await tx;
       await tipTx?.wait();
       window.location.reload();
