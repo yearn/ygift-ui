@@ -11,7 +11,7 @@ export function useCollectFormManagement(tokenId: string) {
   const submitHandler = async (params: Parameters<YGift["collect"]>) => {
     try {
       params[1] = ethers.utils.parseEther(params[1].toString());
-      const tx = yGift?.instance?.collect.apply(null, params.concat({ gasLimit: 5000000 }) as any);
+      const tx = yGift?.instance?.collect.apply(null, params.concat({ gasLimit: 500000 }) as any);
       const collectTx = await tx;
       await collectTx?.wait();
       window.location.reload();

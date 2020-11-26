@@ -31,7 +31,7 @@ export function useCreateGiftFormManagement() {
       console.log(params[7]);
 
       try {
-        const tx = yGift?.instance?.mint.apply(null, params.concat({ gasLimit: 5000000 }) as any);
+        const tx = yGift?.instance?.mint.apply(null, params.concat({ gasLimit: 500000 }) as any);
         const createGiftTx = await tx;
         await createGiftTx?.wait();
         setHasSubmitted(true);
