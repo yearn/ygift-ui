@@ -18,7 +18,7 @@ interface IProps {
 // const erc20Tokens = ["YFI", "yUSD", "y3Crv", "DAI", "USDC", "ETH", "wBTC"];
 export const erc20TokensData = [
   {
-    address: "0xad5fe5b0b8ec8ff4565204990e4405b2da117d8e",
+    address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
     chainId: 1,
     decimals: 18,
     logoURI: "None",
