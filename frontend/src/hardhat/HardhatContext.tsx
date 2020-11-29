@@ -28,8 +28,14 @@ export const defaultSigner: Signer | undefined = undefined;
 export const SignerContext = React.createContext<
   [Signer | undefined, React.Dispatch<React.SetStateAction<Signer | undefined>>]
 >([defaultSigner, () => {}]);
-export const yGiftContext = React.createContext<SymfoniYGift>(emptyContract);
-export const ERC721Context = React.createContext<SymfoniErc721>(emptyContract);
+export const yGiftContext = React.createContext<[SymfoniYGift, React.Dispatch<React.SetStateAction<SymfoniYGift>>]>([
+  emptyContract,
+  () => {},
+]);
+export const ERC721Context = React.createContext<[SymfoniErc721, React.Dispatch<React.SetStateAction<SymfoniErc721>>]>([
+  emptyContract,
+  () => {},
+]);
 
 export interface HardhatContextProps {}
 
@@ -213,8 +219,8 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
     <ProviderContext.Provider value={[provider, setProvider]}>
       <SignerContext.Provider value={[signer, setSigner]}>
         <CurrentAddressContext.Provider value={[currentAddress, setCurrentAddress]}>
-          <yGiftContext.Provider value={yGift}>
-            <ERC721Context.Provider value={ERC721}>
+          <yGiftContext.Provider value={[yGift, setyGift]}>
+            <ERC721Context.Provider value={[ERC721, setERC721]}>
               {props.children}
               {/* {!ready && (
                 <div>

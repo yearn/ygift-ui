@@ -16,6 +16,8 @@ import {
   emptyContract,
   SymfoniYGift,
   SymfoniErc721,
+  yGiftContext,
+  ERC721Context,
 } from "../../hardhat/HardhatContext";
 import { formatAddress } from "../../lib/format-address";
 
@@ -80,8 +82,8 @@ const OurLink = (props: any) => {
   const [_provider, setProvider] = useContext(ProviderContext);
   const [_signer, setSigner] = useContext(SignerContext);
   const [_currentAddress, setCurrentAddress] = useContext(CurrentAddressContext);
-  const [yGift, setyGift] = useState<SymfoniYGift>(emptyContract);
-  const [ERC721, setERC721] = useState<SymfoniErc721>(emptyContract);
+  const [yGift, setyGift] = useContext(yGiftContext);
+  const [ERC721, setERC721] = useContext(ERC721Context);
 
   if (!currentAddress) {
     return (

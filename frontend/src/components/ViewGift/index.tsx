@@ -34,7 +34,7 @@ interface IProps {}
 const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const { id } = useParams<{ id: string }>();
-  const yGift = useContext(yGiftContext);
+  const [yGift] = useContext(yGiftContext);
   const [currentAddress] = useContext(CurrentAddressContext);
   const [provider] = useContext(ProviderContext);
   const [gift, setGift] = useState<GiftModel>();

@@ -6,9 +6,9 @@ import { BigNumber, ethers } from "ethers";
 import { useHistory } from "react-router-dom";
 
 export function useCreateGiftFormManagement() {
-  const yGift = useContext(yGiftContext);
   const [currentAddress] = useContext(CurrentAddressContext);
   const [provider] = useContext(ProviderContext);
+  const [yGift] = useContext(yGiftContext);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [giftCreatedId, setGiftCreatedId] = useState("");
   const _start = Math.floor(DateTime.local().toSeconds());
@@ -16,9 +16,9 @@ export function useCreateGiftFormManagement() {
   const history = useHistory();
 
   const submitHandler = async (params: Parameters<YGift["mint"]>) => {
-    console.log(params);
     return new Promise(async (resolve) => {
       try {
+        console.log(params);
         // Convert ether to gwei
         console.log(params[2]);
         params[2] = ethers.utils.parseEther(params[2].toString());

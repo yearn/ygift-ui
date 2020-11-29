@@ -5,7 +5,7 @@ import { yGiftContext } from "../../../hardhat/HardhatContext";
 import { YGift } from "../../../hardhat/typechain/YGift";
 
 export function useCollectFormManagement(tokenId: string) {
-  const yGift = useContext(yGiftContext);
+  const [yGift] = useContext(yGiftContext);
   const history = useHistory();
 
   const submitHandler = async (params: Parameters<YGift["collect"]>) => {

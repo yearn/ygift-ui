@@ -3,7 +3,7 @@ import { ProviderContext, SignerContext, yGiftContext } from "../../../hardhat/H
 import { GiftModel } from "../../Gifts/Gift";
 
 export function useGifts() {
-  const yGift = useContext(yGiftContext);
+  const [yGift] = useContext(yGiftContext);
   const signer = useContext(SignerContext);
   const provider = useContext(ProviderContext);
   const [giftsOwned, setGiftsOwned] = useState<(GiftModel | undefined)[]>([]);

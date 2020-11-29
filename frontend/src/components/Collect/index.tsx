@@ -16,7 +16,7 @@ interface IProps {
 
 const Collect: React.FunctionComponent<IProps> = (props) => {
   const management = useCollectFormManagement(props.tokenId);
-  const yGift = useContext(yGiftContext);
+  const [yGift] = useContext(yGiftContext);
   const formik = useFormik(management);
   const [collectible, setCollectible] = useState("");
 
