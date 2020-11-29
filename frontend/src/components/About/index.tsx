@@ -15,18 +15,17 @@ const Content: React.FC<IContentProps> = (props) => {
   // const [address, setAddress] = React.useState("");
   // const history = useHistory();
   return (
-    <VStack spacing={4} textAlign="left" width="543px">
+    <VStack spacing={4} textAlign="left" width={["auto", "auto", "auto", "543px"]}>
       <Heading
         as="h2"
-        fontSize="58px"
+        fontSize={["4xl", "58px"]}
         {...{
           fontFamily: "Roboto",
           fontStyle: "normal",
           fontWeight: "bold",
-          lineHeight: "73px",
           color: "#013A6D",
         }}
-        mb={8}
+        mb={[2, 4]}
       >
         NFTs for gifts, grants, and gratitude
       </Heading>
@@ -89,9 +88,9 @@ const Content: React.FC<IContentProps> = (props) => {
 };
 
 const About: React.FunctionComponent<IProps> = (props) => (
-  <HStack spacing={10} px={[5, 10, 40]}>
+  <HStack spacing={[0, 10]} px={[5, 10, 10]} flexDirection={["column", "column", "column", "row"]}>
+    <Image src={graphic} width={["534px"]} height={["auto"]}></Image>
     <Content></Content>
-    <Image src={graphic} width={"574px"} height="auto"></Image>
   </HStack>
 );
 
