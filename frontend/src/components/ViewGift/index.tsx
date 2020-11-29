@@ -85,10 +85,17 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           pb={2}
           spacing={["0", "32px"]}
           flexDirection={["column", "row"]}
+          alignItems="flex-start"
         >
-          <Box alignSelf={["center", "flex-start"]} cursor="pointer">
+          <Box cursor="pointer">
             <SRLWrapper>
-              <Image borderRadius={"16px"} height="auto" width="400px" src={gift?.url} alignSelf="flex-start" />
+              <Image
+                borderRadius={"16px"}
+                height="auto"
+                width={["auto", "auto", "auto", "400px"]}
+                src={gift?.url}
+                alignSelf="flex-start"
+              />
             </SRLWrapper>
           </Box>
           <VStack
