@@ -28,7 +28,11 @@ const Logo = () => (
   </NavLink>
 );
 
-const handleWeb3ProviderConnect = (setProvider: Function, setSigner: Function) => async () => {
+const handleWeb3ProviderConnect = (
+  setProvider: Function,
+  setSigner: Function,
+  setCurrentAddress: Function
+) => async () => {
   const getWeb3ModalProvider = async (): Promise<any> => {
     const providerOptions: IProviderOptions = {
       walletconnect: {
@@ -51,18 +55,22 @@ const handleWeb3ProviderConnect = (setProvider: Function, setSigner: Function) =
   console.log(provider);
   const web3provider = new ethers.providers.Web3Provider(provider);
   const signer = await web3provider.getSigner();
+  const address = await signer.getAddress();
   setProvider(web3provider);
   setSigner(signer);
+  console.log("address", address);
+  setCurrentAddress(address);
 };
 
 const OurLink = (props: any) => {
   const [currentAddress] = useContext(CurrentAddressContext);
   const [_provider, setProvider] = useContext(ProviderContext);
   const [_signer, setSigner] = useContext(SignerContext);
+  const [_currentAddress, setCurrentAddress] = useContext(CurrentAddressContext);
   if (!currentAddress) {
     return (
       <CLink
-        onClick={handleWeb3ProviderConnect(setProvider, setSigner)}
+        onClick={handleWeb3ProviderConnect(setProvider, setSigner, setCurrentAddress)}
         href={"#"}
         activeStyle={{
           color: "#013A6D",
@@ -111,6 +119,8 @@ const Links = () => (
 const Navbar: React.FunctionComponent<IProps> = (props) => {
   const [currentAddress] = useContext(CurrentAddressContext);
   const [_provider, setProvider] = useContext(ProviderContext);
+  const [_signer, setSigner] = useContext(SignerContext);
+  const [_currentAddress, setCurrentAddress] = useContext(CurrentAddressContext);
 
   return (
     <Flex width="100%" px={[2, 10]} py={4}>
@@ -136,7 +146,7 @@ const Navbar: React.FunctionComponent<IProps> = (props) => {
             background="#0065D0"
             borderRadius="32px"
             color="white"
-            onClick={handleWeb3ProviderConnect(setProvider)}
+            onClick={handleWeb3ProviderConnect(setProvider, setSigner, setCurrentAddress)}
           >
             Connect
           </Button>
