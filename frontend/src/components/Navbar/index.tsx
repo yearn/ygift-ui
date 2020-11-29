@@ -5,7 +5,13 @@ import { NavLink } from "react-router-dom";
 import Web3Modal, { IProviderOptions } from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
-import { CurrentAddressContext, INFURA_API_KEY, ProviderContext, network } from "../../hardhat/HardhatContext";
+import {
+  CurrentAddressContext,
+  INFURA_API_KEY,
+  ProviderContext,
+  network,
+  SignerContext,
+} from "../../hardhat/HardhatContext";
 import { formatAddress } from "../../lib/format-address";
 
 export const componentDataTestId = createDataTestId("Navbar");
@@ -22,7 +28,7 @@ const Logo = () => (
   </NavLink>
 );
 
-const handleWeb3ProviderConnect = (setProvider: Function) => async () => {
+const handleWeb3ProviderConnect = (setProvider: Function, setSigner: Function) => async () => {
   const getWeb3ModalProvider = async (): Promise<any> => {
     const providerOptions: IProviderOptions = {
       walletconnect: {
@@ -44,16 +50,19 @@ const handleWeb3ProviderConnect = (setProvider: Function) => async () => {
   const provider = await getWeb3ModalProvider();
   console.log(provider);
   const web3provider = new ethers.providers.Web3Provider(provider);
+  const signer = await web3provider.getSigner();
   setProvider(web3provider);
+  setSigner(signer);
 };
 
 const OurLink = (props: any) => {
   const [currentAddress] = useContext(CurrentAddressContext);
   const [_provider, setProvider] = useContext(ProviderContext);
+  const [_signer, setSigner] = useContext(SignerContext);
   if (!currentAddress) {
     return (
       <CLink
-        onClick={handleWeb3ProviderConnect(setProvider)}
+        onClick={handleWeb3ProviderConnect(setProvider, setSigner)}
         href={"#"}
         activeStyle={{
           color: "#013A6D",
