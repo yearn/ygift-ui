@@ -31,13 +31,13 @@ const Transaction: React.FC<TransactionModel> = (props) => (
           fontSize: "16px",
           lineHeight: "137.88%",
         }}
-        width={["auto", "150px"]}
+        minWidth={["auto", "auto", "auto", "150px"]}
         textAlign="left"
       >
         {DateTime.fromSeconds(props.date).toHTTP()}
       </Text>
     </Flex>
-    <VStack spacing={2} width={["auto", "340px"]} alignSelf="flex-start" alignItems="flex-start">
+    <VStack spacing={2} minWidth={["auto", "auto", "auto", "340px"]} alignSelf="flex-start" alignItems="flex-start">
       <VStack alignItems="flex-start">
         <Text
           color="#0065D0"

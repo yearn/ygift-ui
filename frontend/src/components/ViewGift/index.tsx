@@ -74,7 +74,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
     return (
       <VStack
         minHeight={"884px"}
-        width={["auto", "920px"]}
+        width={["auto", "auto", "auto", "920px"]}
         borderRadius="16px"
         boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)"
         mb={8}
@@ -91,7 +91,13 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
               <Image borderRadius={"16px"} height="auto" width="400px" src={gift?.url} alignSelf="flex-start" />
             </SRLWrapper>
           </Box>
-          <VStack height="100%" width={["auto", "520px"]} alignItems="flex-start" p={4} spacing={"24px"}>
+          <VStack
+            height="100%"
+            width={["auto", "auto", "auto", "520px"]}
+            alignItems="flex-start"
+            p={4}
+            spacing={"24px"}
+          >
             {/*  */}
             <HStack width="100%">
               <Heading
