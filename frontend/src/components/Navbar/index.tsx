@@ -67,8 +67,12 @@ const handleWeb3ProviderConnect = (
   setSigner(signer);
   console.log("address", address);
   setCurrentAddress(address);
-  setyGift(getyGift(web3provider, signer));
-  setERC721(getERC721(web3provider, signer));
+  const yGift = getyGift(web3provider, signer);
+  const erc721 = getERC721(web3provider, signer);
+  console.log(yGift);
+  console.log(erc721);
+  setyGift(yGift);
+  setERC721(erc721);
 };
 
 const OurLink = (props: any) => {
