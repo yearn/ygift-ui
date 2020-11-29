@@ -91,15 +91,6 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
   const getProvider = async (): Promise<providers.Provider | undefined> => {
     const provider = await providerPriority.reduce(
       async (maybeProvider: Promise<providers.Provider | undefined>, providerIdentification) => {
-        if (!window.ethereum) {
-          try {
-            const defaultProvider = new ethers.providers.InfuraProvider(network, INFURA_API_KEY);
-            console.log(defaultProvider);
-            return Promise.resolve(defaultProvider);
-          } catch (error) {
-            return Promise.resolve(undefined);
-          }
-        }
         let foundProvider = await maybeProvider;
         if (foundProvider) {
           return Promise.resolve(foundProvider);
@@ -126,6 +117,15 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
                 return Promise.resolve(undefined);
               }
             default:
+              if (!window.ethereum) {
+                try {
+                  const defaultProvider = new ethers.providers.InfuraProvider(network, INFURA_API_KEY);
+                  console.log(defaultProvider);
+                  return Promise.resolve(defaultProvider);
+                } catch (error) {
+                  return Promise.resolve(undefined);
+                }
+              }
               return Promise.resolve(undefined);
           }
         }
