@@ -10,6 +10,8 @@ import { ViewGift } from "./components/ViewGift";
 import { ChakraProvider } from "@chakra-ui/react";
 import { GiftsTabs } from "./components/GiftsTabs";
 import { Error } from "./components/Error";
+// @ts-ignore-next
+import SimpleReactLightbox from "simple-react-lightbox";
 import ErrorBoundary from "./components/Error/ErrorBoundary";
 
 export const AppRouter = () => {
@@ -46,7 +48,9 @@ function App() {
         <ChakraProvider>
           <HardhatContext>
             <Layout>
-              <AppRouter></AppRouter>
+              <SimpleReactLightbox>
+                <AppRouter></AppRouter>
+              </SimpleReactLightbox>
             </Layout>
           </HardhatContext>
         </ChakraProvider>

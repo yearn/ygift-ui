@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import { Flex, Stack, Text, Button, VStack, HStack, Image, useDisclosure, Heading } from "@chakra-ui/react";
+import { Flex, Stack, Text, Button, VStack, HStack, Image, useDisclosure, Heading, Box } from "@chakra-ui/react";
 import { GiftModel } from "../Gifts/Gift";
 import {
   Popover,
@@ -22,6 +22,8 @@ import { formatUnits } from "ethers/lib/utils";
 import { BigNumber, ethers } from "ethers";
 import { DateTime } from "luxon";
 import { SEO } from "./SEO";
+// @ts-ignore-next
+import { SRLWrapper } from "simple-react-lightbox";
 
 export const componentDataTestId = createDataTestId("ViewGift");
 
@@ -72,7 +74,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
     return (
       <VStack
         minHeight={"884px"}
-        width="920px"
+        width={["auto", "920px"]}
         borderRadius="16px"
         boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)"
         mb={8}
@@ -81,11 +83,15 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)"
           borderRadius="16px"
           pb={2}
-          spacing={"32px"}
-          direction={["column", "row"]}
+          spacing={["0", "32px"]}
+          flexDirection={["column", "row"]}
         >
-          <Image borderRadius={"16px"} height="auto" width="400px" src={gift?.url} alignSelf="flex-start" />
-          <VStack height="100%" width="520px" alignItems="flex-start" p={4} spacing={"24px"}>
+          <Box alignSelf={["center", "flex-start"]} cursor="pointer">
+            <SRLWrapper>
+              <Image borderRadius={"16px"} height="auto" width="400px" src={gift?.url} alignSelf="flex-start" />
+            </SRLWrapper>
+          </Box>
+          <VStack height="100%" width={["auto", "520px"]} alignItems="flex-start" p={4} spacing={"24px"}>
             {/*  */}
             <HStack width="100%">
               <Heading

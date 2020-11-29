@@ -18,7 +18,8 @@ interface IProps {
 // const erc20Tokens = ["YFI", "yUSD", "y3Crv", "DAI", "USDC", "ETH", "wBTC"];
 export const erc20TokensData = [
   {
-    address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    // Penguin-UNI LP, no one should have this really
+    address: "0xff84179Bf75737B9B651D712D6809E44CFFB382a",
     chainId: 1,
     decimals: 18,
     logoURI: "None",

@@ -12,9 +12,7 @@ interface IProps {}
 const Layout: React.FunctionComponent<IProps> = (props) => (
   <VStack spacing={0}>
     <Navbar></Navbar>
-    <Center minHeight={`calc(100vh - 72px)`} width={"100%"}>
-      {props.children}
-    </Center>
+    {props.children}
   </VStack>
 );
 
