@@ -15,7 +15,7 @@ const Error: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <Center
-      width={"70vw"}
+      width={["100vw", "90vw", "90vw", "70vw"]}
       {...{
         background: "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
         borderRadius: "16px",

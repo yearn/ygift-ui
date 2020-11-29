@@ -58,36 +58,6 @@ const spin = keyframes`
   to { transform: rotate(360deg); }
 `;
 
-const Submitting: React.FC = () => (
-  <Center
-    {...{
-      position: "absolute",
-      width: "1200px",
-      height: "700px",
-      background: "#013A6D",
-      opacity: 0.9,
-      borderRadius: "16px",
-      zIndex: 500,
-    }}
-  >
-    <VStack spacing={4}>
-      <Heading
-        as="h3"
-        {...{
-          fontFamily: "Roboto",
-          fontStyle: "normal",
-          fontWeight: "bold",
-          fontSize: "24px",
-          color: "white",
-        }}
-      >
-        Processing
-      </Heading>
-      <SpinnerIcon color="white" height="90px" width="90px" animation={`${spin} 2s infinite linear`} />
-    </VStack>
-  </Center>
-);
-
 interface ISubmittedProps {
   url: string;
   id: string;
@@ -98,11 +68,11 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
   const { hasCopied: hasIdCopied, onCopy: onIdCopy } = useClipboard(giftIdUrl);
   return (
     <Center
+      width={["auto", "auto", "90vw", "1200px"]}
+      height={["auto", "auto", "auto", "700px"]}
       {...{
         background: "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
         borderRadius: "16px",
-        width: "1200px",
-        height: "700px",
         py: 8,
       }}
     >
@@ -350,7 +320,6 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      {(props.isSubmitting || formik.isSubmitting) && <Submitting></Submitting>}
       <HStack
         spacing={0}
         {...{
@@ -358,12 +327,14 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           borderRadius: "16px",
           background: "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
         }}
-        width="1200px"
-        height="700px"
+        width={["auto", "auto", "auto", "1200px"]}
+        height={["auto", "auto", "auto", "700px"]}
+        flexDirection={["column", "column", "column", "row"]}
+        alignItems={["center", "center", "center", "inherit"]}
       >
-        <Center height={"100%"} width="50%">
+        <Center height={"100%"} width={["100%", "100%", "100%", "50%"]}>
           {" "}
-          <VStack spacing={0} py={"36px"} height={"100%"}>
+          <VStack spacing={0} py={"36px"} height={"100%"} alignItems={["center", "center", "center", "inherit"]}>
             <Box position="relative">
               <Image
                 borderRadius="16px"
@@ -510,9 +481,10 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
 
         <Center
           background="white"
-          width="50%"
+          width={["auto", "auto", "auto", "50%"]}
           height="100%"
-          px={20}
+          py={[5, 5, 5, 5, 0]}
+          px={[5, 5, 5, 5, 20]}
           borderRadius="16px"
           borderTopLeftRadius="none"
           borderBottomLeftRadius="none"
@@ -608,6 +580,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 !isApproved && formik?.values?.[Number(params.indexOf("_amount"))] !== 0 && erc20Approve();
               }}
               isDisabled={!formik.values?.[Number(params.indexOf("_token"))]}
+              isLoading={props.isSubmitting || formik.isSubmitting}
               variant="outline"
               background="#0065D0"
               _hover={{ background: darken(0.1, "#0065D0") }}
@@ -615,6 +588,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               width={"100%"}
               height={"56px"}
               color="white"
+              _disabled={{ background: darken(0.1, "#0065D0") }}
               {...{
                 fontFamily: "Roboto",
                 fontStyle: "normal",
