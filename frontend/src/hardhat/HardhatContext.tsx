@@ -46,6 +46,28 @@ export interface SymfoniErc721 {
 export const INFURA_API_KEY = "c6b047a0e8a14a96ac331a47ec96c508";
 export const network = "mainnet";
 
+export const getyGift = (_provider: providers.Provider, _signer?: Signer) => {
+  const contractAddress = yGiftDeployment.receipt.contractAddress;
+  const instance = _signer
+    ? YGiftFactory.connect(contractAddress, _signer)
+    : YGiftFactory.connect(contractAddress, _provider);
+  const contract: SymfoniYGift = {
+    instance: instance,
+    factory: _signer ? new YGiftFactory(_signer) : undefined,
+  };
+  console.log(contract);
+  return contract;
+};
+
+export const getERC721 = (_provider: providers.Provider, _signer?: Signer) => {
+  let instance = undefined;
+  const contract: SymfoniErc721 = {
+    instance: instance,
+    factory: _signer ? new Erc721Factory(_signer) : undefined,
+  };
+  return contract;
+};
+
 export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
   const [ready, setReady] = useState(false);
   const [messages, setMessages] = useState<string[]>([]);
@@ -187,26 +209,6 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
     };
   }, []);
 
-  const getyGift = (_provider: providers.Provider, _signer?: Signer) => {
-    const contractAddress = yGiftDeployment.receipt.contractAddress;
-    const instance = _signer
-      ? YGiftFactory.connect(contractAddress, _signer)
-      : YGiftFactory.connect(contractAddress, _provider);
-    const contract: SymfoniYGift = {
-      instance: instance,
-      factory: _signer ? new YGiftFactory(_signer) : undefined,
-    };
-    console.log(contract);
-    return contract;
-  };
-  const getERC721 = (_provider: providers.Provider, _signer?: Signer) => {
-    let instance = undefined;
-    const contract: SymfoniErc721 = {
-      instance: instance,
-      factory: _signer ? new Erc721Factory(_signer) : undefined,
-    };
-    return contract;
-  };
   return (
     <ProviderContext.Provider value={[provider, setProvider]}>
       <SignerContext.Provider value={[signer, setSigner]}>

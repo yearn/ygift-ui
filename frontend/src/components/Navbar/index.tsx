@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
 import { Flex, Text, Button, HStack, Heading, Link as CLink, Center } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
@@ -11,6 +11,11 @@ import {
   ProviderContext,
   network,
   SignerContext,
+  getyGift,
+  getERC721,
+  emptyContract,
+  SymfoniYGift,
+  SymfoniErc721,
 } from "../../hardhat/HardhatContext";
 import { formatAddress } from "../../lib/format-address";
 
@@ -31,7 +36,9 @@ const Logo = () => (
 const handleWeb3ProviderConnect = (
   setProvider: Function,
   setSigner: Function,
-  setCurrentAddress: Function
+  setCurrentAddress: Function,
+  setyGift: Function,
+  setERC721: Function
 ) => async () => {
   const getWeb3ModalProvider = async (): Promise<any> => {
     const providerOptions: IProviderOptions = {
@@ -60,6 +67,8 @@ const handleWeb3ProviderConnect = (
   setSigner(signer);
   console.log("address", address);
   setCurrentAddress(address);
+  setyGift(getyGift(web3provider, signer));
+  setERC721(getERC721(web3provider, signer));
 };
 
 const OurLink = (props: any) => {
@@ -67,10 +76,13 @@ const OurLink = (props: any) => {
   const [_provider, setProvider] = useContext(ProviderContext);
   const [_signer, setSigner] = useContext(SignerContext);
   const [_currentAddress, setCurrentAddress] = useContext(CurrentAddressContext);
+  const [yGift, setyGift] = useState<SymfoniYGift>(emptyContract);
+  const [ERC721, setERC721] = useState<SymfoniErc721>(emptyContract);
+
   if (!currentAddress) {
     return (
       <CLink
-        onClick={handleWeb3ProviderConnect(setProvider, setSigner, setCurrentAddress)}
+        onClick={handleWeb3ProviderConnect(setProvider, setSigner, setCurrentAddress, setyGift, setERC721)}
         href={"#"}
         activeStyle={{
           color: "#013A6D",
@@ -121,6 +133,8 @@ const Navbar: React.FunctionComponent<IProps> = (props) => {
   const [_provider, setProvider] = useContext(ProviderContext);
   const [_signer, setSigner] = useContext(SignerContext);
   const [_currentAddress, setCurrentAddress] = useContext(CurrentAddressContext);
+  const [yGift, setyGift] = useState<SymfoniYGift>(emptyContract);
+  const [ERC721, setERC721] = useState<SymfoniErc721>(emptyContract);
 
   return (
     <Flex width="100%" px={[2, 10]} py={4}>
@@ -146,7 +160,7 @@ const Navbar: React.FunctionComponent<IProps> = (props) => {
             background="#0065D0"
             borderRadius="32px"
             color="white"
-            onClick={handleWeb3ProviderConnect(setProvider, setSigner, setCurrentAddress)}
+            onClick={handleWeb3ProviderConnect(setProvider, setSigner, setCurrentAddress, setyGift, setERC721)}
           >
             Connect
           </Button>
