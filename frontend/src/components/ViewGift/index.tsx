@@ -121,7 +121,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
         >
           <Box cursor="pointer">
             {isVideo ? (
-              <video src={_url} autoPlay loop height="auto" width="400px" />
+              <video src={_url} autoPlay loop muted playsInline height="auto" width="400px" />
             ) : (
               <SRLWrapper>
                 <Image
