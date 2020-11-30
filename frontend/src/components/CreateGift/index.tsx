@@ -362,6 +362,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
       };
       reader.readAsDataURL(files[0]);
 
+      setIsVideo(true);
       setChosenFile(files[0]);
     }
   }
@@ -420,6 +421,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                     if (chosenFileUrl.length) {
                       setChosenFile(undefined);
                       setChosenFileUrl("");
+                      setIsVideo(false);
                     } else {
                       formik.setFieldValue(String(params.indexOf("_url")), "");
                     }
