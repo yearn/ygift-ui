@@ -222,6 +222,8 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
       <video
         src={formik?.values?.[Number(params?.indexOf("_url"))]?.toString() || chosenFileUrl}
         autoPlay
+        playsInline
+        muted
         loop
         height="auto"
         width="464px"

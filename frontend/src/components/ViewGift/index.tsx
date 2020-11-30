@@ -99,7 +99,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const isRecipient = currentAddress === ownedBy;
 
   const [video, state, controls, ref] = useVideo(
-    isVideo ? <video src={gift?.url} autoPlay loop height="auto" width="400px" /> : <div></div>
+    isVideo ? <video src={gift?.url} autoPlay playsInline muted loop height="auto" width="400px" /> : <div></div>
   );
 
   if (gift && ownedBy) {
