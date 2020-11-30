@@ -217,12 +217,16 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   const [chosenFileUrl, setChosenFileUrl] = useState<string>("");
   const [isVideo, setIsVideo] = useState<boolean>(false);
   const [video, state, controls, ref] = useVideo(
-    <video
-      src={formik?.values?.[Number(params?.indexOf("_url"))]?.toString() || chosenFileUrl}
-      autoPlay
-      height="auto"
-      width="464px"
-    />
+    isVideo ? (
+      <video
+        src={formik?.values?.[Number(params?.indexOf("_url"))]?.toString() || chosenFileUrl}
+        autoPlay
+        height="auto"
+        width="464px"
+      />
+    ) : (
+      <div></div>
+    )
   );
 
   // Check if ipfs file is video

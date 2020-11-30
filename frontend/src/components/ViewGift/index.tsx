@@ -22,8 +22,14 @@ import { formatUnits } from "ethers/lib/utils";
 import { BigNumber, ethers } from "ethers";
 import { DateTime } from "luxon";
 import { SEO } from "./SEO";
+import fileType from "file-type";
+import { useVideo } from "react-use";
 // @ts-ignore-next
 import { SRLWrapper } from "simple-react-lightbox";
+import {
+  // @ts-ignore-next
+  urlSource,
+} from "ipfs-http-client";
 
 export const componentDataTestId = createDataTestId("ViewGift");
 
@@ -40,6 +46,27 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const [gift, setGift] = useState<GiftModel>();
   const [ownedBy, setOwnedBy] = useState<string>("");
   const [from, setFrom] = useState<string>("");
+  const [isVideo, setIsVideo] = useState<boolean>(false);
+
+  // Check if ipfs file is video
+  useEffect(() => {
+    const fetch = async function () {
+      const ipfsFileUrl = gift?.url?.toString();
+      console.log(ipfsFileUrl);
+
+      if (ipfsFileUrl?.includes("ipfs")) {
+        for await (const file of urlSource(ipfsFileUrl)) {
+          const fileContent = await file.content.next();
+          const fileTypeResult = await fileType.fromBuffer(fileContent.value.buffer);
+          const isVideo = Boolean(fileTypeResult?.mime?.includes("video"));
+          console.log({ isVideo });
+          setIsVideo(isVideo);
+        }
+      }
+    };
+    fetch();
+  }, [gift?.url]);
+
   useEffect(() => {
     const fetch = async () => {
       if (yGift?.instance) {
@@ -69,6 +96,10 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
 
   const isRecipient = currentAddress === ownedBy;
 
+  const [video, state, controls, ref] = useVideo(
+    isVideo ? <video src={gift?.url} autoPlay loop height="auto" width="400px" /> : <div></div>
+  );
+
   if (gift && ownedBy) {
     console.log(gift);
     return (
@@ -89,13 +120,17 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
         >
           <Box cursor="pointer">
             <SRLWrapper>
-              <Image
-                borderRadius={"16px"}
-                height="auto"
-                width={["auto", "auto", "auto", "400px"]}
-                src={gift?.url}
-                alignSelf="flex-start"
-              />
+              {isVideo ? (
+                video
+              ) : (
+                <Image
+                  borderRadius={"16px"}
+                  height="auto"
+                  width={["auto", "auto", "auto", "400px"]}
+                  src={gift?.url}
+                  alignSelf="flex-start"
+                />
+              )}
             </SRLWrapper>
           </Box>
           <VStack
