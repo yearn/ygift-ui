@@ -441,7 +441,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 isRequired
                 height={"56px"}
                 width={"424px"}
-                placeholder="Cover image URL"
+                placeholder="Cover URL"
                 key={"_url"}
                 data-testid={"_url"}
                 id={String(params.indexOf("_url"))}
