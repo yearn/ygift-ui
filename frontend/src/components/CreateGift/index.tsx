@@ -1,6 +1,9 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import ipfsClient from "ipfs-http-client";
+import ipfsClient, {
+  // @ts-ignore-next
+  urlSource,
+} from "ipfs-http-client";
 import { darken } from "polished";
 import {
   Button,
@@ -18,6 +21,7 @@ import {
   FormLabel,
   keyframes,
 } from "@chakra-ui/react";
+import fileType from "file-type";
 import { CloseIcon, CopyIcon, SmallCloseIcon, SpinnerIcon } from "@chakra-ui/icons";
 import { useCreateGiftFormManagement } from "./useCreateGiftFormManagement";
 import { useFormik } from "formik";
@@ -211,7 +215,33 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   const [isUploadingCoverImageUrl, setIsUploadingImage] = useState<boolean>(false);
   const [chosenFile, setChosenFile] = useState<File | undefined>(undefined);
   const [chosenFileUrl, setChosenFileUrl] = useState<string>("");
-  const [video, state, controls, ref] = useVideo(<video src={chosenFileUrl} autoPlay height="auto" width="464px" />);
+  const [isVideo, setIsVideo] = useState<boolean>(false);
+  const [video, state, controls, ref] = useVideo(
+    <video
+      src={formik?.values?.[Number(params?.indexOf("_url"))]?.toString() || chosenFileUrl}
+      autoPlay
+      height="auto"
+      width="464px"
+    />
+  );
+
+  // Check if ipfs file is video
+  useEffect(() => {
+    const fetch = async function () {
+      const ipfsFileUrl = formik?.values?.[Number(params?.indexOf("_url"))]?.toString();
+      console.log(ipfsFileUrl);
+
+      if (ipfsFileUrl?.includes("ipfs")) {
+        for await (const file of urlSource(ipfsFileUrl)) {
+          const fileContent = await file.content.next();
+          const fileTypeResult = await fileType.fromBuffer(fileContent.value.buffer);
+          const isVideo = Boolean(fileTypeResult?.mime?.includes("video"));
+          setIsVideo(isVideo);
+        }
+      }
+    };
+    fetch();
+  }, [formik?.values]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -275,7 +305,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
         .then((file) => {
           console.log(file);
           const ipfsHash = file.path;
-          const ipfsGateway = "https://cloudflare-ipfs.com/ipfs/";
+          const ipfsGateway = "https://gateway.ipfs.io/ipfs/";
           formik.setFieldValue(String(params.indexOf("_url")), ipfsGateway + ipfsHash);
           setIsUploadingImage(false);
           setChosenFile(undefined);
@@ -350,7 +380,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           {" "}
           <VStack spacing={0} py={"36px"} height={"100%"} alignItems={["center", "center", "center", "inherit"]}>
             <Box position="relative">
-              {chosenFile?.type?.includes("video") ? (
+              {chosenFile?.type?.includes("video") || isVideo ? (
                 video
               ) : (
                 <Image
@@ -455,7 +485,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 {isUploadingCoverImageUrl ? (
                   <SpinnerIcon color="white" animation={`${spin} 2s infinite linear`} />
                 ) : (
-                  "Upload Image to IPFS"
+                  "Upload File to IPFS"
                 )}
               </Button>
             ) : (
