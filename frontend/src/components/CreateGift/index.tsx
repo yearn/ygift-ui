@@ -325,6 +325,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   }
 
   function handleChooseFile(files: FileList) {
+    setIsVideo(false);
     const fileExtension = files?.[0]["name"].substring(files?.[0]["name"].lastIndexOf(".") + 1).toLowerCase();
 
     if (
@@ -510,7 +511,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 py={"17px"}
                 _hover={{ border: "1px solid grey" }}
               >
-                {"Choose Image"}
+                {"Choose Image or mp4"}
                 <Input
                   onChange={(event) => {
                     event.stopPropagation();
