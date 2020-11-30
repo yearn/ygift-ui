@@ -30,6 +30,7 @@ import {
   // @ts-ignore-next
   urlSource,
 } from "ipfs-http-client";
+import all from "it-all";
 
 export const componentDataTestId = createDataTestId("ViewGift");
 
@@ -47,27 +48,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const [ownedBy, setOwnedBy] = useState<string>("");
   const [from, setFrom] = useState<string>("");
   const [isVideo, setIsVideo] = useState<boolean>(false);
-
-  // Check if ipfs file is video
-  useEffect(() => {
-    const fetch = async function () {
-      const ipfsFileUrl = gift?.url?.toString();
-      console.log(ipfsFileUrl);
-
-      if (ipfsFileUrl?.includes("mp4")) {
-        setIsVideo(true);
-      } else if (ipfsFileUrl?.includes("ipfs")) {
-        for await (const file of urlSource(ipfsFileUrl)) {
-          const fileContent = await file.content.next();
-          const fileTypeResult = await fileType.fromBuffer(fileContent.value.buffer);
-          const isVideo = Boolean(fileTypeResult?.mime?.includes("video"));
-          console.log({ isVideo });
-          setIsVideo(isVideo);
-        }
-      }
-    };
-    fetch();
-  }, [gift?.url]);
+  const _url = gift?.url;
 
   useEffect(() => {
     const fetch = async () => {
@@ -96,11 +77,29 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
     fetch();
   }, [yGift, id, provider]);
 
-  const isRecipient = currentAddress === ownedBy;
+  // Check if ipfs file is video
+  useEffect(() => {
+    const fetch = async function () {
+      const ipfsFileUrl = _url;
+      console.log(ipfsFileUrl);
+      if (isVideo) return;
+      if (ipfsFileUrl?.includes("mp4") && !isVideo) {
+        setIsVideo(true);
+      } else if (ipfsFileUrl?.includes("ipfs") && !isVideo) {
+        const [urlSourced] = await all<any>(urlSource(ipfsFileUrl));
+        const [file] = await all<ArrayBuffer>(urlSourced.content);
+        const fileTypeResult = await fileType.fromBuffer(file);
+        const isVideo = Boolean(fileTypeResult?.mime?.includes("video"));
+        console.log({ isVideo });
+        if (isVideo) {
+          setIsVideo(true);
+        }
+      }
+    };
+    fetch();
+  }, [_url, isVideo]);
 
-  const [video, state, controls, ref] = useVideo(
-    isVideo ? <video src={gift?.url} autoPlay playsInline muted loop height="auto" width="400px" /> : <div></div>
-  );
+  const isRecipient = currentAddress === ownedBy;
 
   if (gift && ownedBy) {
     console.log(gift);
@@ -121,10 +120,10 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           alignItems="flex-start"
         >
           <Box cursor="pointer">
-            <SRLWrapper>
-              {isVideo ? (
-                video
-              ) : (
+            {isVideo ? (
+              <video src={_url} autoPlay loop height="auto" width="400px" />
+            ) : (
+              <SRLWrapper>
                 <Image
                   borderRadius={"16px"}
                   height="auto"
@@ -132,8 +131,8 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                   src={gift?.url}
                   alignSelf="flex-start"
                 />
-              )}
-            </SRLWrapper>
+              </SRLWrapper>
+            )}
           </Box>
           <VStack
             height="100%"

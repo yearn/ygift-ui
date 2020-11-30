@@ -27,6 +27,7 @@
     "formik": "^2.2.3",
     "framer-motion": "^2.9.4",
     "ipfs-http-client": "^48.1.1",
+    "it-all": "^1.0.4",
     "luxon": "^1.25.0",
     "match-sorter": "^5.0.0",
     "polished": "^4.0.4",

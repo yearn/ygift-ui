@@ -31,6 +31,7 @@ import { CurrentAddressContext, ProviderContext, SignerContext } from "../../har
 import yGiftDeployment from "../../hardhat/deployments/localhost/yGift.json";
 import { Erc20Select } from "./Erc20Select";
 import { useVideo } from "react-use";
+import all from "it-all";
 // /src/hardhat/deployments/localhost/yGift.json
 
 export const componentDataTestId = createDataTestId("CreateGift");
@@ -217,21 +218,6 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   const [chosenFile, setChosenFile] = useState<File | undefined>(undefined);
   const [chosenFileUrl, setChosenFileUrl] = useState<string>("");
   const [isVideo, setIsVideo] = useState<boolean>(false);
-  const [video, state, controls, ref] = useVideo(
-    isVideo ? (
-      <video
-        src={formik?.values?.[Number(params?.indexOf("_url"))]?.toString() || chosenFileUrl}
-        autoPlay
-        playsInline
-        muted
-        loop
-        height="auto"
-        width="464px"
-      />
-    ) : (
-      <div></div>
-    )
-  );
 
   // Check if ipfs file is video
   useEffect(() => {
@@ -239,19 +225,18 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
       const ipfsFileUrl = _url;
       console.log(ipfsFileUrl);
 
-      if (ipfsFileUrl?.includes("mp4")) {
+      if (ipfsFileUrl?.includes("mp4") && !isVideo) {
         setIsVideo(true);
-      } else if (ipfsFileUrl?.includes("ipfs")) {
-        for await (const file of urlSource(ipfsFileUrl)) {
-          const fileContent = await file.content.next();
-          const fileTypeResult = await fileType.fromBuffer(fileContent.value.buffer);
-          const isVideo = Boolean(fileTypeResult?.mime?.includes("video"));
-          setIsVideo(isVideo);
-        }
+      } else if (ipfsFileUrl?.includes("ipfs") && !isVideo) {
+        const [urlSourced] = await all<any>(urlSource(ipfsFileUrl));
+        const [file] = await all<ArrayBuffer>(urlSourced.content);
+        const fileTypeResult = await fileType.fromBuffer(file);
+        const isVideo = Boolean(fileTypeResult?.mime?.includes("video"));
+        setIsVideo(isVideo);
       }
     };
     fetch();
-  }, [_url]);
+  }, [_url, isVideo]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -393,7 +378,15 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           <VStack spacing={0} py={"36px"} height={"100%"} alignItems={["center", "center", "center", "inherit"]}>
             <Box position="relative">
               {chosenFile?.type?.includes("video") || isVideo ? (
-                video
+                <video
+                  src={formik?.values?.[Number(params?.indexOf("_url"))]?.toString() || chosenFileUrl}
+                  autoPlay
+                  playsInline
+                  muted
+                  loop
+                  height="auto"
+                  width="464px"
+                />
               ) : (
                 <Image
                   borderRadius="16px"
