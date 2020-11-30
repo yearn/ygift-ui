@@ -26,10 +26,12 @@ import { BigNumber, ethers } from "ethers";
 import { CurrentAddressContext, ProviderContext, SignerContext } from "../../hardhat/HardhatContext";
 import yGiftDeployment from "../../hardhat/deployments/localhost/yGift.json";
 import { Erc20Select } from "./Erc20Select";
+import { useVideo } from "react-use";
 // /src/hardhat/deployments/localhost/yGift.json
 
 export const componentDataTestId = createDataTestId("CreateGift");
 
+const ipfs = ipfsClient({ url: "https://ipfs.infura.io:5001" });
 export const params = ["_to", "_token", "_amount", "_name", "_msg", "_url", "_start", "_duration"] as const;
 export const yGiftContractAddress = yGiftDeployment.receipt.contractAddress;
 export const erc20Abi = [
@@ -209,6 +211,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   const [isUploadingCoverImageUrl, setIsUploadingImage] = useState<boolean>(false);
   const [chosenFile, setChosenFile] = useState<File | undefined>(undefined);
   const [chosenFileUrl, setChosenFileUrl] = useState<string>("");
+  const [video, state, controls, ref] = useVideo(<video src={chosenFileUrl} autoPlay height="auto" width="464px" />);
 
   useEffect(() => {
     const fetch = async () => {
@@ -264,7 +267,6 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
 
   async function saveToIpfs(file: File) {
     if (file) {
-      const ipfs = ipfsClient({ url: "https://ipfs.infura.io:5001" });
       setIsUploadingImage(true);
       ipfs
         .add(file, {
@@ -311,6 +313,18 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
       };
 
       reader.readAsDataURL(files[0]);
+    } else if (files && files[0] && fileExtension === "mp4") {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        var videoElement = document.createElement("video");
+        if (e?.target?.result) {
+          videoElement.src = String(e.target.result);
+          setChosenFileUrl(e.target.result.toString());
+        }
+      };
+      reader.readAsDataURL(files[0]);
+
+      setChosenFile(files[0]);
     }
   }
 
@@ -336,14 +350,18 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           {" "}
           <VStack spacing={0} py={"36px"} height={"100%"} alignItems={["center", "center", "center", "inherit"]}>
             <Box position="relative">
-              <Image
-                borderRadius="16px"
-                maxHeight={(chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "463px"}
-                height={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "auto") || "463px"}
-                maxWidth={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "424px") || "304px"}
-                src={chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
-                mb={"18px"}
-              ></Image>
+              {chosenFile?.type?.includes("video") ? (
+                video
+              ) : (
+                <Image
+                  borderRadius="16px"
+                  maxHeight={(chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "463px"}
+                  height={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "auto") || "463px"}
+                  maxWidth={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "424px") || "304px"}
+                  src={chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
+                  mb={"18px"}
+                ></Image>
+              )}
               {chosenFileUrl && (
                 <Box
                   {...{

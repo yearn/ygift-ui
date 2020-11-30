@@ -91,12 +91,21 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
   const getProvider = async (): Promise<providers.Provider | undefined> => {
     const provider = await providerPriority.reduce(
       async (maybeProvider: Promise<providers.Provider | undefined>, providerIdentification) => {
+        if (!window.ethereum) {
+          try {
+            const defaultProvider = new ethers.providers.InfuraProvider(network, INFURA_API_KEY);
+            return Promise.resolve(defaultProvider);
+          } catch (error) {
+            return Promise.resolve(undefined);
+          }
+        }
+
         let foundProvider = await maybeProvider;
         if (foundProvider) {
           return Promise.resolve(foundProvider);
         } else {
           switch (providerIdentification.toLowerCase()) {
-            case "web3modal":
+            case "web3modal": {
               try {
                 const provider = await getWeb3ModalProvider();
                 console.log(provider);
@@ -106,6 +115,7 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
               } catch (error) {
                 return Promise.resolve(undefined);
               }
+            }
             case "hardhat":
               try {
                 const provider = new ethers.providers.JsonRpcProvider({
@@ -139,7 +149,6 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
       case "Web3Provider":
         const web3provider = _provider as ethers.providers.Web3Provider;
         const signer = await web3provider.getSigner();
-        console.log("getSigner: ", signer);
         return signer;
       case "JsonRpcProvider":
         return ethers.Wallet.fromMnemonic("test test test test test test test test test test test junk").connect(
@@ -158,11 +167,10 @@ export const HardhatContext: React.FC<HardhatContextProps> = (props) => {
               return undefined;
             }
           }
-          if ((_provider as ethers.providers.InfuraProvider).apiKey) {
-            return undefined;
-          }
         }
-
+        if ((_provider as ethers.providers.InfuraProvider).apiKey) {
+          return undefined;
+        }
         return undefined;
       }
     }

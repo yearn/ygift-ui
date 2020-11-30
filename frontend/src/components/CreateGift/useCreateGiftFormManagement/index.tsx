@@ -6,9 +6,9 @@ import { BigNumber, ethers } from "ethers";
 import { useHistory } from "react-router-dom";
 
 export function useCreateGiftFormManagement() {
-  const [yGift] = useContext(yGiftContext);
   const [currentAddress] = useContext(CurrentAddressContext);
   const [provider] = useContext(ProviderContext);
+  const [yGift] = useContext(yGiftContext);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [giftCreatedId, setGiftCreatedId] = useState("");
   const _start = Math.floor(DateTime.local().toSeconds());
@@ -61,7 +61,7 @@ export function useCreateGiftFormManagement() {
       }
     });
   };
-  const onSubmit = useCallback(submitHandler, [yGift?.instance, provider, currentAddress, history]);
+  const onSubmit = useCallback(submitHandler, [yGift, provider, currentAddress, history]);
   // _to: string, _token: string, _amount: BigNumberish, _name: string, _msg: string, _url: string, _start: BigNumberish, _duration: BigNumberish,
   const initialValues: Parameters<YGift["mint"]> = ["", "", "", "", "", "", _start, ""];
   return {

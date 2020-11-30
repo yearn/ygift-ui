@@ -4,9 +4,9 @@ import { TransactionModel } from "../";
 import { BigNumber, ethers } from "ethers";
 
 export function useGiftTransactionHistory(id: string) {
-  const [yGift] = useContext(yGiftContext);
-  const signer = useContext(SignerContext);
+  const [signer] = useContext(SignerContext);
   const [provider] = useContext(ProviderContext);
+  const [yGift] = useContext(yGiftContext);
   const [transactionHistory, setTransactionHistory] = useState<TransactionModel[]>([]);
 
   useEffect(() => {
