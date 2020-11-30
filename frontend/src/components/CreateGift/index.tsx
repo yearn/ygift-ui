@@ -209,6 +209,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   const [signer] = useContext(SignerContext);
   const [currentAddress] = useContext(CurrentAddressContext);
   const _token = String(formik?.values[Number(params.indexOf("_token"))]);
+  const _url = String(formik?.values[Number(params.indexOf("_url"))]);
   const [isApproved, setIsApproved] = useState<boolean>(false);
   const [maxAmount, setMaxAmount] = useState<number>(0);
   const [erc20Contract, setErc20Contract] = useState<ethers.Contract | undefined>(undefined);
@@ -233,7 +234,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   // Check if ipfs file is video
   useEffect(() => {
     const fetch = async function () {
-      const ipfsFileUrl = formik?.values?.[Number(params?.indexOf("_url"))]?.toString();
+      const ipfsFileUrl = _url;
       console.log(ipfsFileUrl);
 
       if (ipfsFileUrl?.includes("mp4")) {
@@ -248,7 +249,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
       }
     };
     fetch();
-  }, [formik?.values]);
+  }, [_url]);
 
   useEffect(() => {
     const fetch = async () => {
