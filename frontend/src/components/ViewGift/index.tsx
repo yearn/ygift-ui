@@ -54,7 +54,9 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
       const ipfsFileUrl = gift?.url?.toString();
       console.log(ipfsFileUrl);
 
-      if (ipfsFileUrl?.includes("ipfs")) {
+      if (ipfsFileUrl?.includes("mp4")) {
+        setIsVideo(true);
+      } else if (ipfsFileUrl?.includes("ipfs")) {
         for await (const file of urlSource(ipfsFileUrl)) {
           const fileContent = await file.content.next();
           const fileTypeResult = await fileType.fromBuffer(fileContent.value.buffer);

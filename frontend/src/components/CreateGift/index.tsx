@@ -221,6 +221,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
       <video
         src={formik?.values?.[Number(params?.indexOf("_url"))]?.toString() || chosenFileUrl}
         autoPlay
+        loop
         height="auto"
         width="464px"
       />
@@ -235,7 +236,9 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
       const ipfsFileUrl = formik?.values?.[Number(params?.indexOf("_url"))]?.toString();
       console.log(ipfsFileUrl);
 
-      if (ipfsFileUrl?.includes("ipfs")) {
+      if (ipfsFileUrl?.includes("mp4")) {
+        setIsVideo(true);
+      } else if (ipfsFileUrl?.includes("ipfs")) {
         for await (const file of urlSource(ipfsFileUrl)) {
           const fileContent = await file.content.next();
           const fileTypeResult = await fileType.fromBuffer(fileContent.value.buffer);
