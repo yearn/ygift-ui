@@ -83,6 +83,14 @@ export const erc20TokensData = [
     name: "Wrapped Bitcoin",
     symbol: "WBTC",
   },
+  {
+    address: "0x5D8d9F5b96f4438195BE9b99eee6118Ed4304286",
+    chainId: 1,
+    decimals: 8,
+    logoURI: "https://zapper.fi/images/COVER-icon.png",
+    name: "Cover Protocol",
+    symbol: "COVER",
+  },
 ];
 
 const Erc20Select: React.FunctionComponent<IProps> = (props) => {
