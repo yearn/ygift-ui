@@ -1,8 +1,7 @@
 # Get started
 
-1. Clone the repo and cd into it `git clone https://github.com/symfoni/hardhat-react-boilerplate.git MyProject && cd MyProject`
-2. Install deps with yarn `yarn` or npm `npm install`
-3. Start hardhat `npx hardhat node --watch`
+1. Install deps with yarn `yarn` or npm `npm install`
+2. Start hardhat `npx hardhat node --watch`
 
 ![](https://media.giphy.com/media/9l6z9MzXfHX9gKzbvU/giphy.gif)
 
