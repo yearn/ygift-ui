@@ -52,6 +52,15 @@ export const erc20TokensData = [
     symbol: "y3Crv",
   },
   {
+    address: "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2",
+    chainId: 1,
+    decimals: 18,
+    logoURI:
+      "https://github.com/iearn-finance/yearn-assets/blob/master/icons/tokens/0x6B3595068778DD592e39A122f4f5a5cF09C90fE2/logo-128.png?raw=true",
+    name: "SUSHI",
+    symbol: "SUSHI",
+  },
+  {
     address: "0x6b175474e89094c44da98b954eedeac495271d0f",
     chainId: 1,
     decimals: 18,
