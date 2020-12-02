@@ -47,7 +47,7 @@ export const erc20TokensData = [
     chainId: 1,
     decimals: 18,
     logoURI:
-      "https://github.com/iearn-finance/yearn-assets/blob/master/icons/tokens/0x9cA85572E6A3EbF24dEDd195623F188735A5179f/logo-128.png?raw=true",
+      "https://raw.githubusercontent.com/iearn-finance/yearn-assets/master/icons/tokens/0x9cA85572E6A3EbF24dEDd195623F188735A5179f/logo-128.png",
     name: "y3Crv",
     symbol: "y3Crv",
   },
@@ -56,7 +56,7 @@ export const erc20TokensData = [
     chainId: 1,
     decimals: 18,
     logoURI:
-      "https://github.com/iearn-finance/yearn-assets/blob/master/icons/tokens/0x6B3595068778DD592e39A122f4f5a5cF09C90fE2/logo-128.png?raw=true",
+      "https://raw.githubusercontent.com/iearn-finance/yearn-assets/master/icons/tokens/0x6B3595068778DD592e39A122f4f5a5cF09C90fE2/logo-128.png",
     name: "SUSHI",
     symbol: "SUSHI",
   },
