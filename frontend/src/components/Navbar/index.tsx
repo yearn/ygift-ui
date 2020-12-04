@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
 import { Flex, Text, Button, HStack, Heading, Link as CLink, Center } from "@chakra-ui/react";
-import { NavLink } from "react-router-dom";
+import NavLink from "next/link";
 import Web3Modal, { IProviderOptions } from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
@@ -28,7 +28,7 @@ export const dataTestIds = {};
 interface IProps {}
 
 const Logo = () => (
-  <NavLink to="/">
+  <NavLink href="/">
     <Heading color={"#013A6D"} {...{ fontFamily: "Roboto", fontStyle: "normal", fontWeight: "900", fontSize: "40px" }}>
       yGift
     </Heading>
