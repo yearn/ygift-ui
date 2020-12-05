@@ -142,6 +142,7 @@ const Erc20Select: React.FunctionComponent<IProps> = (props) => {
         <MenuList>
           {erc20TokensData.map((erc20Token) => (
             <MenuItem
+              key={erc20Token.address}
               minH="48px"
               minW="415px"
               onClick={() => {

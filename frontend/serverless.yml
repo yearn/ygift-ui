@@ -1,0 +1,5 @@
+ygift-ui:
+  component: "@sls-next/serverless-component@1.19.0-alpha.14" 
+  # TODO: - WIP
+  # inputs:
+    # domain: "ygift.to"

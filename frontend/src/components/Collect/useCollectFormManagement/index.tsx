@@ -1,12 +1,12 @@
 import { BigNumber, ethers } from "ethers";
 import { useCallback, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 import { yGiftContext } from "../../../hardhat/HardhatContext";
 import { YGift } from "../../../hardhat/typechain/YGift";
 
 export function useCollectFormManagement(tokenId: string) {
   const [yGift] = useContext(yGiftContext);
-  const history = useHistory();
+  const Router = useRouter();
 
   const submitHandler = async (params: Parameters<YGift["collect"]>) => {
     try {
@@ -19,10 +19,10 @@ export function useCollectFormManagement(tokenId: string) {
       window.location.reload();
     } catch (e) {
       console.error(e);
-      history.push("/error");
+      Router.push("/error");
     }
   };
-  const onSubmit = useCallback(submitHandler, [yGift?.instance, history]);
+  const onSubmit = useCallback(submitHandler, [yGift?.instance, Router]);
   const initialValues: Parameters<YGift["collect"]> = [tokenId, ""];
   return {
     onSubmit,

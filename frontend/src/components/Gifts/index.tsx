@@ -3,7 +3,7 @@ import { createDataTestId } from "../../lib/create-data-testid";
 import { Flex, Stack, Text, Button, Wrap, WrapItem, Center, VStack, Heading } from "@chakra-ui/react";
 import { yGiftContext } from "../../hardhat/HardhatContext";
 import { Gift, GiftModel } from "./Gift";
-import { useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 
 export const params = [];
 
@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const NoGifts: React.FC = () => {
-  const history = useHistory();
+  const router = useRouter();
   return (
     <Center width="100%" height="100%" py={"30vh"}>
       <VStack spacing={4}>
@@ -30,7 +30,7 @@ const NoGifts: React.FC = () => {
           minWidth="200px"
           height={"56px"}
           onClick={() => {
-            history.push("/create-gift");
+            router.push("/create-gift");
           }}
         >
           Send a gift
