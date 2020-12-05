@@ -1,14 +1,10 @@
 name: Deploy master branch
 
-on:
+on: 
+  # pull_request:
   push:
     branches:
       - master
-
-defaults:
-  run:
-    working-directory: frontend
-
 
 jobs:
   deploy:
@@ -34,11 +30,15 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-yarn-
     - run: yarn install
+      working-directory: ./frontend
+    # https://github.com/serverless-nextjs/serverless-next.js/issues/707#issuecomment-716466389
     - name: serverless deploy
       run: |
-        yarn add serverless
+        yarn global add serverless
+        echo "$(yarn global bin)" >> $GITHUB_PATH
+        mkdir -p /home/runner/.serverless/components/registry/npm/@sls-next/serverless-component@1.19.0-alpha.14
         yarn deploy:prod
-      working-directory: frontend
+      working-directory: ./frontend
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
