@@ -29,7 +29,11 @@ interface IProps {}
 
 const Logo = () => (
   <NavLink href="/">
-    <Heading color={"#013A6D"} {...{ fontFamily: "Roboto", fontStyle: "normal", fontWeight: "900", fontSize: "40px" }}>
+    <Heading
+      color={"#013A6D"}
+      {...{ fontFamily: "Roboto", fontStyle: "normal", fontWeight: "900", fontSize: "40px" }}
+      cursor="pointer"
+    >
       yGift
     </Heading>
   </NavLink>
@@ -127,8 +131,8 @@ const OurLink = (props: any) => {
 const Links = () => (
   <Center mx="auto">
     <HStack spacing={10}>
-      <OurLink to="/create-gift">Create gift</OurLink>
-      <OurLink to="/gifts">Gifts</OurLink>
+      <OurLink href="/create-gift">Create gift</OurLink>
+      <OurLink href="/gifts">Gifts</OurLink>
       {/* <OurLink to="/about">About</OurLink> */}
     </HStack>
   </Center>

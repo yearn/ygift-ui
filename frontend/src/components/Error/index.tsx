@@ -1,8 +1,9 @@
 import React from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
 import { Button, VStack, Heading, Center, Image } from "@chakra-ui/react";
+// @ts-ignore-next
 import graphic from "./error-graphic.png";
-import { useHistory } from "react-router-dom";
+import Router, { useRouter } from "next/router";
 
 export const componentDataTestId = createDataTestId("Error ");
 
@@ -11,7 +12,7 @@ export const dataTestIds = {};
 interface IProps {}
 
 const Error: React.FunctionComponent<IProps> = (props) => {
-  const history = useHistory();
+  const router = useRouter();
 
   return (
     <Center
@@ -35,29 +36,27 @@ const Error: React.FunctionComponent<IProps> = (props) => {
           Oops, something went wrong :(
         </Heading>
         <Image src={graphic}></Image>
-        {history.length > 1 ? (
-          <Button
-            {...{
-              border: "1px solid #FFFFFF",
-              boxSizing: "border-box",
-              borderRadius: "32px",
-              color: "#FFFFFF",
-              fontFamily: "Roboto",
-              fontStyle: "normal",
-              fontWeight: "normal",
-              fontSize: "16px",
-            }}
-            _hover={{ border: "1px solid grey" }}
-            width={350}
-            height={"56px"}
-            variant="outline"
-            onClick={(): void => {
-              history.goBack();
-            }}
-          >
-            Try again
-          </Button>
-        ) : null}
+        <Button
+          {...{
+            border: "1px solid #FFFFFF",
+            boxSizing: "border-box",
+            borderRadius: "32px",
+            color: "#FFFFFF",
+            fontFamily: "Roboto",
+            fontStyle: "normal",
+            fontWeight: "normal",
+            fontSize: "16px",
+          }}
+          _hover={{ border: "1px solid grey" }}
+          width={350}
+          height={"56px"}
+          variant="outline"
+          onClick={(): void => {
+            router.back();
+          }}
+        >
+          Try again
+        </Button>
       </VStack>
     </Center>
   );

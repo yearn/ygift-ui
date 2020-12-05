@@ -5,6 +5,7 @@ import { HardhatContext } from "../hardhat/HardhatContext";
 // @ts-ignore-next
 import SimpleReactLightbox from "simple-react-lightbox";
 import ErrorBoundary from "../components/Error/ErrorBoundary";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   return (
@@ -13,6 +14,9 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         <Layout>
           <SimpleReactLightbox>
             <ErrorBoundary key={router.asPath}>
+              <Head>
+                <title>yGift</title>
+              </Head>
               <Component {...pageProps} />
             </ErrorBoundary>
           </SimpleReactLightbox>
