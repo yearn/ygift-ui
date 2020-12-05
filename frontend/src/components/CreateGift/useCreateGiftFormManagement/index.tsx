@@ -3,7 +3,7 @@ import { CurrentAddressContext, ProviderContext, yGiftContext } from "../../../h
 import { YGift } from "../../../hardhat/typechain/YGift";
 import { DateTime, Duration } from "luxon";
 import { BigNumber, ethers } from "ethers";
-import { useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 
 export function useCreateGiftFormManagement() {
   const [currentAddress] = useContext(CurrentAddressContext);
@@ -13,7 +13,7 @@ export function useCreateGiftFormManagement() {
   const [giftCreatedId, setGiftCreatedId] = useState("");
   const _start = Math.floor(DateTime.local().toSeconds());
   const dayInSeconds = 86400;
-  const history = useHistory();
+  const Router = useRouter();
 
   const submitHandler = async (params: Parameters<YGift["mint"]>) => {
     console.log(params);
@@ -56,12 +56,12 @@ export function useCreateGiftFormManagement() {
         resolve(true);
       } catch (e) {
         console.error(e);
-        history.push("/error");
+        Router.push("/error");
         resolve(false);
       }
     });
   };
-  const onSubmit = useCallback(submitHandler, [yGift, provider, currentAddress, history]);
+  const onSubmit = useCallback(submitHandler, [yGift, provider, currentAddress, Router]);
   // _to: string, _token: string, _amount: BigNumberish, _name: string, _msg: string, _url: string, _start: BigNumberish, _duration: BigNumberish,
   const initialValues: Parameters<YGift["mint"]> = ["", "", "", "", "", "", _start, ""];
   return {

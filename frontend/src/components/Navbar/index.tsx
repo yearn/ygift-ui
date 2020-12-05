@@ -20,6 +20,7 @@ import {
   ERC721Context,
 } from "../../hardhat/HardhatContext";
 import { formatAddress } from "../../lib/format-address";
+import { useRouter } from "next/router";
 
 export const componentDataTestId = createDataTestId("Navbar");
 
@@ -88,16 +89,14 @@ const OurLink = (props: any) => {
   const [_currentAddress, setCurrentAddress] = useContext(CurrentAddressContext);
   const [yGift, setyGift] = useContext(yGiftContext);
   const [ERC721, setERC721] = useContext(ERC721Context);
+  const Router = useRouter();
+  const isActive = Router.pathname === props.href;
 
   if (!currentAddress) {
     return (
       <CLink
         onClick={handleWeb3ProviderConnect(setProvider, setSigner, setCurrentAddress, setyGift, setERC721)}
         href={"#"}
-        activeStyle={{
-          color: "#013A6D",
-          textDecoration: "underline",
-        }}
         {...props}
         {...{
           fontFamily: "Roboto",
@@ -105,6 +104,10 @@ const OurLink = (props: any) => {
           fontWeight: "normal",
           fontSize: "16px",
           color: "#809EBD",
+          ...(isActive && {
+            color: "#013A6D",
+            textDecoration: "underline",
+          }),
         }}
       />
     );
@@ -112,10 +115,6 @@ const OurLink = (props: any) => {
   return (
     <CLink
       as={NavLink}
-      activeStyle={{
-        color: "#013A6D",
-        textDecoration: "underline",
-      }}
       {...props}
       {...{
         fontFamily: "Roboto",
@@ -123,6 +122,10 @@ const OurLink = (props: any) => {
         fontWeight: "normal",
         fontSize: "16px",
         color: "#809EBD",
+        ...(isActive && {
+          color: "#013A6D",
+          textDecoration: "underline",
+        }),
       }}
     />
   );
