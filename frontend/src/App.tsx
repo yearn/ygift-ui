@@ -1,6 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
 import { HardhatContext } from "./hardhat/HardhatContext";
 import { BrowserRouter as Router, Switch, Route, Link, useLocation } from "react-router-dom";
 import { CreateGift } from "./components/CreateGift";
@@ -13,6 +11,9 @@ import { Error } from "./components/Error";
 // @ts-ignore-next
 import SimpleReactLightbox from "simple-react-lightbox";
 import ErrorBoundary from "./components/Error/ErrorBoundary";
+import "./App.css";
+// @ts-ignore-next
+import logo from "./logo.svg";
 
 export const AppRouter = () => {
   const location = useLocation();

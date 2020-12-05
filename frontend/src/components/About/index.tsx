@@ -1,6 +1,7 @@
 import React from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
 import { Flex, Stack, Text, Button, VStack, Heading, HStack, Input, Image } from "@chakra-ui/react";
+// @ts-ignore-next
 import graphic from "./graphic.png";
 
 export const componentDataTestId = createDataTestId("About");
