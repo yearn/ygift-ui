@@ -6,8 +6,21 @@ import { HardhatContext } from "../hardhat/HardhatContext";
 import SimpleReactLightbox from "simple-react-lightbox";
 import ErrorBoundary from "../components/Error/ErrorBoundary";
 import Head from "next/head";
+import "../App.css";
+import { useEffect } from "react";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
+  useEffect(() => {
+    if (!window) return;
+    window.onerror = (event: Event | string, source?: string, lineno?: number, colno?: number, error?: Error) => {
+      console.error(event);
+      console.error(error);
+
+      setTimeout(() => {
+        window.location.href = "/error";
+      }, 3000);
+    };
+  }, []);
   return (
     <ChakraProvider>
       <HardhatContext>
