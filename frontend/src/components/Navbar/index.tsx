@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
 import { Flex, Text, Button, HStack, Heading, Link as CLink, Center } from "@chakra-ui/react";
-import { NavLink } from "react-router-dom";
+import NavLink from "next/link";
 import Web3Modal, { IProviderOptions } from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
@@ -20,6 +20,7 @@ import {
   ERC721Context,
 } from "../../hardhat/HardhatContext";
 import { formatAddress } from "../../lib/format-address";
+import { useRouter } from "next/router";
 
 export const componentDataTestId = createDataTestId("Navbar");
 
@@ -28,8 +29,12 @@ export const dataTestIds = {};
 interface IProps {}
 
 const Logo = () => (
-  <NavLink to="/">
-    <Heading color={"#013A6D"} {...{ fontFamily: "Roboto", fontStyle: "normal", fontWeight: "900", fontSize: "40px" }}>
+  <NavLink href="/">
+    <Heading
+      color={"#013A6D"}
+      {...{ fontFamily: "Roboto", fontStyle: "normal", fontWeight: "900", fontSize: "40px" }}
+      cursor="pointer"
+    >
       yGift
     </Heading>
   </NavLink>
@@ -84,16 +89,14 @@ const OurLink = (props: any) => {
   const [_currentAddress, setCurrentAddress] = useContext(CurrentAddressContext);
   const [yGift, setyGift] = useContext(yGiftContext);
   const [ERC721, setERC721] = useContext(ERC721Context);
+  const Router = useRouter();
+  const isActive = Router.pathname === props.href;
 
   if (!currentAddress) {
     return (
       <CLink
         onClick={handleWeb3ProviderConnect(setProvider, setSigner, setCurrentAddress, setyGift, setERC721)}
         href={"#"}
-        activeStyle={{
-          color: "#013A6D",
-          textDecoration: "underline",
-        }}
         {...props}
         {...{
           fontFamily: "Roboto",
@@ -101,6 +104,10 @@ const OurLink = (props: any) => {
           fontWeight: "normal",
           fontSize: "16px",
           color: "#809EBD",
+          ...(isActive && {
+            color: "#013A6D",
+            textDecoration: "underline",
+          }),
         }}
       />
     );
@@ -108,10 +115,6 @@ const OurLink = (props: any) => {
   return (
     <CLink
       as={NavLink}
-      activeStyle={{
-        color: "#013A6D",
-        textDecoration: "underline",
-      }}
       {...props}
       {...{
         fontFamily: "Roboto",
@@ -119,6 +122,10 @@ const OurLink = (props: any) => {
         fontWeight: "normal",
         fontSize: "16px",
         color: "#809EBD",
+        ...(isActive && {
+          color: "#013A6D",
+          textDecoration: "underline",
+        }),
       }}
     />
   );
@@ -127,8 +134,8 @@ const OurLink = (props: any) => {
 const Links = () => (
   <Center mx="auto">
     <HStack spacing={10}>
-      <OurLink to="/create-gift">Create gift</OurLink>
-      <OurLink to="/gifts">Gifts</OurLink>
+      <OurLink href="/create-gift">Create gift</OurLink>
+      <OurLink href="/gifts">Gifts</OurLink>
       {/* <OurLink to="/about">About</OurLink> */}
     </HStack>
   </Center>
