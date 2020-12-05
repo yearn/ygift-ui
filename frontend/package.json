@@ -35,8 +35,6 @@
     "polished": "^4.0.4",
     "react-helmet": "^6.1.0",
     "react-highlight-words": "^0.16.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
     "react-test-renderer": "^17.0.1",
     "react-use": "^15.3.4",
     "simple-react-lightbox": "^3.3.4-2",
@@ -44,13 +42,12 @@
     "web3modal": "^1.9.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "dev": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "deploy": "vercel",
-    "deploy:prod": "vercel --prod",
+    "start": "next start",
+    "dev": "next dev",
+    "build": "next build",
+    "test": "jest",
+    "deploy": "serverless",
+    "deploy:prod": "serverless",
     "storybook": "start-storybook -p 6006 -s public --no-dll",
     "build-storybook": "build-storybook -s public --no-dll"
   },
