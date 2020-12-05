@@ -1,4 +1,6 @@
 ygift-ui:
   component: "@sls-next/serverless-component@1.19.0-alpha.14" 
   inputs:
-    domain: "ygift.to"
+    domain: ["ygift.to"]
+    cloudfront:
+      distributionId: "E2PRYR0A5WWZZX"
