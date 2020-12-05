@@ -31,10 +31,12 @@ jobs:
           ${{ runner.os }}-yarn-
     - run: yarn install
       working-directory: ./frontend
+    # https://github.com/serverless-nextjs/serverless-next.js/issues/707#issuecomment-716466389
     - name: serverless deploy
       run: |
         yarn global add serverless
         echo "$(yarn global bin)" >> $GITHUB_PATH
+        mkdir -p /home/runner/.serverless/components/registry/npm/@sls-next/serverless-component@1.19.0-alpha.14
         yarn deploy:prod
       working-directory: ./frontend
       env:
