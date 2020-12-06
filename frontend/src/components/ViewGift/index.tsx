@@ -31,6 +31,7 @@ import {
   urlSource,
 } from "ipfs-http-client";
 import all from "it-all";
+import { erc20TokensData } from "../CreateGift/Erc20Select";
 
 export const componentDataTestId = createDataTestId("ViewGift");
 
@@ -251,8 +252,13 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                     color: "#013A6D;",
                   }}
                 >
-                  {" "}
-                  {`${ethers.utils.formatEther(gift?.amount)}`}
+                  {erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())?.symbol !==
+                  "None"
+                    ? `${ethers.utils.formatEther(gift?.amount)} $${
+                        erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())
+                          ?.symbol
+                      }`
+                    : "None"}
                 </Text>
               </VStack>
               <VStack alignItems="flex-start" spacing={2} textAlign="left">
@@ -282,7 +288,13 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                     color: "#013A6D;",
                   }}
                 >
-                  {ethers.utils.formatEther(gift?.tipped)}
+                  {erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())?.symbol !==
+                  "None"
+                    ? `${ethers.utils.formatEther(gift?.tipped)} $${
+                        erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())
+                          ?.symbol
+                      }`
+                    : "None"}
                 </Text>
               </VStack>
               <VStack alignItems="flex-start" spacing={2} textAlign="left">
