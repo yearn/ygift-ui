@@ -437,6 +437,9 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
             >
               <Input
                 isRequired
+                disabled
+                display={formik?.values?.[Number(params.indexOf("_url"))] ? "block" : "none"}
+                _disabled={{ cursor: "default" }}
                 height={"56px"}
                 width={"424px"}
                 placeholder="Cover URL"
