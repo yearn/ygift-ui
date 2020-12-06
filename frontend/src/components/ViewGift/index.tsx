@@ -31,6 +31,7 @@ import {
   urlSource,
 } from "ipfs-http-client";
 import all from "it-all";
+import { erc20TokensData } from "../CreateGift/Erc20Select";
 
 export const componentDataTestId = createDataTestId("ViewGift");
 
@@ -167,60 +168,62 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
               >
                 {gift?.name}
               </Heading>
-              {window.ethereum && (
-                <HStack spacing={4}>
-                  <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} placement="bottom" closeOnBlur={false}>
-                    <PopoverTrigger>
-                      {isRecipient ? (
-                        <HStack cursor="pointer" spacing={1}>
-                          <Text
-                            {...{
-                              fontFamily: "Roboto",
-                              fontStyle: "normal",
-                              fontWeight: "normal",
-                              fontSize: "16px",
-                              lineHeight: "137.88%",
-                              display: "flex",
-                              alignItems: "center",
-                              color: "#013A6D;",
-                            }}
-                          >
-                            Collect
-                          </Text>
-                          <MinusIcon color="#0065D0"></MinusIcon>
-                        </HStack>
-                      ) : (
-                        <HStack cursor="pointer" spacing={1}>
-                          <Text
-                            {...{
-                              fontFamily: "Roboto",
-                              fontStyle: "normal",
-                              fontWeight: "normal",
-                              fontSize: "16px",
-                              lineHeight: "137.88%",
-                              display: "flex",
-                              alignItems: "center",
-                              color: "#013A6D;",
-                            }}
-                          >
-                            Tip
-                          </Text>
-                          <AddIcon color="#0065D0"></AddIcon>
-                        </HStack>
-                      )}
-                    </PopoverTrigger>
-                    <PopoverContent p={5}>
-                      <PopoverArrow />
-                      <PopoverCloseButton />
-                      {isRecipient ? (
-                        <Collect tokenId={id} />
-                      ) : (
-                        <Tip isOpen={isOpen} tokenId={id} tokenContractAddress={gift?.token}></Tip>
-                      )}
-                    </PopoverContent>
-                  </Popover>
-                </HStack>
-              )}
+              {currentAddress &&
+                erc20TokensData?.find((token) => token?.address.toLowerCase() === gift?.token.toLowerCase())?.symbol !==
+                  "None" && (
+                  <HStack spacing={4}>
+                    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} placement="bottom" closeOnBlur={false}>
+                      <PopoverTrigger>
+                        {isRecipient ? (
+                          <HStack cursor="pointer" spacing={1}>
+                            <Text
+                              {...{
+                                fontFamily: "Roboto",
+                                fontStyle: "normal",
+                                fontWeight: "normal",
+                                fontSize: "16px",
+                                lineHeight: "137.88%",
+                                display: "flex",
+                                alignItems: "center",
+                                color: "#013A6D;",
+                              }}
+                            >
+                              Collect
+                            </Text>
+                            <MinusIcon color="#0065D0"></MinusIcon>
+                          </HStack>
+                        ) : (
+                          <HStack cursor="pointer" spacing={1}>
+                            <Text
+                              {...{
+                                fontFamily: "Roboto",
+                                fontStyle: "normal",
+                                fontWeight: "normal",
+                                fontSize: "16px",
+                                lineHeight: "137.88%",
+                                display: "flex",
+                                alignItems: "center",
+                                color: "#013A6D;",
+                              }}
+                            >
+                              Tip
+                            </Text>
+                            <AddIcon color="#0065D0"></AddIcon>
+                          </HStack>
+                        )}
+                      </PopoverTrigger>
+                      <PopoverContent p={5}>
+                        <PopoverArrow />
+                        <PopoverCloseButton />
+                        {isRecipient ? (
+                          <Collect tokenId={id} tokenContractAddress={gift?.token} />
+                        ) : (
+                          <Tip isOpen={isOpen} tokenId={id} tokenContractAddress={gift?.token}></Tip>
+                        )}
+                      </PopoverContent>
+                    </Popover>
+                  </HStack>
+                )}
             </HStack>
             {/*  */}
             <HStack spacing={4} alignItems="flex-start">
@@ -251,8 +254,13 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                     color: "#013A6D;",
                   }}
                 >
-                  {" "}
-                  {`${ethers.utils.formatEther(gift?.amount)}`}
+                  {erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())?.symbol !==
+                  "None"
+                    ? `${ethers.utils.formatEther(gift?.amount)} $${
+                        erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())
+                          ?.symbol
+                      }`
+                    : "None"}
                 </Text>
               </VStack>
               <VStack alignItems="flex-start" spacing={2} textAlign="left">
@@ -282,7 +290,13 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                     color: "#013A6D;",
                   }}
                 >
-                  {ethers.utils.formatEther(gift?.tipped)}
+                  {erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())?.symbol !==
+                  "None"
+                    ? `${ethers.utils.formatEther(gift?.tipped)} $${
+                        erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())
+                          ?.symbol
+                      }`
+                    : "None"}
                 </Text>
               </VStack>
               <VStack alignItems="flex-start" spacing={2} textAlign="left">
@@ -484,7 +498,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           </VStack>
         </HStack>
 
-        <TransactionHistory id={id}></TransactionHistory>
+        <TransactionHistory tokenContractAddress={gift?.token} id={id}></TransactionHistory>
       </VStack>
     );
   } else {

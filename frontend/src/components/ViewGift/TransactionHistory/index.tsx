@@ -5,6 +5,7 @@ import { BigNumberish, ethers } from "ethers";
 import { useGiftTransactionHistory } from "./useGiftTransactionHistory";
 import { DateTime } from "luxon";
 import { formatAddress } from "../../../lib/format-address";
+import { erc20TokensData } from "../../CreateGift/Erc20Select";
 
 export const componentDataTestId = createDataTestId("TransactionHistory");
 
@@ -17,6 +18,7 @@ export type TransactionModel = {
   message?: string;
   amount?: BigNumberish;
   event: "Minted" | "Collected" | "Tipped" | "Transferred";
+  tokenContractAddress: string;
 };
 
 const Transaction: React.FC<TransactionModel> = (props) => (
@@ -143,7 +145,10 @@ const Transaction: React.FC<TransactionModel> = (props) => (
               lineHeight: "137.88%",
             }}
           >
-            {ethers.utils.formatEther(props.amount)}
+            {`${ethers.utils.formatEther(props.amount)} $${
+              erc20TokensData.find((token) => token.address.toLowerCase() === props.tokenContractAddress?.toLowerCase())
+                ?.symbol
+            }`}
           </Text>
         </VStack>
       )}
@@ -153,6 +158,7 @@ const Transaction: React.FC<TransactionModel> = (props) => (
 
 interface IProps {
   id: string;
+  tokenContractAddress: string;
 }
 
 const TransactionHistory: React.FunctionComponent<IProps> = (props) => {
@@ -177,11 +183,19 @@ const TransactionHistory: React.FunctionComponent<IProps> = (props) => {
         {transactionHistory.map((transaction, index) =>
           index !== transactionHistory.length - 1 ? (
             <React.Fragment key={`${transaction?.date}-${index}`}>
-              <Transaction key={`${transaction?.date}-${index}`} {...transaction}></Transaction>
+              <Transaction
+                key={`${transaction?.date}-${index}`}
+                {...transaction}
+                tokenContractAddress={props.tokenContractAddress}
+              ></Transaction>
               <Divider></Divider>
             </React.Fragment>
           ) : (
-            <Transaction key={`${transaction?.date}-${index}`} {...transaction}></Transaction>
+            <Transaction
+              key={`${transaction?.date}-${index}`}
+              {...transaction}
+              tokenContractAddress={props.tokenContractAddress}
+            ></Transaction>
           )
         )}
       </VStack>
