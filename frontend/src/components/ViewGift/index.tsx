@@ -32,6 +32,7 @@ import {
 } from "ipfs-http-client";
 import all from "it-all";
 import { erc20TokensData } from "../CreateGift/Erc20Select";
+import { useEns } from "../../lib/use-ens";
 
 export const componentDataTestId = createDataTestId("ViewGift");
 
@@ -51,6 +52,8 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const [ownedBy, setOwnedBy] = useState<string>("");
   const [from, setFrom] = useState<string>("");
   const [isVideo, setIsVideo] = useState<boolean>(false);
+  const { ensName: fromName } = useEns(from);
+  const { ensName: ownedByName } = useEns(ownedBy);
   const _url = gift?.url;
 
   useEffect(() => {
@@ -423,7 +426,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                     color: "#013A6D;",
                   }}
                 >
-                  {ownedBy}
+                  {ownedByName}
                 </Text>
                 {/* <CopyIcon></CopyIcon> */}
               </HStack>
@@ -457,7 +460,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                     color: "#013A6D;",
                   }}
                 >
-                  {from}
+                  {fromName}
                 </Text>
                 {/* <CopyIcon></CopyIcon> */}
               </HStack>
