@@ -498,7 +498,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           </VStack>
         </HStack>
 
-        <TransactionHistory id={id}></TransactionHistory>
+        <TransactionHistory tokenContractAddress={gift?.token} id={id}></TransactionHistory>
       </VStack>
     );
   } else {
