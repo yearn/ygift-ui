@@ -186,7 +186,7 @@ interface IProps {
 
 const TransactionHistory: React.FunctionComponent<IProps> = (props) => {
   const { transactionHistory } = useGiftTransactionHistory(props.id);
-  console.log(transactionHistory);
+  // console.log(transactionHistory);
   const [isSmallMobileBreakpoint] = useMediaQuery(`(max-width: 430px)`);
 
   if (transactionHistory?.length) {

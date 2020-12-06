@@ -1,6 +1,6 @@
 import React from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import Helmet from "react-helmet";
+import Head from "next/head";
 import { Flex, Stack, Text, Button } from "@chakra-ui/react";
 import { GiftModel } from "../Gifts/Gift";
 
@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const SEO: React.FunctionComponent<IProps> = ({ gift }) => (
-  <Helmet>
+  <Head>
     {/* <!-- HTML Meta Tags --> */}
     <meta content={gift?.url} />
 
@@ -29,7 +29,7 @@ const SEO: React.FunctionComponent<IProps> = ({ gift }) => (
     <meta name="twitter:title" content="yGift" />
     <meta name="twitter:description" content="NFTs for gifts, grants, and gratitude" />
     <meta name="twitter:image" content={gift?.url} />
-  </Helmet>
+  </Head>
 );
 
 export { SEO };

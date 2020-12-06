@@ -53,49 +53,23 @@ export const dataTestIds = {};
 
 interface IProps {
   id: string;
+  gift: GiftModel;
+  ownedBy: string;
+  from: string;
 }
 
 const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
+  const { gift, from, ownedBy } = props;
   const { id } = props;
   const [isSmallMobileBreakpoint] = useMediaQuery(`(max-width: 430px)`);
   const [yGift] = useContext(yGiftContext);
   const [currentAddress] = useContext(CurrentAddressContext);
   const [provider] = useContext(ProviderContext);
-  const [gift, setGift] = useState<GiftModel>();
-  const [ownedBy, setOwnedBy] = useState<string>("");
-  const [from, setFrom] = useState<string>("");
   const [isVideo, setIsVideo] = useState<boolean>(false);
   const { ensName: fromName } = useEns(from, isSmallMobileBreakpoint);
   const { ensName: ownedByName } = useEns(ownedBy, isSmallMobileBreakpoint);
   const _url = gift?.url;
-
-  useEffect(() => {
-    const fetch = async () => {
-      if (yGift?.instance) {
-        const gift = await yGift?.instance?.gifts(id);
-        const giftMintedEventFilter = yGift?.instance?.filters?.GiftMinted(
-          null,
-          null,
-          BigNumber.from(id).toHexString(),
-          null
-        );
-        const transferEventFilter = yGift?.instance?.filters?.Transfer(null, null, BigNumber.from(id).toHexString());
-        const [log] = await provider?.getLogs({ ...giftMintedEventFilter, fromBlock: 0 });
-        const [from] = yGift?.instance?.interface?.parseLog(log)?.args;
-
-        const transferLogs = await provider?.getLogs({ ...transferEventFilter, fromBlock: 0 });
-        const [, ownedBy] = yGift?.instance?.interface?.parseLog(transferLogs[transferLogs.length - 1])?.args;
-
-        // gift resolveName parsed
-        setGift({ ...gift, token: (await provider?.resolveName(gift.token)) || gift.token });
-
-        setOwnedBy((await provider?.resolveName(ownedBy)) || ownedBy);
-        setFrom((await provider?.resolveName(from)) || from);
-      }
-    };
-    fetch();
-  }, [yGift, id, provider]);
 
   // Check if ipfs file is video
   useEffect(() => {
@@ -121,8 +95,8 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
 
   const isRecipient = currentAddress === ownedBy;
 
-  if (gift && ownedBy) {
-    console.log(gift);
+  if (gift && ownedBy && from) {
+    // console.log(gift);
     return (
       <VStack
         minHeight={"884px"}
@@ -131,6 +105,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
         boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)"
         mb={8}
       >
+        <SEO gift={gift}></SEO>
         <HStack
           boxShadow="0px 0px 24px rgba(27, 39, 70, 0.1)"
           borderRadius="16px"
@@ -352,12 +327,12 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                     color: "#013A6D;",
                   }}
                 >
-                  {DateTime.fromSeconds(gift?.start?.toNumber()).toHTTP()}
+                  {DateTime.fromSeconds(BigNumber.from(gift.start).toNumber()).toHTTP()}
                 </Text>
               </VStack>
             </HStack>
             {/*  */}
-            {gift?.duration?.toNumber() > 0 && (
+            {BigNumber.from(gift?.duration).toNumber() > 0 && (
               <VStack spacing={2} alignItems="flex-start">
                 <Text
                   {...{
@@ -385,7 +360,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                     color: "#013A6D;",
                   }}
                 >
-                  {gift?.duration?.toNumber() / 86400}
+                  {BigNumber.from(gift.duration).toNumber() / 86400}
                 </Text>
               </VStack>
             )}
