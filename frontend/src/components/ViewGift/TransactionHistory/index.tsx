@@ -149,7 +149,12 @@ const Transaction: React.FC<TransactionModel> = (props) => {
                 lineHeight: "137.88%",
               }}
             >
-              {`${ethers.utils.formatEther(props.amount)} $${
+              {`${ethers.utils.formatUnits(
+                props.amount,
+                erc20TokensData.find(
+                  (token) => token.address.toLowerCase() === props.tokenContractAddress?.toLowerCase()
+                )?.decimals
+              )} $${
                 erc20TokensData.find(
                   (token) => token.address.toLowerCase() === props.tokenContractAddress?.toLowerCase()
                 )?.symbol
