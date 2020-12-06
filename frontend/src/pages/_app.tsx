@@ -8,8 +8,10 @@ import ErrorBoundary from "../components/Error/ErrorBoundary";
 import Head from "next/head";
 import "../App.css";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
+  const Router = useRouter();
   useEffect(() => {
     if (!window) return;
     window.onerror = (event: Event | string, source?: string, lineno?: number, colno?: number, error?: Error) => {
@@ -17,7 +19,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
       console.error(error);
 
       setTimeout(() => {
-        window.location.href = "/error";
+        Router.push("/error");
       }, 3000);
     };
   }, []);

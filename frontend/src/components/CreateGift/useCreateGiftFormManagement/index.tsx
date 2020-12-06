@@ -4,6 +4,7 @@ import { YGift } from "../../../hardhat/typechain/YGift";
 import { DateTime, Duration } from "luxon";
 import { BigNumber, ethers } from "ethers";
 import { useRouter } from "next/router";
+import { erc20TokensData } from "../Erc20Select";
 
 export function useCreateGiftFormManagement() {
   const [currentAddress] = useContext(CurrentAddressContext);
@@ -20,15 +21,18 @@ export function useCreateGiftFormManagement() {
     return new Promise(async (resolve) => {
       // Convert ether to gwei
       console.log(params[2]);
-      params[2] = ethers.utils.parseEther(params[2].toString());
+      params[2] = ethers.utils.parseUnits(
+        params[2].toString(),
+        erc20TokensData.find((token) => token.address.toLowerCase() === params[1].toLowerCase())?.decimals
+      );
       console.log(params[2]);
       // Resolve ens for _to and _token
       params[0] = (await provider?.resolveName(params[0])) || params[0];
       params[1] = (await provider?.resolveName(params[1])) || params[1];
       // Convert days to seconds
       console.log(params[7]);
-      params[6] = dayInSeconds * Number(params[6]);
-      params[7] = _start + dayInSeconds * Number(params[7]); // Now add X days
+      params[6] = _start + dayInSeconds * Number(params[6]);
+      params[7] = dayInSeconds * Number(params[7]);
       console.log(params[7]);
 
       try {
