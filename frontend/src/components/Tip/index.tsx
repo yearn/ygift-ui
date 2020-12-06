@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import { BigNumber, ethers } from "ethers";
 import { CurrentAddressContext, ProviderContext, SignerContext } from "../../hardhat/HardhatContext";
 import { erc20Abi, yGiftContractAddress } from "../CreateGift";
+import { erc20TokensData } from "../CreateGift/Erc20Select";
 
 export const componentDataTestId = createDataTestId("Tip");
 
@@ -94,10 +95,21 @@ const Tip: React.FunctionComponent<IProps> = ({ tokenId, isOpen, tokenContractAd
             <FormControl key={param} isInvalid={Boolean(formik.errors[index] && formik.touched[index])}>
               {maxAmount && param === "_amount" ? (
                 <FormLabel textAlign="center" htmlFor="_amount">
-                  {`Max: ${Math.floor(Number(ethers.utils.formatEther(maxAmount)) * 100) / 100}`}
+                  {`Max: $${
+                    erc20TokensData.find((token) => token.address.toLowerCase() === tokenContractAddress.toLowerCase())
+                      ?.symbol
+                  } ${Math.floor(Number(ethers.utils.formatEther(maxAmount)) * 100) / 100}`}
                 </FormLabel>
               ) : null}
-              <FormLabel htmlFor={param}>{param === "_amount" ? "Amount" : "Message"}</FormLabel>
+              <FormLabel htmlFor={param}>
+                {param === "_amount"
+                  ? `$${
+                      erc20TokensData.find(
+                        (token) => token.address.toLowerCase() === tokenContractAddress.toLowerCase()
+                      )?.symbol
+                    } Amount`
+                  : "Message"}
+              </FormLabel>
               <Input
                 key={param}
                 data-testid={param}
