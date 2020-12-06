@@ -27,7 +27,8 @@ export function useCreateGiftFormManagement() {
       params[1] = (await provider?.resolveName(params[1])) || params[1];
       // Convert days to seconds
       console.log(params[7]);
-      params[7] = dayInSeconds * Number(params[7]);
+      params[6] = dayInSeconds * Number(params[6]);
+      params[7] = _start + dayInSeconds * Number(params[7]); // Now add X days
       console.log(params[7]);
 
       try {
@@ -63,7 +64,7 @@ export function useCreateGiftFormManagement() {
   };
   const onSubmit = useCallback(submitHandler, [yGift, provider, currentAddress, Router]);
   // _to: string, _token: string, _amount: BigNumberish, _name: string, _msg: string, _url: string, _start: BigNumberish, _duration: BigNumberish,
-  const initialValues: Parameters<YGift["mint"]> = ["", "", "", "", "", "", _start, ""];
+  const initialValues: Parameters<YGift["mint"]> = ["", "", "", "", "", "", "", ""];
   return {
     onSubmit,
     initialValues,

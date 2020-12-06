@@ -76,7 +76,7 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
   return (
     <Center
       width={["auto", "auto", "90vw", "1200px"]}
-      height={["auto", "auto", "auto", "700px"]}
+      height={["auto", "auto", "auto", "775px"]}
       {...{
         background: "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
         borderRadius: "16px",
@@ -194,8 +194,11 @@ const getPlaceholder = (param: ValuesOf<typeof params>) => {
     case "_token": {
       return "Token (Contract or ENS) address";
     }
+    case "_start": {
+      return "Delivery lockup (days to lock tokens for)";
+    }
     case "_duration": {
-      return "Vesting duration in days - (0 is instant)";
+      return "Vesting duration (days to vest tokens for after unlock)";
     }
     default: {
       return param;
@@ -369,9 +372,10 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           background: "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
         }}
         width={["auto", "auto", "auto", "1200px"]}
-        height={["auto", "auto", "auto", "700px"]}
+        height={["auto", "auto", "auto", "775px"]}
         flexDirection={["column", "column", "column", "row"]}
         alignItems={["center", "center", "center", "inherit"]}
+        mb={8}
       >
         <Center height={"100%"} width={["100%", "100%", "100%", "50%"]}>
           {" "}
@@ -428,6 +432,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               )}
             </Box>
             <FormControl
+              display={formik?.values?.[Number(params.indexOf("_url"))] ? "block" : "none"}
               borderRadius="24px"
               key={"_url"}
               isInvalid={Boolean(formik.errors[3] && formik.touched[3])}
@@ -438,7 +443,6 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               <Input
                 isRequired
                 disabled
-                display={formik?.values?.[Number(params.indexOf("_url"))] ? "block" : "none"}
                 _disabled={{ cursor: "default" }}
                 height={"56px"}
                 width={"424px"}
@@ -480,10 +484,12 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 }}
                 color="white"
                 borderRadius="32px"
+                boxSizing="border-box"
                 border="1px solid white"
                 textAlign="center"
                 height={"56px"}
                 width={"424px"}
+                mt={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "inherit") || "auto"}
                 m={0}
                 onClick={() => {
                   if (chosenFile) {
@@ -515,7 +521,9 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 height={"56px"}
                 width={"424px"}
                 m={0}
+                mt={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "inherit") || "auto"}
                 px={5}
+                boxSizing="border-box"
                 py={"17px"}
                 _hover={{ border: "1px solid grey" }}
               >
@@ -582,9 +590,6 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               if (param === "_url") {
                 return null;
               }
-              if (param === "_start") {
-                return null;
-              }
               if (param === "_token") {
                 return <Erc20Select formik={formik}></Erc20Select>;
               }
@@ -610,7 +615,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                     id={index.toString()}
                     name={index.toString()}
                     onChange={formik.handleChange}
-                    type={param === "_duration" || param === "_amount" ? "number" : "text"}
+                    type={param === "_duration" || param === "_amount" || param === "_start" ? "number" : "text"}
                     max={param === "_amount" ? ethers.utils.formatEther(maxAmount) : undefined}
                     min={param === "_amount" ? "0" : undefined}
                     step={param === "_amount" ? "any" : undefined}
