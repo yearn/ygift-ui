@@ -5,8 +5,9 @@ import { ViewGift } from "../../components/ViewGift";
 import { INFURA_API_KEY, network, SymfoniYGift } from "../../hardhat/HardhatContext";
 import yGiftDeployment from "../../hardhat/deployments/localhost/yGift.json";
 import { YGiftFactory } from "../../hardhat/typechain";
+import { GiftModel } from "../../components/Gifts/Gift";
 
-function GiftPage({ gift, from, ownedBy, id }) {
+function GiftPage({ gift, from, ownedBy, id }: { gift: GiftModel; from: string; ownedBy: string; id: string }) {
   return <ViewGift from={from} ownedBy={ownedBy} gift={gift} id={id}></ViewGift>;
 }
 
