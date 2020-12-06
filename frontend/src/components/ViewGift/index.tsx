@@ -259,7 +259,11 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                 >
                   {erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())?.symbol !==
                   "None"
-                    ? `${ethers.utils.formatEther(gift?.amount)} $${
+                    ? `${ethers.utils.formatUnits(
+                        gift.amount,
+                        erc20TokensData.find((token) => token.address.toLowerCase() === gift.token?.toLowerCase())
+                          ?.decimals
+                      )} $${
                         erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())
                           ?.symbol
                       }`
@@ -295,7 +299,11 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                 >
                   {erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())?.symbol !==
                   "None"
-                    ? `${ethers.utils.formatEther(gift?.tipped)} $${
+                    ? `${ethers.utils.formatUnits(
+                        gift.tipped,
+                        erc20TokensData.find((token) => token.address.toLowerCase() === gift.token?.toLowerCase())
+                          ?.decimals
+                      )} $${
                         erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())
                           ?.symbol
                       }`
