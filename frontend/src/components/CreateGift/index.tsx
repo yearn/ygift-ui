@@ -603,7 +603,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                   {maxAmount && param === "_amount" ? (
                     <FormLabel textAlign="center" htmlFor="_amount">
                       {`Max: ${ethers.utils.formatUnits(
-                        maxAmount,
+                        maxAmount?.toString(),
                         erc20TokensData.find(
                           (token) =>
                             token.address.toLowerCase() ===
@@ -623,12 +623,15 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                     type={param === "_duration" || param === "_amount" || param === "_start" ? "number" : "text"}
                     max={
                       param === "_amount"
-                        ? ethers.utils.formatUnits(
-                            maxAmount,
-                            erc20TokensData.find(
-                              (token) => token.address.toLowerCase() === formik.values[Number(params.indexOf("_token"))]
-                            )?.decimals
-                          )
+                        ? ethers.utils
+                            .parseUnits(
+                              maxAmount?.toString(),
+                              erc20TokensData.find(
+                                (token) =>
+                                  token.address.toLowerCase() === formik.values[Number(params.indexOf("_token"))]
+                              )?.decimals
+                            )
+                            .toString()
                         : undefined
                     }
                     min={param === "_amount" ? "0" : undefined}
