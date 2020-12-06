@@ -5,6 +5,7 @@ import { useCollectFormManagement } from "./useCollectFormManagement";
 import { useFormik } from "formik";
 import { yGiftContext } from "../../hardhat/HardhatContext";
 import { ethers } from "ethers";
+import { erc20TokensData } from "../CreateGift/Erc20Select";
 
 export const componentDataTestId = createDataTestId("Collect");
 
@@ -12,6 +13,7 @@ export const params = ["_tokenId", "_amount"];
 
 interface IProps {
   tokenId: string;
+  tokenContractAddress: string;
 }
 
 const Collect: React.FunctionComponent<IProps> = (props) => {
@@ -48,7 +50,15 @@ const Collect: React.FunctionComponent<IProps> = (props) => {
           }
           return (
             <FormControl key={param} isInvalid={Boolean(formik.errors[index] && formik.touched[index])}>
-              <FormLabel htmlFor={param}>{param === "_amount" ? "Amount" : ""}</FormLabel>
+              <FormLabel htmlFor={param}>
+                {param === "_amount"
+                  ? `$${
+                      erc20TokensData.find(
+                        (token) => token.address.toLowerCase() === props.tokenContractAddress.toLowerCase()
+                      )?.symbol
+                    } Amount`
+                  : ""}
+              </FormLabel>
               <Input
                 key={param}
                 data-testid={param}
