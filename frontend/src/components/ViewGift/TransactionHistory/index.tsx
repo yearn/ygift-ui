@@ -18,7 +18,7 @@ export type TransactionModel = {
   message?: string;
   amount?: BigNumberish;
   event: "Minted" | "Collected" | "Tipped" | "Transferred";
-  tokenContractAddress: string;
+  tokenContractAddress?: string;
 };
 
 const Transaction: React.FC<TransactionModel> = (props) => (
