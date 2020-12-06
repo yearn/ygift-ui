@@ -9,6 +9,7 @@ import {
   // @ts-ignore-next
   urlSource,
 } from "ipfs-http-client";
+import { erc20TokensData } from "../../CreateGift/Erc20Select";
 
 /*
   string name;
@@ -100,7 +101,10 @@ const Gift: React.FunctionComponent<GiftModel> = (props) => {
                 Amount left
               </Text>
               <Text fontFamily="Roboto" fontSize="16px" fontWeight="bold" color={giftAmountColour}>
-                {`${ethers.utils.formatEther(props?.amount.toString())}`}
+                {ethers.utils.formatUnits(
+                  props?.amount,
+                  erc20TokensData.find((token) => token.address.toLowerCase() === props.token?.toLowerCase())?.decimals
+                )}{" "}
               </Text>
             </>
           )}

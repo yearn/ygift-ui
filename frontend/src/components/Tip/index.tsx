@@ -55,7 +55,6 @@ const Tip: React.FunctionComponent<IProps> = ({ tokenId, isOpen, tokenContractAd
         if (events?.length > 0) {
           const balance = await erc20Contract.balanceOf(currentAddress);
           console.log(balance?.toString());
-          console.log(ethers.utils.formatEther(balance));
           setMaxAmount(balance);
         }
       }
@@ -98,7 +97,11 @@ const Tip: React.FunctionComponent<IProps> = ({ tokenId, isOpen, tokenContractAd
                   {`Max: $${
                     erc20TokensData.find((token) => token.address.toLowerCase() === tokenContractAddress.toLowerCase())
                       ?.symbol
-                  } ${Math.floor(Number(ethers.utils.formatEther(maxAmount)) * 100) / 100}`}
+                  } ${ethers.utils.formatUnits(
+                    maxAmount,
+                    erc20TokensData.find((token) => token.address.toLowerCase() === tokenContractAddress?.toLowerCase())
+                      ?.decimals
+                  )}`}
                 </FormLabel>
               ) : null}
               <FormLabel htmlFor={param}>
@@ -118,7 +121,16 @@ const Tip: React.FunctionComponent<IProps> = ({ tokenId, isOpen, tokenContractAd
                 onChange={formik.handleChange}
                 type={param === "_amount" ? "number" : "text"}
                 value={formik.values[index]?.toString()}
-                max={param === "_amount" ? ethers.utils.formatEther(maxAmount) : undefined}
+                max={
+                  param === "_amount"
+                    ? ethers.utils.formatUnits(
+                        maxAmount,
+                        erc20TokensData.find(
+                          (token) => token.address.toLowerCase() === tokenContractAddress?.toLowerCase()
+                        )?.decimals
+                      )
+                    : undefined
+                }
                 min={param === "_amount" ? "0" : undefined}
                 step={param === "_amount" ? "0.0001" : undefined}
               />
