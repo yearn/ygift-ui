@@ -1,6 +1,6 @@
 import React from "react";
 import { createDataTestId } from "../../../lib/create-data-testid";
-import { Flex, Stack, Text, Button, VStack, Heading, HStack, Divider } from "@chakra-ui/react";
+import { Flex, Stack, Text, Button, VStack, Heading, HStack, Divider, useMediaQuery } from "@chakra-ui/react";
 import { BigNumberish, ethers } from "ethers";
 import { useGiftTransactionHistory } from "./useGiftTransactionHistory";
 import { DateTime } from "luxon";
@@ -19,14 +19,16 @@ export type TransactionModel = {
   message?: string;
   amount?: BigNumberish;
   event: "Minted" | "Collected" | "Tipped" | "Transferred";
-  tokenContractAddress?: string;
 };
 
-const Transaction: React.FC<TransactionModel> = (props) => {
+const Transaction: React.FC<TransactionModel & { isSmallMobileBreakpoint?: boolean; tokenContractAddress?: string }> = (
+  props
+) => {
   const { ensName: minterName } = useEns(props.minter, true);
   const { ensName: recipientName } = useEns(props.recipient, true);
+
   return (
-    <HStack key={props.date} spacing={4}>
+    <HStack key={props.date} spacing={4} flexWrap={props.isSmallMobileBreakpoint ? "wrap" : "inherit"}>
       <Flex alignSelf="flex-start">
         <Text
           color="#013A6D"
@@ -43,7 +45,13 @@ const Transaction: React.FC<TransactionModel> = (props) => {
           {DateTime.fromSeconds(props.date).toHTTP()}
         </Text>
       </Flex>
-      <VStack spacing={2} minWidth={["auto", "auto", "auto", "340px"]} alignSelf="flex-start" alignItems="flex-start">
+      <VStack
+        spacing={2}
+        minWidth={["auto", "auto", "auto", "340px"]}
+        alignSelf="flex-start"
+        alignItems="flex-start"
+        ml={props.isSmallMobileBreakpoint ? `0 !important` : "inherit"}
+      >
         <VStack alignItems="flex-start">
           <Text
             color="#0065D0"
@@ -149,16 +157,20 @@ const Transaction: React.FC<TransactionModel> = (props) => {
                 lineHeight: "137.88%",
               }}
             >
-              {`${ethers.utils.formatUnits(
-                props.amount,
-                erc20TokensData.find(
-                  (token) => token.address.toLowerCase() === props.tokenContractAddress?.toLowerCase()
-                )?.decimals
-              )} $${
-                erc20TokensData.find(
-                  (token) => token.address.toLowerCase() === props.tokenContractAddress?.toLowerCase()
-                )?.symbol
-              }`}
+              {erc20TokensData.find(
+                (token) => token.address.toLowerCase() === props.tokenContractAddress?.toLowerCase()
+              )?.symbol === "None"
+                ? "None"
+                : `${ethers.utils.formatUnits(
+                    props.amount,
+                    erc20TokensData.find(
+                      (token) => token.address.toLowerCase() === props.tokenContractAddress?.toLowerCase()
+                    )?.decimals
+                  )} $${
+                    erc20TokensData.find(
+                      (token) => token.address.toLowerCase() === props.tokenContractAddress?.toLowerCase()
+                    )?.symbol
+                  }`}
             </Text>
           </VStack>
         )}
@@ -175,6 +187,8 @@ interface IProps {
 const TransactionHistory: React.FunctionComponent<IProps> = (props) => {
   const { transactionHistory } = useGiftTransactionHistory(props.id);
   console.log(transactionHistory);
+  const [isSmallMobileBreakpoint] = useMediaQuery(`(max-width: 430px)`);
+
   if (transactionHistory?.length) {
     return (
       <VStack minHeight="400px" alignItems="flex-start" spacing={"24px"} py={"32px"} px={"24px"} overflowY="scroll">
@@ -198,6 +212,7 @@ const TransactionHistory: React.FunctionComponent<IProps> = (props) => {
                 key={`${transaction?.date}-${index}`}
                 {...transaction}
                 tokenContractAddress={props.tokenContractAddress}
+                isSmallMobileBreakpoint={isSmallMobileBreakpoint}
               ></Transaction>
               <Divider></Divider>
             </React.Fragment>
@@ -206,6 +221,7 @@ const TransactionHistory: React.FunctionComponent<IProps> = (props) => {
               key={`${transaction?.date}-${index}`}
               {...transaction}
               tokenContractAddress={props.tokenContractAddress}
+              isSmallMobileBreakpoint={isSmallMobileBreakpoint}
             ></Transaction>
           )
         )}

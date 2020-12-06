@@ -1,6 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
-import { Flex, Stack, Text, Button, VStack, HStack, Image, useDisclosure, Heading, Box } from "@chakra-ui/react";
+import {
+  Flex,
+  Stack,
+  Text,
+  Button,
+  VStack,
+  HStack,
+  Image,
+  useDisclosure,
+  Heading,
+  Box,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import { GiftModel } from "../Gifts/Gift";
 import {
   Popover,
@@ -33,6 +45,7 @@ import {
 import all from "it-all";
 import { erc20TokensData } from "../CreateGift/Erc20Select";
 import { useEns } from "../../lib/use-ens";
+import { formatAddress } from "../../lib/format-address";
 
 export const componentDataTestId = createDataTestId("ViewGift");
 
@@ -45,6 +58,7 @@ interface IProps {
 const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const { id } = props;
+  const [isSmallMobileBreakpoint] = useMediaQuery(`(max-width: 430px)`);
   const [yGift] = useContext(yGiftContext);
   const [currentAddress] = useContext(CurrentAddressContext);
   const [provider] = useContext(ProviderContext);
@@ -52,8 +66,8 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
   const [ownedBy, setOwnedBy] = useState<string>("");
   const [from, setFrom] = useState<string>("");
   const [isVideo, setIsVideo] = useState<boolean>(false);
-  const { ensName: fromName } = useEns(from);
-  const { ensName: ownedByName } = useEns(ownedBy);
+  const { ensName: fromName } = useEns(from, isSmallMobileBreakpoint);
+  const { ensName: ownedByName } = useEns(ownedBy, isSmallMobileBreakpoint);
   const _url = gift?.url;
 
   useEffect(() => {
@@ -125,7 +139,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
           flexDirection={["column", "row"]}
           alignItems="flex-start"
         >
-          <Box cursor="pointer">
+          <Box cursor="pointer" alignSelf={isSmallMobileBreakpoint ? "center" : "inherit"}>
             {isVideo ? (
               <video
                 src={_url}
@@ -501,7 +515,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                     color: "#013A6D;",
                   }}
                 >
-                  {gift?.token}
+                  {isSmallMobileBreakpoint ? formatAddress(gift?.token) : gift?.token}
                 </Text>
                 {/* <CopyIcon></CopyIcon> */}
               </HStack>

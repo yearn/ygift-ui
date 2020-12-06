@@ -15,7 +15,6 @@ export const useEns = (lookupAddress?: string, format: boolean = false) => {
           setEnsName(ensName);
         } else {
           setEnsName(format ? formatAddress(lookupAddress) : lookupAddress);
-          console.log(ensName);
         }
       } else if (currentAddress) {
         const ensName = await provider?.lookupAddress(currentAddress);
