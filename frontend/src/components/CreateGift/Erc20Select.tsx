@@ -57,7 +57,7 @@ export const erc20TokensData = [
     decimals: 18,
     logoURI:
       "https://raw.githubusercontent.com/iearn-finance/yearn-assets/master/icons/tokens/0x6B3595068778DD592e39A122f4f5a5cF09C90fE2/logo-128.png",
-    name: "SUSHI",
+    name: "Sushi",
     symbol: "SUSHI",
   },
   {
