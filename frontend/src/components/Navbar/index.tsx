@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { createDataTestId } from "../../lib/create-data-testid";
 import { Flex, Text, Button, HStack, Heading, Link as CLink, Center } from "@chakra-ui/react";
 import NavLink from "next/link";
@@ -21,6 +21,7 @@ import {
 } from "../../hardhat/HardhatContext";
 import { formatAddress } from "../../lib/format-address";
 import { useRouter } from "next/router";
+import { useEns } from "../../lib/use-ens";
 
 export const componentDataTestId = createDataTestId("Navbar");
 
@@ -142,19 +143,19 @@ const Links = () => (
 );
 
 const Navbar: React.FunctionComponent<IProps> = (props) => {
-  const [currentAddress] = useContext(CurrentAddressContext);
-  const [_provider, setProvider] = useContext(ProviderContext);
+  const [currentAddress, setCurrentAddress] = useContext(CurrentAddressContext);
+  const [provider, setProvider] = useContext(ProviderContext);
   const [_signer, setSigner] = useContext(SignerContext);
-  const [_currentAddress, setCurrentAddress] = useContext(CurrentAddressContext);
   const [yGift, setyGift] = useState<SymfoniYGift>(emptyContract);
   const [ERC721, setERC721] = useState<SymfoniErc721>(emptyContract);
+  const { ensName } = useEns();
 
   return (
     <Flex width="100%" px={[2, 10]} py={4}>
       <Logo></Logo>
       <Links></Links>
       <Center>
-        {currentAddress ? (
+        {ensName ? (
           <Text
             ml="auto"
             {...{
@@ -165,7 +166,7 @@ const Navbar: React.FunctionComponent<IProps> = (props) => {
               color: "#809EBD",
             }}
           >
-            {formatAddress(currentAddress)}
+            {ensName}
           </Text>
         ) : (
           <Button

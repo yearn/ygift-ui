@@ -6,6 +6,7 @@ import { useGiftTransactionHistory } from "./useGiftTransactionHistory";
 import { DateTime } from "luxon";
 import { formatAddress } from "../../../lib/format-address";
 import { erc20TokensData } from "../../CreateGift/Erc20Select";
+import { useEns } from "../../../lib/use-ens";
 
 export const componentDataTestId = createDataTestId("TransactionHistory");
 
@@ -21,51 +22,28 @@ export type TransactionModel = {
   tokenContractAddress?: string;
 };
 
-const Transaction: React.FC<TransactionModel> = (props) => (
-  <HStack key={props.date} spacing={4}>
-    <Flex alignSelf="flex-start">
-      <Text
-        color="#013A6D"
-        {...{
-          fontFamily: "Roboto",
-          fontStyle: "normal",
-          fontWeight: "bold",
-          fontSize: "16px",
-          lineHeight: "137.88%",
-        }}
-        minWidth={["auto", "auto", "auto", "150px"]}
-        textAlign="left"
-      >
-        {DateTime.fromSeconds(props.date).toHTTP()}
-      </Text>
-    </Flex>
-    <VStack spacing={2} minWidth={["auto", "auto", "auto", "340px"]} alignSelf="flex-start" alignItems="flex-start">
-      <VStack alignItems="flex-start">
+const Transaction: React.FC<TransactionModel> = (props) => {
+  const { ensName: minterName } = useEns(props.minter, true);
+  const { ensName: recipientName } = useEns(props.recipient, true);
+  return (
+    <HStack key={props.date} spacing={4}>
+      <Flex alignSelf="flex-start">
         <Text
-          color="#0065D0"
+          color="#013A6D"
           {...{
             fontFamily: "Roboto",
             fontStyle: "normal",
-            fontWeight: "normal",
-            fontSize: "12px",
+            fontWeight: "bold",
+            fontSize: "16px",
             lineHeight: "137.88%",
           }}
+          minWidth={["auto", "auto", "auto", "150px"]}
           textAlign="left"
-        >{`${props.event} by`}</Text>
-        <Text
-          color="#013A6D"
-          {...{
-            fontFamily: "Roboto",
-            fontStyle: "normal",
-            fontWeight: "normal",
-            fontSize: "16px",
-            lineHeight: "137.88%",
-          }}
         >
-          {formatAddress(props.minter)}
+          {DateTime.fromSeconds(props.date).toHTTP()}
         </Text>
-      </VStack>
-      {props.event === "Tipped" && (
+      </Flex>
+      <VStack spacing={2} minWidth={["auto", "auto", "auto", "340px"]} alignSelf="flex-start" alignItems="flex-start">
         <VStack alignItems="flex-start">
           <Text
             color="#0065D0"
@@ -77,64 +55,7 @@ const Transaction: React.FC<TransactionModel> = (props) => (
               lineHeight: "137.88%",
             }}
             textAlign="left"
-          >
-            Message
-          </Text>
-          <Text
-            color="#809EBD"
-            {...{
-              fontFamily: "Roboto",
-              fontStyle: "normal",
-              fontWeight: "normal",
-              fontSize: "16px",
-              lineHeight: "137.88%",
-            }}
-            textAlign="left"
-          >
-            {props.message}
-          </Text>
-        </VStack>
-      )}
-    </VStack>
-    <VStack spacing={2} width={["auto", "340px"]} alignSelf="flex-start" alignItems="flex-start">
-      <VStack alignItems="flex-start">
-        <Text
-          color="#0065D0"
-          {...{
-            fontFamily: "Roboto",
-            fontStyle: "normal",
-            fontWeight: "normal",
-            fontSize: "12px",
-            lineHeight: "137.88%",
-          }}
-        >{`${props.event === "Transferred" ? "Transferred" : "Gifted"} to`}</Text>
-        <Text
-          color="#013A6D"
-          {...{
-            fontFamily: "Roboto",
-            fontStyle: "normal",
-            fontWeight: "normal",
-            fontSize: "16px",
-            lineHeight: "137.88%",
-          }}
-        >
-          {formatAddress(props.recipient)}
-        </Text>
-      </VStack>
-      {props.amount && (
-        <VStack alignItems="flex-start">
-          <Text
-            color="#0065D0"
-            {...{
-              fontFamily: "Roboto",
-              fontStyle: "normal",
-              fontWeight: "normal",
-              fontSize: "12px",
-              lineHeight: "137.88%",
-            }}
-          >
-            Amount
-          </Text>
+          >{`${props.event} by`}</Text>
           <Text
             color="#013A6D"
             {...{
@@ -145,16 +66,101 @@ const Transaction: React.FC<TransactionModel> = (props) => (
               lineHeight: "137.88%",
             }}
           >
-            {`${ethers.utils.formatEther(props.amount)} $${
-              erc20TokensData.find((token) => token.address.toLowerCase() === props.tokenContractAddress?.toLowerCase())
-                ?.symbol
-            }`}
+            {minterName}
           </Text>
         </VStack>
-      )}
-    </VStack>
-  </HStack>
-);
+        {props.event === "Tipped" && (
+          <VStack alignItems="flex-start">
+            <Text
+              color="#0065D0"
+              {...{
+                fontFamily: "Roboto",
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontSize: "12px",
+                lineHeight: "137.88%",
+              }}
+              textAlign="left"
+            >
+              Message
+            </Text>
+            <Text
+              color="#809EBD"
+              {...{
+                fontFamily: "Roboto",
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontSize: "16px",
+                lineHeight: "137.88%",
+              }}
+              textAlign="left"
+            >
+              {props.message}
+            </Text>
+          </VStack>
+        )}
+      </VStack>
+      <VStack spacing={2} width={["auto", "340px"]} alignSelf="flex-start" alignItems="flex-start">
+        <VStack alignItems="flex-start">
+          <Text
+            color="#0065D0"
+            {...{
+              fontFamily: "Roboto",
+              fontStyle: "normal",
+              fontWeight: "normal",
+              fontSize: "12px",
+              lineHeight: "137.88%",
+            }}
+          >{`${props.event === "Transferred" ? "Transferred" : "Gifted"} to`}</Text>
+          <Text
+            color="#013A6D"
+            {...{
+              fontFamily: "Roboto",
+              fontStyle: "normal",
+              fontWeight: "normal",
+              fontSize: "16px",
+              lineHeight: "137.88%",
+            }}
+          >
+            {recipientName}
+          </Text>
+        </VStack>
+        {props.amount && (
+          <VStack alignItems="flex-start">
+            <Text
+              color="#0065D0"
+              {...{
+                fontFamily: "Roboto",
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontSize: "12px",
+                lineHeight: "137.88%",
+              }}
+            >
+              Amount
+            </Text>
+            <Text
+              color="#013A6D"
+              {...{
+                fontFamily: "Roboto",
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontSize: "16px",
+                lineHeight: "137.88%",
+              }}
+            >
+              {`${ethers.utils.formatEther(props.amount)} $${
+                erc20TokensData.find(
+                  (token) => token.address.toLowerCase() === props.tokenContractAddress?.toLowerCase()
+                )?.symbol
+              }`}
+            </Text>
+          </VStack>
+        )}
+      </VStack>
+    </HStack>
+  );
+};
 
 interface IProps {
   id: string;
