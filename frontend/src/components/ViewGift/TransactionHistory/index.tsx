@@ -19,11 +19,11 @@ export type TransactionModel = {
   message?: string;
   amount?: BigNumberish;
   event: "Minted" | "Collected" | "Tipped" | "Transferred";
-  tokenContractAddress?: string;
-  isSmallMobileBreakpoint: boolean;
 };
 
-const Transaction: React.FC<TransactionModel> = (props) => {
+const Transaction: React.FC<TransactionModel & { isSmallMobileBreakpoint?: boolean; tokenContractAddress?: string }> = (
+  props
+) => {
   const { ensName: minterName } = useEns(props.minter, true);
   const { ensName: recipientName } = useEns(props.recipient, true);
 
