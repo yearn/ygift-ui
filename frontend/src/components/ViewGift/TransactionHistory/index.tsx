@@ -166,7 +166,7 @@ const Transaction: React.FC<TransactionModel & { isSmallMobileBreakpoint?: boole
                     erc20TokensData.find(
                       (token) => token.address.toLowerCase() === props.tokenContractAddress?.toLowerCase()
                     )?.decimals
-                  )} $${
+                  )} ${
                     erc20TokensData.find(
                       (token) => token.address.toLowerCase() === props.tokenContractAddress?.toLowerCase()
                     )?.symbol
