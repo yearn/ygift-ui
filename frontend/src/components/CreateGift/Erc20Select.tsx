@@ -100,6 +100,22 @@ export const erc20TokensData = [
     name: "Cover Protocol",
     symbol: "COVER",
   },
+  {
+    address: "0xd533a949740bb3306d119cc777fa900ba034cd52",
+    chainId: 1,
+    decimals: 18,
+    logoURI: "https://zapper.fi/images/CRV-icon.png",
+    name: "Curve DAO Token",
+    symbol: "CRV",
+  },
+  {
+    address: "0x37236cd05b34cc79d3715af2383e96dd7443dcf1",
+    chainId: 1,
+    decimals: 0,
+    logoURI: "https://zapper.fi/images/SLP-icon.png",
+    name: "Small Love Potion",
+    symbol: "SLP",
+  },
 ];
 
 const Erc20Select: React.FunctionComponent<IProps> = (props) => {
