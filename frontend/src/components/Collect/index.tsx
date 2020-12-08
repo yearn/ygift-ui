@@ -59,7 +59,7 @@ const Collect: React.FunctionComponent<IProps> = (props) => {
             <FormControl key={param} isInvalid={Boolean(formik.errors[index] && formik.touched[index])}>
               <FormLabel htmlFor={param}>
                 {param === "_amount"
-                  ? `$${
+                  ? `${
                       erc20TokensData.find(
                         (token) => token.address.toLowerCase() === props.tokenContractAddress.toLowerCase()
                       )?.symbol

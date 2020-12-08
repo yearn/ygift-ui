@@ -94,7 +94,7 @@ const Tip: React.FunctionComponent<IProps> = ({ tokenId, isOpen, tokenContractAd
             <FormControl key={param} isInvalid={Boolean(formik.errors[index] && formik.touched[index])}>
               {maxAmount && param === "_amount" ? (
                 <FormLabel textAlign="center" htmlFor="_amount">
-                  {`Max: $${
+                  {`Max: ${
                     erc20TokensData.find((token) => token.address.toLowerCase() === tokenContractAddress.toLowerCase())
                       ?.symbol
                   } ${ethers.utils.formatUnits(
@@ -106,7 +106,7 @@ const Tip: React.FunctionComponent<IProps> = ({ tokenId, isOpen, tokenContractAd
               ) : null}
               <FormLabel htmlFor={param}>
                 {param === "_amount"
-                  ? `$${
+                  ? `${
                       erc20TokensData.find(
                         (token) => token.address.toLowerCase() === tokenContractAddress.toLowerCase()
                       )?.symbol

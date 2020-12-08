@@ -252,7 +252,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                         gift.amount,
                         erc20TokensData.find((token) => token.address.toLowerCase() === gift.token?.toLowerCase())
                           ?.decimals
-                      )} $${
+                      )} ${
                         erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())
                           ?.symbol
                       }`
@@ -292,7 +292,7 @@ const ViewGift: React.FunctionComponent<IProps> = (props) => {
                         gift.tipped,
                         erc20TokensData.find((token) => token.address.toLowerCase() === gift.token?.toLowerCase())
                           ?.decimals
-                      )} $${
+                      )} ${
                         erc20TokensData.find((token) => token.address.toLowerCase() === gift.token.toLowerCase())
                           ?.symbol
                       }`
