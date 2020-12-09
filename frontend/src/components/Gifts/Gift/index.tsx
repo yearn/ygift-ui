@@ -95,14 +95,14 @@ const Gift: React.FunctionComponent<GiftModel> = (props) => {
           <Heading as="h4" fontFamily="Roboto" fontSize="18px" fontWeight="700" color={giftNameColour}>
             {props?.name}
           </Heading>
-          {props?.amount && (
+          {(props?.amount || props?.tipped) && (
             <>
               <Text fontFamily="Roboto" fontSize="16px" fontWeight="bold" color={"#1a4b77"}>
                 Amount left
               </Text>
               <Text fontFamily="Roboto" fontSize="16px" fontWeight="bold" color={giftAmountColour}>
                 {ethers.utils.formatUnits(
-                  props?.amount,
+                  props?.amount.add(props?.tipped),
                   erc20TokensData.find((token) => token.address.toLowerCase() === props.token?.toLowerCase())?.decimals
                 )}{" "}
               </Text>
