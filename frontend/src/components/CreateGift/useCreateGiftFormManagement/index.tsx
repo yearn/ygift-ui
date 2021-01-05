@@ -32,8 +32,6 @@ export function useCreateGiftFormManagement() {
       // Convert days to seconds
       console.log(params[7]);
       params[6] = _start + dayInSeconds * Number(params[6]);
-      params[7] = dayInSeconds * Number(params[7]);
-      console.log(params[7]);
 
       try {
         const gasLimit = await yGift?.instance?.estimateGas.mint.apply(null, params as any);

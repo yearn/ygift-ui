@@ -37,7 +37,7 @@ import all from "it-all";
 export const componentDataTestId = createDataTestId("CreateGift");
 
 const ipfs = ipfsClient({ url: "https://ipfs.infura.io:5001" });
-export const params = ["_to", "_token", "_amount", "_name", "_msg", "_url", "_start", "_duration"] as const;
+export const params = ["_to", "_token", "_amount", "_name", "_msg", "_url", "_start"] as const;
 export const yGiftContractAddress = yGiftDeployment.receipt.contractAddress;
 export const erc20Abi = [
   // Some details about the token
@@ -196,9 +196,6 @@ const getPlaceholder = (param: ValuesOf<typeof params>) => {
     }
     case "_start": {
       return "Delivery lockup (days to lock tokens for)";
-    }
-    case "_duration": {
-      return "Vesting duration (days to vest tokens for after unlock)";
     }
     default: {
       return param;
@@ -620,7 +617,7 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                     id={index.toString()}
                     name={index.toString()}
                     onChange={formik.handleChange}
-                    type={param === "_duration" || param === "_amount" || param === "_start" ? "number" : "text"}
+                    type={param === "_amount" || param === "_start" ? "number" : "text"}
                     max={
                       param === "_amount"
                         ? ethers.utils
