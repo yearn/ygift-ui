@@ -22,12 +22,21 @@ import {
   keyframes,
 } from "@chakra-ui/react";
 import fileType from "file-type";
-import { CloseIcon, CopyIcon, SmallCloseIcon, SpinnerIcon } from "@chakra-ui/icons";
+import {
+  CloseIcon,
+  CopyIcon,
+  SmallCloseIcon,
+  SpinnerIcon,
+} from "@chakra-ui/icons";
 import { useCreateGiftFormManagement } from "./useCreateGiftFormManagement";
 import { useFormik } from "formik";
 import graphic from "./graphic.png";
 import { BigNumber, ethers } from "ethers";
-import { CurrentAddressContext, ProviderContext, SignerContext } from "../../hardhat/HardhatContext";
+import {
+  CurrentAddressContext,
+  ProviderContext,
+  SignerContext,
+} from "../../hardhat/HardhatContext";
 import yGiftDeployment from "../../hardhat/deployments/localhost/yGift.json";
 import { Erc20Select, erc20TokensData } from "./Erc20Select";
 import { useVideo } from "react-use";
@@ -37,7 +46,15 @@ import all from "it-all";
 export const componentDataTestId = createDataTestId("CreateGift");
 
 const ipfs = ipfsClient({ url: "https://ipfs.infura.io:5001" });
-export const params = ["_to", "_token", "_amount", "_name", "_msg", "_url", "_start"] as const;
+export const params = [
+  "_to",
+  "_token",
+  "_amount",
+  "_name",
+  "_msg",
+  "_url",
+  "_start",
+] as const;
 export const yGiftContractAddress = yGiftDeployment.receipt.contractAddress;
 export const erc20Abi = [
   // Some details about the token
@@ -71,14 +88,18 @@ interface ISubmittedProps {
 }
 export const Submitted: React.FC<ISubmittedProps> = (props) => {
   const { hasCopied, onCopy } = useClipboard(props.url);
-  const giftIdUrl = `${window.location.href.replace("/create-gift", `/gift/${props.id}`)}`;
+  const giftIdUrl = `${window.location.href.replace(
+    "/create-gift",
+    `/gift/${props.id}`
+  )}`;
   const { hasCopied: hasIdCopied, onCopy: onIdCopy } = useClipboard(giftIdUrl);
   return (
     <Center
       width={["auto", "auto", "90vw", "1200px"]}
       height={["auto", "auto", "auto", "775px"]}
       {...{
-        background: "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
+        background:
+          "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
         borderRadius: "16px",
         py: 8,
       }}
@@ -117,7 +138,12 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
           {hasCopied ? (
             <Text>Copied</Text>
           ) : (
-            <CopyIcon color="white" id="add" cursor="pointer" onClick={onCopy}></CopyIcon>
+            <CopyIcon
+              color="white"
+              id="add"
+              cursor="pointer"
+              onClick={onCopy}
+            ></CopyIcon>
           )}
         </HStack>
         <HStack spacing={3} mb={"24px"}>
@@ -139,7 +165,12 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
           {hasIdCopied ? (
             <Text>Copied</Text>
           ) : (
-            <CopyIcon color="white" id="add" cursor="pointer" onClick={onIdCopy}></CopyIcon>
+            <CopyIcon
+              color="white"
+              id="add"
+              cursor="pointer"
+              onClick={onIdCopy}
+            ></CopyIcon>
           )}
         </HStack>
         <VStack spacing={1}>
@@ -167,7 +198,8 @@ export const Submitted: React.FC<ISubmittedProps> = (props) => {
               color: "white",
             }}
           >
-            Share the image and URL so that others can add tips with the same gifted token.
+            Share the image and URL so that others can add tips with the same
+            gifted token.
           </Text>
         </VStack>
       </VStack>
@@ -213,8 +245,12 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   const _url = String(formik?.values[Number(params.indexOf("_url"))]);
   const [isApproved, setIsApproved] = useState<boolean>(false);
   const [maxAmount, setMaxAmount] = useState<number>(0);
-  const [erc20Contract, setErc20Contract] = useState<ethers.Contract | undefined>(undefined);
-  const [isUploadingCoverImageUrl, setIsUploadingImage] = useState<boolean>(false);
+  const [erc20Contract, setErc20Contract] = useState<
+    ethers.Contract | undefined
+  >(undefined);
+  const [isUploadingCoverImageUrl, setIsUploadingImage] = useState<boolean>(
+    false
+  );
   const [chosenFile, setChosenFile] = useState<File | undefined>(undefined);
   const [chosenFileUrl, setChosenFileUrl] = useState<string>("");
   const [isVideo, setIsVideo] = useState<boolean>(false);
@@ -245,16 +281,24 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
         setMaxAmount(0);
       }
       // Resolve ens for _token
-      const resolvedToken = (_token.length > 3 && (await provider?.resolveName(_token))) || _token;
+      const resolvedToken =
+        (_token.length > 3 && (await provider?.resolveName(_token))) || _token;
       if (!ethers.utils.isAddress(resolvedToken)) {
         return;
       }
       if (signer && _token) {
         console.log(_token);
-        const erc20Contract = new ethers.Contract(resolvedToken, erc20Abi, provider).connect(signer);
+        const erc20Contract = new ethers.Contract(
+          resolvedToken,
+          erc20Abi,
+          provider
+        ).connect(signer);
         setErc20Contract(erc20Contract);
 
-        const filter = erc20Contract?.filters.Approval(currentAddress, yGiftContractAddress);
+        const filter = erc20Contract?.filters.Approval(
+          currentAddress,
+          yGiftContractAddress
+        );
         const events = await erc20Contract.queryFilter(filter);
         console.log(events);
         setIsApproved(events?.length > 0);
@@ -275,7 +319,10 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
     const fetch = async () => {
       if (erc20Contract && signer) {
         erc20Contract.connect(signer);
-        const tx = (erc20Contract as any).approve(yGiftContractAddress, BigNumber.from(2).pow(256).sub(1));
+        const tx = (erc20Contract as any).approve(
+          yGiftContractAddress,
+          BigNumber.from(2).pow(256).sub(1)
+        );
         const approveTx = await tx;
         await approveTx?.wait();
         setIsApproved(true);
@@ -299,7 +346,10 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
           console.log(file);
           const ipfsHash = file.path;
           const ipfsGateway = "https://gateway.ipfs.io/ipfs/";
-          formik.setFieldValue(String(params.indexOf("_url")), ipfsGateway + ipfsHash);
+          formik.setFieldValue(
+            String(params.indexOf("_url")),
+            ipfsGateway + ipfsHash
+          );
           setIsUploadingImage(false);
           setChosenFile(undefined);
           setChosenFileUrl("");
@@ -319,12 +369,17 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
 
   function handleChooseFile(files: FileList) {
     setIsVideo(false);
-    const fileExtension = files?.[0]["name"].substring(files?.[0]["name"].lastIndexOf(".") + 1).toLowerCase();
+    const fileExtension = files?.[0]["name"]
+      .substring(files?.[0]["name"].lastIndexOf(".") + 1)
+      .toLowerCase();
 
     if (
       files &&
       files[0] &&
-      (fileExtension === "gif" || fileExtension === "png" || fileExtension === "jpeg" || fileExtension === "jpg")
+      (fileExtension === "gif" ||
+        fileExtension === "png" ||
+        fileExtension === "jpeg" ||
+        fileExtension === "jpg")
     ) {
       setChosenFile(files[0]);
       const reader = new FileReader();
@@ -354,7 +409,12 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
   }
 
   if (management.hasSubmitted) {
-    return <Submitted id={management.giftCreatedId} url={formik.values?.["5"]}></Submitted>;
+    return (
+      <Submitted
+        id={management.giftCreatedId}
+        url={formik.values?.["5"]}
+      ></Submitted>
+    );
   }
 
   return (
@@ -364,7 +424,8 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
         {...{
           boxShadow: "0px 0px 68px rgba(27, 39, 70, 0.15)",
           borderRadius: "16px",
-          background: "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
+          background:
+            "linear-gradient(342.98deg, #013A6D 0%, #0055AC 56.01%, #0065D0 93.35%)",
         }}
         width={["auto", "auto", "auto", "1200px"]}
         height={["auto", "auto", "auto", "775px"]}
@@ -374,11 +435,20 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
       >
         <Center height={"100%"} width={["100%", "100%", "100%", "50%"]}>
           {" "}
-          <VStack spacing={0} py={"36px"} height={"100%"} alignItems={["center", "center", "center", "inherit"]}>
+          <VStack
+            spacing={0}
+            py={"36px"}
+            height={"100%"}
+            alignItems={["center", "center", "center", "inherit"]}
+          >
             <Box position="relative">
               {chosenFile?.type?.includes("video") || isVideo ? (
                 <video
-                  src={formik?.values?.[Number(params?.indexOf("_url"))]?.toString() || chosenFileUrl}
+                  src={
+                    formik?.values?.[
+                      Number(params?.indexOf("_url"))
+                    ]?.toString() || chosenFileUrl
+                  }
                   autoPlay
                   playsInline
                   muted
@@ -389,10 +459,30 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               ) : (
                 <Image
                   borderRadius="16px"
-                  maxHeight={(chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "463px"}
-                  height={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "auto") || "463px"}
-                  maxWidth={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "424px") || "304px"}
-                  src={chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]?.toString() || graphic}
+                  maxHeight={
+                    (chosenFileUrl ||
+                      formik.values?.[Number(params.indexOf("_url"))]) &&
+                    "463px"
+                  }
+                  height={
+                    ((chosenFileUrl ||
+                      formik.values?.[Number(params.indexOf("_url"))]) &&
+                      "auto") ||
+                    "463px"
+                  }
+                  maxWidth={
+                    ((chosenFileUrl ||
+                      formik.values?.[Number(params.indexOf("_url"))]) &&
+                      "424px") ||
+                    "304px"
+                  }
+                  src={
+                    chosenFileUrl ||
+                    formik.values?.[
+                      Number(params.indexOf("_url"))
+                    ]?.toString() ||
+                    graphic
+                  }
                   mb={"18px"}
                 ></Image>
               )}
@@ -427,12 +517,19 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               )}
             </Box>
             <FormControl
-              display={formik?.values?.[Number(params.indexOf("_url"))] ? "block" : "none"}
+              display={
+                formik?.values?.[Number(params.indexOf("_url"))]
+                  ? "block"
+                  : "none"
+              }
               borderRadius="24px"
               key={"_url"}
               isInvalid={Boolean(formik.errors[3] && formik.touched[3])}
               mt={
-                ((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "auto !important") || "inherit"
+                ((chosenFileUrl ||
+                  formik.values?.[Number(params.indexOf("_url"))]) &&
+                  "auto !important") ||
+                "inherit"
               }
             >
               <Input
@@ -448,7 +545,9 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 name={String(params.indexOf("_url"))}
                 onChange={formik.handleChange}
                 type="text"
-                value={formik.values[Number(params.indexOf("_url"))]?.toString()}
+                value={formik.values[
+                  Number(params.indexOf("_url"))
+                ]?.toString()}
                 borderRadius={"32px"}
                 border="none"
                 color="#A1C5E2"
@@ -462,7 +561,9 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 }}
                 mb={"32px"}
               />
-              <FormErrorMessage>{formik.errors[Number(params.indexOf("_url"))]}</FormErrorMessage>
+              <FormErrorMessage>
+                {formik.errors[Number(params.indexOf("_url"))]}
+              </FormErrorMessage>
             </FormControl>
 
             {chosenFileUrl.length ? (
@@ -480,11 +581,17 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 color="white"
                 borderRadius="32px"
                 boxSizing="border-box"
-                border="1px solid white"
+                border="1px solid orange"
+                borderColor="orange"
                 textAlign="center"
                 height={"56px"}
                 width={"424px"}
-                mt={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "inherit") || "auto"}
+                mt={
+                  ((chosenFileUrl ||
+                    formik.values?.[Number(params.indexOf("_url"))]) &&
+                    "inherit") ||
+                  "auto"
+                }
                 m={0}
                 onClick={() => {
                   if (chosenFile) {
@@ -493,7 +600,10 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 }}
               >
                 {isUploadingCoverImageUrl ? (
-                  <SpinnerIcon color="white" animation={`${spin} 2s infinite linear`} />
+                  <SpinnerIcon
+                    color="white"
+                    animation={`${spin} 2s infinite linear`}
+                  />
                 ) : (
                   "Upload File to IPFS"
                 )}
@@ -516,7 +626,12 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 height={"56px"}
                 width={"424px"}
                 m={0}
-                mt={((chosenFileUrl || formik.values?.[Number(params.indexOf("_url"))]) && "inherit") || "auto"}
+                mt={
+                  ((chosenFileUrl ||
+                    formik.values?.[Number(params.indexOf("_url"))]) &&
+                    "inherit") ||
+                  "auto"
+                }
                 px={5}
                 boxSizing="border-box"
                 py={"17px"}
@@ -592,7 +707,9 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
               return (
                 <FormControl
                   key={param}
-                  isInvalid={Boolean(formik.errors[index] && formik.touched[index])}
+                  isInvalid={Boolean(
+                    formik.errors[index] && formik.touched[index]
+                  )}
                   background="#ECF4FA"
                   borderRadius="24px"
                   mt={index === 0 ? `0px !important` : "inherit"}
@@ -604,7 +721,9 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                         erc20TokensData.find(
                           (token) =>
                             token.address.toLowerCase() ===
-                            formik.values[Number(params.indexOf("_token"))]?.toString()?.toLowerCase()
+                            formik.values[Number(params.indexOf("_token"))]
+                              ?.toString()
+                              ?.toLowerCase()
                         )?.decimals
                       )}`}
                     </FormLabel>
@@ -617,7 +736,11 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                     id={index.toString()}
                     name={index.toString()}
                     onChange={formik.handleChange}
-                    type={param === "_amount" || param === "_start" ? "number" : "text"}
+                    type={
+                      param === "_amount" || param === "_start"
+                        ? "number"
+                        : "text"
+                    }
                     max={
                       param === "_amount"
                         ? ethers.utils
@@ -625,7 +748,10 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                               maxAmount?.toString(),
                               erc20TokensData.find(
                                 (token) =>
-                                  token.address.toLowerCase() === formik.values[Number(params.indexOf("_token"))]
+                                  token.address.toLowerCase() ===
+                                  formik.values[
+                                    Number(params.indexOf("_token"))
+                                  ]
                               )?.decimals
                             )
                             .toString()
@@ -651,9 +777,16 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
             })}
             <Button
               data-testid={"submit"}
-              type={isApproved || formik?.values?.[Number(params.indexOf("_amount"))] === 0 ? "submit" : "button"}
+              type={
+                isApproved ||
+                formik?.values?.[Number(params.indexOf("_amount"))] === 0
+                  ? "submit"
+                  : "button"
+              }
               onClick={() => {
-                !isApproved && formik?.values?.[Number(params.indexOf("_amount"))] !== 0 && erc20Approve();
+                !isApproved &&
+                  formik?.values?.[Number(params.indexOf("_amount"))] !== 0 &&
+                  erc20Approve();
               }}
               isDisabled={!formik.values?.[Number(params.indexOf("_token"))]}
               isLoading={props.isSubmitting || formik.isSubmitting}
@@ -673,7 +806,10 @@ const CreateGift: React.FunctionComponent<IProps> = (props) => {
                 lineHeight: "137.88%",
               }}
             >
-              {isApproved || formik?.values?.[Number(params.indexOf("_amount"))] === 0 ? "Submit" : "Approve"}
+              {isApproved ||
+              formik?.values?.[Number(params.indexOf("_amount"))] === 0
+                ? "Submit"
+                : "Approve"}
             </Button>
           </VStack>
         </Center>

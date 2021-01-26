@@ -1,5 +1,9 @@
 import { useCallback, useContext, useState } from "react";
-import { CurrentAddressContext, ProviderContext, yGiftContext } from "../../../hardhat/HardhatContext";
+import {
+  CurrentAddressContext,
+  ProviderContext,
+  yGiftContext,
+} from "../../../hardhat/HardhatContext";
 import { YGift } from "../../../hardhat/typechain/YGift";
 import { DateTime, Duration } from "luxon";
 import { BigNumber, ethers } from "ethers";
@@ -23,7 +27,9 @@ export function useCreateGiftFormManagement() {
       console.log(params[2]);
       params[2] = ethers.utils.parseUnits(
         params[2].toString(),
-        erc20TokensData.find((token) => token.address.toLowerCase() === params[1].toLowerCase())?.decimals
+        erc20TokensData.find(
+          (token) => token.address.toLowerCase() === params[1].toLowerCase()
+        )?.decimals
       );
       console.log(params[2]);
       // Resolve ens for _to and _token
@@ -34,8 +40,14 @@ export function useCreateGiftFormManagement() {
       params[6] = _start + dayInSeconds * Number(params[6]);
 
       try {
-        const gasLimit = await yGift?.instance?.estimateGas.mint.apply(null, params as any);
-        const tx = yGift?.instance?.mint.apply(null, params.concat({ gasLimit: gasLimit?.add("80000") }) as any);
+        const gasLimit = await yGift?.instance?.estimateGas.mint.apply(
+          null,
+          params as any
+        );
+        const tx = yGift?.instance?.mint.apply(
+          null,
+          params.concat({ gasLimit: gasLimit?.add("80000") }) as any
+        );
         const createGiftTx = await tx;
         await createGiftTx?.wait();
         setHasSubmitted(true);
@@ -46,8 +58,13 @@ export function useCreateGiftFormManagement() {
           null
         );
         if (giftMintedSentEventFilter) {
-          const logs = await provider?.getLogs({ ...giftMintedSentEventFilter, fromBlock: 0 });
-          const giftsMinted = logs.map((log) => yGift?.instance?.interface?.parseLog(log)?.args);
+          const logs = await provider?.getLogs({
+            ...giftMintedSentEventFilter,
+            fromBlock: 0,
+          });
+          const giftsMinted = logs.map(
+            (log) => yGift?.instance?.interface?.parseLog(log)?.args
+          );
           if (giftsMinted?.[giftsMinted.length - 1]) {
             console.log(giftsMinted);
             const giftMinted = giftsMinted?.[giftsMinted.length - 1];
@@ -59,14 +76,28 @@ export function useCreateGiftFormManagement() {
         resolve(true);
       } catch (e) {
         console.error(e);
-        Router.push("/error");
+        // Router.push("/error");
         resolve(false);
       }
     });
   };
-  const onSubmit = useCallback(submitHandler, [yGift, provider, currentAddress, Router]);
+  const onSubmit = useCallback(submitHandler, [
+    yGift,
+    provider,
+    currentAddress,
+    Router,
+  ]);
   // _to: string, _token: string, _amount: BigNumberish, _name: string, _msg: string, _url: string, _start: BigNumberish, _duration: BigNumberish,
-  const initialValues: Parameters<YGift["mint"]> = ["", "", "", "", "", "", "", ""];
+  const initialValues: Parameters<YGift["mint"]> = [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    0,
+  ];
   return {
     onSubmit,
     initialValues,
