@@ -76,7 +76,7 @@ export function useCreateGiftFormManagement() {
         resolve(true);
       } catch (e) {
         console.error(e);
-        // Router.push("/error");
+        Router.push("/error");
         resolve(false);
       }
     });
