@@ -116,6 +116,14 @@ export const erc20TokensData = [
     name: "Small Love Potion",
     symbol: "SLP",
   },
+  {
+    address: "0xbC396689893D065F41bc2C6EcbeE5e0085233447",
+    chainId: 1,
+    decimals: 18,
+    logoURI: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xbC396689893D065F41bc2C6EcbeE5e0085233447/logo.png",
+    name: "Perpetual Protocol",
+    symbol: "PERP",
+  },
 ];
 
 const Erc20Select: React.FunctionComponent<IProps> = (props) => {
