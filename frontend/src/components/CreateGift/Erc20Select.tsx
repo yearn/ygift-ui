@@ -123,6 +123,14 @@ export const erc20TokensData = [
     logoURI: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xbC396689893D065F41bc2C6EcbeE5e0085233447/logo.png",
     name: "Perpetual Protocol",
     symbol: "PERP",
+  },  
+  {
+    address: "0xa283aA7CfBB27EF0cfBcb2493dD9F4330E0fd304",
+    chainId: 1,
+    decimals: 18,
+    logoURI: "https://github.com/mushroomsforest/deployment/raw/main/logos/mushrooms256.png",
+    name: "Mushrooms Finance",
+    symbol: "MM",
   },
 ];
 
